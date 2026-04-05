@@ -182,6 +182,12 @@ body {
   border: 1px solid rgba(107, 114, 128, 0.35);
 }
 
+.kpi-billing .kpi-employee-badge.employee-absent {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
 .kpi-body {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
@@ -198,6 +204,7 @@ body {
   background: #000000;
   aspect-ratio: 16 / 9;
   min-height: 360px;
+  align-self: start;
 }
 
 .kpi-video-label {
@@ -265,6 +272,18 @@ body {
 
 .kpi-legend > div + div {
   margin-top: 2px;
+}
+
+.bh-ff-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.bh-ff-row .kpi-graph {
+  flex: 1;
+  min-width: 0;
+  height: 100px;
 }
 
 @media (max-width: 900px) {

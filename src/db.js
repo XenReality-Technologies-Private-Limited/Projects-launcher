@@ -61,27 +61,63 @@ async function createDatabase(url = '/reliance.db') {
   return new SQL.Database(bytes);
 }
 
+function computeFIFODwell(rows) {
+  const queues = [[], [], []]; // [male, female, child]
+  let dwellSum = 0;
+  let dwellCount = 0;
+
+  rows.forEach((row, t) => {
+    for (let c = 0; c < 3; c++) {
+      for (let i = 0; i < row.in_count[c]; i++) queues[c].push(t);
+    }
+    for (let c = 0; c < 3; c++) {
+      for (let i = 0; i < row.out_count[c]; i++) {
+        if (queues[c].length > 0) {
+          const entryTime = queues[c].shift();
+          const raw = t - entryTime;
+          const rounded = Math.round(raw / 30) * 30;
+          const clamped = Math.max(30, Math.min(3600, rounded));
+          dwellSum += clamped;
+          dwellCount++;
+        }
+      }
+    }
+    row.avg_dwell_time = dwellCount > 0 ? dwellSum / dwellCount : 0;
+  });
+}
+
 function loadFootfall(db) {
-  const stmt = db.prepare('SELECT video_time, in_count FROM footfall ORDER BY video_time ASC');
+  const stmt = db.prepare('SELECT video_time, in_count, out_count FROM footfall ORDER BY video_time ASC');
   const rows = [];
-  const maleSeries = [];
-  const femaleSeries = [];
-  const childSeries = [];
+  const inMaleSeries = [];
+  const inFemaleSeries = [];
+  const inChildSeries = [];
+  const outMaleSeries = [];
+  const outFemaleSeries = [];
+  const outChildSeries = [];
 
   while (stmt.step()) {
     const row = stmt.getAsObject();
     const inCount = parseInCount(row.in_count);
+    const outCount = parseInCount(row.out_count);
     rows.push({
       video_time: row.video_time,
       in_count: inCount,
+      out_count: outCount,
+      avg_dwell_time: 0,
     });
-    maleSeries.push(inCount[0]);
-    femaleSeries.push(inCount[1]);
-    childSeries.push(inCount[2]);
+    inMaleSeries.push(inCount[0]);
+    inFemaleSeries.push(inCount[1]);
+    inChildSeries.push(inCount[2]);
+    outMaleSeries.push(outCount[0]);
+    outFemaleSeries.push(outCount[1]);
+    outChildSeries.push(outCount[2]);
   }
   stmt.free();
 
-  return { rows, maleSeries, femaleSeries, childSeries };
+  computeFIFODwell(rows);
+
+  return { rows, inMaleSeries, inFemaleSeries, inChildSeries, outMaleSeries, outFemaleSeries, outChildSeries };
 }
 
 function loadTrials(db) {
@@ -133,8 +169,32 @@ function loadTrials(db) {
   return { rows, customerSeries };
 }
 
+function loadBHBilling(db) {
+  const stmt = db.prepare(
+    'SELECT video_time, employee_present, customer_count, employee_time_seconds, interaction_time_seconds FROM billing ORDER BY video_time ASC'
+  );
+  const rows = [];
+  const customerSeries = [];
+
+  while (stmt.step()) {
+    const row = stmt.getAsObject();
+    const customerCount = Number(row.customer_count) || 0;
+    rows.push({
+      video_time: row.video_time,
+      employee_present: parseBoolean(row.employee_present),
+      customer_count: customerCount,
+      employee_time_seconds: Number(row.employee_time_seconds) || 0,
+      interaction_time_seconds: Number(row.interaction_time_seconds) || 0,
+    });
+    customerSeries.push(customerCount);
+  }
+  stmt.free();
+
+  return { rows, customerSeries };
+}
+
 // Loads a single KPI database from a URL and returns the relevant data for the given KPI type.
-// kpiType: 'footfall' | 'passerby' | 'zone-entry'
+// kpiType: 'footfall' | 'passerby' | 'zone-entry' | 'billing'
 export async function loadKpiDatabase(dbUrl, kpiType) {
   const db = await createDatabase(dbUrl);
   switch (kpiType) {
@@ -143,6 +203,8 @@ export async function loadKpiDatabase(dbUrl, kpiType) {
       return { type: kpiType, data: loadFootfall(db) };
     case 'zone-entry':
       return { type: kpiType, data: loadTrials(db) };
+    case 'billing':
+      return { type: kpiType, data: loadBHBilling(db) };
     default:
       throw new Error(`Unknown KPI type: ${kpiType}`);
   }
