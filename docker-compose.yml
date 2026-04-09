@@ -13,8 +13,6 @@ services:
       dockerfile: Dockerfile
     image: xentrack-dash:1.0
     container_name: xentrack-dash
-    ports:
-      - "80:80"
     networks:
       - xennet
     restart: unless-stopped
