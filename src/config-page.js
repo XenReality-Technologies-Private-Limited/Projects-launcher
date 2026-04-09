@@ -1,4 +1,3 @@
-import { encodeConfig } from './config-utils.js';
 
 const KPI_TYPES = [
   { value: 'footfall',   label: 'Footfall' },
@@ -185,7 +184,7 @@ export function renderConfigPage(appEl, errorMessage = null) {
   });
 
   // Continue
-  appEl.querySelector('#continue-btn').addEventListener('click', () => {
+  appEl.querySelector('#continue-btn').addEventListener('click', async () => {
     readKpisFromDom();
     if (!validate()) return;
 
@@ -194,26 +193,43 @@ export function renderConfigPage(appEl, errorMessage = null) {
       kpis: state.kpis.map(({ type, label, videoUrl, dbUrl }) => ({ type, label, videoUrl, dbUrl })),
     };
 
-    const token = encodeConfig(config);
+    const btn = appEl.querySelector('#continue-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving\u2026';
 
-    // Show the generated URL before navigating
-    const shareBox = document.createElement('div');
-    shareBox.className = 'share-url-box';
-    const fullUrl = `${window.location.origin}${window.location.pathname}#dashboard/${token}`;
-    shareBox.innerHTML = `
-      <div class="share-url-label">Your dashboard URL (share this with your client):</div>
-      <div class="share-url-text">${fullUrl}</div>
-      <button class="btn-copy-url" type="button">Copy URL</button>
-    `;
-    appEl.querySelector('.config-actions').after(shareBox);
-
-    shareBox.querySelector('.btn-copy-url').addEventListener('click', () => {
-      navigator.clipboard.writeText(fullUrl).then(() => {
-        shareBox.querySelector('.btn-copy-url').textContent = 'Copied!';
+    try {
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config),
       });
-    });
+      if (!res.ok) throw new Error('Server error');
+      const { id } = await res.json();
 
-    // Navigate to dashboard
-    window.location.hash = `#dashboard/${token}`;
+      const shareBox = document.createElement('div');
+      shareBox.className = 'share-url-box';
+      const fullUrl = `${window.location.origin}${window.location.pathname}#dashboard/${id}`;
+      shareBox.innerHTML = `
+        <div class="share-url-label">Your dashboard URL (share this with your client):</div>
+        <div class="share-url-text">${fullUrl}</div>
+        <button class="btn-copy-url" type="button">Copy URL</button>
+      `;
+      appEl.querySelector('.config-actions').after(shareBox);
+
+      shareBox.querySelector('.btn-copy-url').addEventListener('click', () => {
+        navigator.clipboard.writeText(fullUrl).then(() => {
+          shareBox.querySelector('.btn-copy-url').textContent = 'Copied!';
+        });
+      });
+
+      window.location.hash = `#dashboard/${id}`;
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Continue \u2192';
+      const msg = document.createElement('p');
+      msg.className = 'config-error-msg';
+      msg.textContent = 'Failed to save configuration. Please try again.';
+      appEl.querySelector('.config-actions').before(msg);
+    }
   });
 }

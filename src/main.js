@@ -10,7 +10,16 @@ async function bootstrap() {
   if (hash.startsWith('#dashboard/')) {
     const token = hash.slice('#dashboard/'.length);
     try {
-      const config = decodeConfig(token);
+      let config;
+      if (token.length <= 16) {
+        // Short ID — fetch config from API
+        const res = await fetch(`/api/config/${token}`);
+        if (!res.ok) throw new Error('Not found');
+        config = await res.json();
+      } else {
+        // Legacy long base64 token
+        config = decodeConfig(token);
+      }
       if (!config.kpis.length) {
         renderConfigPage(appEl, 'No KPIs found in this URL — please reconfigure.');
         return;

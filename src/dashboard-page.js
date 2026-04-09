@@ -52,7 +52,6 @@ function buildDashboardShell(config) {
         <img src="/xenlogo.png" alt="XenReality" class="header-logo-img" />
       </div>
       <div class="header-right">
-        <button class="btn-reconfigure" id="reconfigure-btn" type="button">&#8592; Reconfigure</button>
         <span class="header-status">SYSTEM ONLINE</span>
         <span class="header-clock" id="ist-clock">--:--:--</span>
       </div>
@@ -441,11 +440,6 @@ export async function renderDashboard(appEl, config) {
     clockEl.textContent = formatISTTime();
     setInterval(() => { clockEl.textContent = formatISTTime(); }, 1000);
   }
-
-  // Reconfigure button
-  appEl.querySelector('#reconfigure-btn')?.addEventListener('click', () => {
-    window.location.hash = '';
-  });
 
   // 2. Fetch all KPI databases in parallel
   const settled = await Promise.allSettled(
