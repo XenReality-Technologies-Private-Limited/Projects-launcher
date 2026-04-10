@@ -207,6 +207,13 @@ body {
   align-self: start;
 }
 
+@media (max-width: 900px) {
+  .kpi-video-container {
+    min-height: unset;
+    width: 100%;
+  }
+}
+
 .kpi-video-label {
   position: absolute;
   top: 10px;
