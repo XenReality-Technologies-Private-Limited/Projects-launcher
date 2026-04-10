@@ -5,10 +5,10 @@ import { decodeConfig } from './config-utils.js';
 
 async function bootstrap() {
   const appEl = document.getElementById('app');
-  const hash = window.location.hash;
+  const path = window.location.pathname;
 
-  if (hash.startsWith('#dashboard/')) {
-    const token = hash.slice('#dashboard/'.length);
+  if (path.startsWith('/dashboard/')) {
+    const token = path.slice('/dashboard/'.length);
     try {
       let config;
       if (token.length <= 16) {
@@ -33,5 +33,5 @@ async function bootstrap() {
   }
 }
 
-window.addEventListener('hashchange', bootstrap);
+window.addEventListener('popstate', bootstrap);
 bootstrap();

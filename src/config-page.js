@@ -208,7 +208,7 @@ export function renderConfigPage(appEl, errorMessage = null) {
 
       const shareBox = document.createElement('div');
       shareBox.className = 'share-url-box';
-      const fullUrl = `${window.location.origin}${window.location.pathname}#dashboard/${id}`;
+      const fullUrl = `${window.location.origin}/dashboard/${id}`;
       shareBox.innerHTML = `
         <div class="share-url-label">Your dashboard URL (share this with your client):</div>
         <div class="share-url-text">${fullUrl}</div>
@@ -222,7 +222,7 @@ export function renderConfigPage(appEl, errorMessage = null) {
         });
       });
 
-      window.location.hash = `#dashboard/${id}`;
+      window.location.href = `/dashboard/${id}`;
     } catch {
       btn.disabled = false;
       btn.textContent = 'Continue \u2192';
