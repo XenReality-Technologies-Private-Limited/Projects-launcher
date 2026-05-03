@@ -120,6 +120,37 @@ function loadFootfall(db) {
   return { rows, inMaleSeries, inFemaleSeries, inChildSeries, outMaleSeries, outFemaleSeries, outChildSeries };
 }
 
+function loadPasserby(db) {
+  const stmt = db.prepare('SELECT video_time, in_count, out_count FROM passerby ORDER BY video_time ASC');
+  const rows = [];
+  const inMaleSeries = [];
+  const inFemaleSeries = [];
+  const inChildSeries = [];
+  const outMaleSeries = [];
+  const outFemaleSeries = [];
+  const outChildSeries = [];
+
+  while (stmt.step()) {
+    const row = stmt.getAsObject();
+    const inCount = parseInCount(row.in_count);
+    const outCount = parseInCount(row.out_count);
+    rows.push({
+      video_time: row.video_time,
+      in_count: inCount,
+      out_count: outCount,
+    });
+    inMaleSeries.push(inCount[0]);
+    inFemaleSeries.push(inCount[1]);
+    inChildSeries.push(inCount[2]);
+    outMaleSeries.push(outCount[0]);
+    outFemaleSeries.push(outCount[1]);
+    outChildSeries.push(outCount[2]);
+  }
+  stmt.free();
+
+  return { rows, inMaleSeries, inFemaleSeries, inChildSeries, outMaleSeries, outFemaleSeries, outChildSeries };
+}
+
 function loadTrials(db) {
   const hasCustomerColumn = (() => {
     try {
@@ -199,8 +230,9 @@ export async function loadKpiDatabase(dbUrl, kpiType) {
   const db = await createDatabase(dbUrl);
   switch (kpiType) {
     case 'footfall':
-    case 'passerby':
       return { type: kpiType, data: loadFootfall(db) };
+    case 'passerby':
+      return { type: kpiType, data: loadPasserby(db) };
     case 'zone-entry':
       return { type: kpiType, data: loadTrials(db) };
     case 'billing':
