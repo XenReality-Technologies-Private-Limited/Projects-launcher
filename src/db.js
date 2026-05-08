@@ -151,53 +151,128 @@ function loadPasserby(db) {
   return { rows, inMaleSeries, inFemaleSeries, inChildSeries, outMaleSeries, outFemaleSeries, outChildSeries };
 }
 
-function loadTrials(db) {
-  const hasCustomerColumn = (() => {
-    try {
-      const info = db.exec("PRAGMA table_info(trials)");
-      if (!info.length || !info[0].values) return false;
-      return info[0].values.some((row) => row[1] === 'customer');
-    } catch {
-      return false;
-    }
-  })();
+function computeDwellFromIds(rows) {
+  const entryTimes = {};
+  const completedDwells = [];
+  let prevIds = new Set();
 
-  const selectColumns = hasCustomerColumn
-    ? 'video_time, employee, customer, customer_id, unique_customer'
-    : 'video_time, employee, customer_id, unique_customer';
+  rows.forEach((row, t) => {
+    const currentIds = new Set(
+      [...row.man_id, ...row.woman_id, ...row.child_id].map(String)
+    );
 
+    currentIds.forEach((id) => {
+      if (!(id in entryTimes)) entryTimes[id] = t;
+    });
+
+    prevIds.forEach((id) => {
+      if (!currentIds.has(id)) {
+        completedDwells.push(Math.max(1, t - entryTimes[id]));
+        delete entryTimes[id];
+      }
+    });
+
+    const sum = completedDwells.reduce((a, b) => a + b, 0);
+    row.avg_dwell_time = completedDwells.length > 0 ? sum / completedDwells.length : 0;
+
+    prevIds = new Set(currentIds);
+  });
+}
+
+function loadZoneEntry(db) {
   const stmt = db.prepare(
-    `SELECT ${selectColumns} FROM trials ORDER BY video_time ASC`
+    'SELECT video_time, man_count, woman_count, child_count, total_count, man_id, woman_id, child_id FROM women_clothing_zone ORDER BY video_time ASC'
   );
   const rows = [];
-  const customerSeries = [];
+  const manSeries = [];
+  const womanSeries = [];
+  const childSeries = [];
 
   while (stmt.step()) {
     const row = stmt.getAsObject();
-    const customerId = parseArray(row.customer_id);
-    const uniqueCustomer = parseArray(row.unique_customer);
-    const customer = hasCustomerColumn
-      ? (typeof row.customer === 'number' ? row.customer : Number(row.customer) || 0)
-      : customerId.length;
+    const manCount  = Number(row.man_count)   || 0;
+    const womanCount = Number(row.woman_count) || 0;
+    const childCount = Number(row.child_count) || 0;
+    const totalCount = Number(row.total_count) || (manCount + womanCount + childCount);
     rows.push({
-      video_time: row.video_time,
-      employee: parseBoolean(row.employee),
-      customer,
-      customer_id: customerId,
-      unique_customer: uniqueCustomer,
-      uniqueCount: uniqueCustomer.length,
+      video_time:  row.video_time,
+      man_count:   manCount,
+      woman_count: womanCount,
+      child_count: childCount,
+      total_count: totalCount,
+      man_id:   parseNumberArray(row.man_id),
+      woman_id: parseNumberArray(row.woman_id),
+      child_id: parseNumberArray(row.child_id),
+      avg_dwell_time: 0,
     });
-    customerSeries.push(customer);
+    manSeries.push(manCount);
+    womanSeries.push(womanCount);
+    childSeries.push(childCount);
   }
   stmt.free();
 
-  let runningSum = 0;
-  rows.forEach((r) => {
-    runningSum += r.uniqueCount;
-    r.cumulativeUnique = runningSum;
+  computeDwellFromIds(rows);
+
+  return { rows, manSeries, womanSeries, childSeries };
+}
+
+function parseHMSToSeconds(str) {
+  if (typeof str === 'number') return str;
+  const parts = String(str).split(':').map(Number);
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  if (parts.length === 2) return parts[0] * 60 + parts[1];
+  return Number(str) || 0;
+}
+
+function loadTrialRoom(db) {
+  const stmt = db.prepare(
+    'SELECT video_time, event_type, count_in, count_out, customer_count, unique_customer FROM trials ORDER BY video_time ASC'
+  );
+  const events = [];
+
+  while (stmt.step()) {
+    const row = stmt.getAsObject();
+    const uniqueArr = parseArray(row.unique_customer);
+    events.push({
+      timeSeconds:    parseHMSToSeconds(row.video_time),
+      event_type:     row.event_type,
+      count_in:       Number(row.count_in)       || 0,
+      count_out:      Number(row.count_out)      || 0,
+      customer_count: Number(row.customer_count) || 0,
+      unique_count:   uniqueArr.length,
+      avg_dwell_time: 0,
+    });
+  }
+  stmt.free();
+
+  // FIFO dwell time across events
+  const queue = [];
+  const completedDwells = [];
+  events.forEach((evt) => {
+    if (evt.event_type === 'in') {
+      queue.push(evt.timeSeconds);
+    } else if (evt.event_type === 'out' && queue.length > 0) {
+      const entryTime = queue.shift();
+      completedDwells.push(Math.max(1, evt.timeSeconds - entryTime));
+    }
+    const sum = completedDwells.reduce((a, b) => a + b, 0);
+    evt.avg_dwell_time = completedDwells.length > 0 ? sum / completedDwells.length : 0;
   });
 
-  return { rows, customerSeries };
+  // Expand to per-second series for the graph
+  const maxTime = events.length > 0 ? events[events.length - 1].timeSeconds : 0;
+  const customerCountSeries = new Array(maxTime + 1).fill(0);
+  let evtIdx = 0;
+  let currentCount = 0;
+  for (let t = 0; t <= maxTime; t++) {
+    while (evtIdx < events.length && events[evtIdx].timeSeconds <= t) {
+      currentCount = events[evtIdx].customer_count;
+      evtIdx++;
+    }
+    customerCountSeries[t] = currentCount;
+  }
+
+  return { events, customerCountSeries };
 }
 
 function loadBHBilling(db) {
@@ -234,7 +309,9 @@ export async function loadKpiDatabase(dbUrl, kpiType) {
     case 'passerby':
       return { type: kpiType, data: loadPasserby(db) };
     case 'zone-entry':
-      return { type: kpiType, data: loadTrials(db) };
+      return { type: kpiType, data: loadZoneEntry(db) };
+    case 'trial-room':
+      return { type: kpiType, data: loadTrialRoom(db) };
     case 'billing':
       return { type: kpiType, data: loadBHBilling(db) };
     default:

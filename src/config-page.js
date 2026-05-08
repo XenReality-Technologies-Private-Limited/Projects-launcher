@@ -4,6 +4,7 @@ const KPI_TYPES = [
   { value: 'passerby',  label: 'PasserBy' },
   { value: 'zone-entry', label: 'Zone Entry' },
   { value: 'billing',   label: 'Billing Counter' },
+  { value: 'trial-room', label: 'Trial Room' },
 ];
 
 // Resize an uploaded logo image to max 200px wide before base64-encoding,

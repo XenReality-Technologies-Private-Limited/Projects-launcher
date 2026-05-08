@@ -25,6 +25,7 @@ const KPI_ICONS = {
   passerby: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   'zone-entry': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`,
   billing: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2m4 0h2M7 11h2m4 0h2"/></svg>`,
+  'trial-room': `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
 };
 
 const KPI_LABELS = {
@@ -32,6 +33,7 @@ const KPI_LABELS = {
   passerby:   'PASSERBY',
   'zone-entry': 'ZONE ENTRY',
   billing:     'BILLING COUNTER',
+  'trial-room': 'TRIAL ROOM',
 };
 
 const FOOTFALL_COLORS = {
@@ -320,7 +322,7 @@ function buildZoneEntryCard(kpi, index, dbResult) {
         <span class="kpi-title-icon" aria-hidden="true">${KPI_ICONS[kpi.type] || ''}</span>
         <h2 class="kpi-title">${displayTitle}</h2>
       </div>
-      <span class="kpi-employee-badge">Employee: --</span>
+      <span class="kpi-badge">ACTIVE</span>
     </div>
     <div class="kpi-body">
       <div class="kpi-video-container">
@@ -328,13 +330,15 @@ function buildZoneEntryCard(kpi, index, dbResult) {
         <video class="kpi-video" controls muted playsinline autoplay loop></video>
       </div>
       <div class="kpi-right">
-        <div class="kpi-metric-label">UNIQUE CUSTOMERS</div>
-        <div class="kpi-metric-value">--</div>
-        <canvas class="kpi-graph" width="600" height="160"></canvas>
-        <div class="kpi-metric-label">INTERACTION TIME</div>
-        <div class="kpi-metric-value kpi-interaction-time-value">--</div>
+        <div class="kpi-metric-label">CUSTOMER COUNT</div>
+        <div class="bh-ff-row">
+          <div class="kpi-metric-value">--</div>
+          <canvas class="kpi-graph kpi-graph-zone" width="600" height="120"></canvas>
+        </div>
+        <div class="kpi-legend"><div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div></div>
+        <div class="kpi-metric-label">AVG DWELL TIME</div>
+        <div class="kpi-metric-value bh-dwell-time-value">--:--</div>
         <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
-        <div class="kpi-legend"><div>Customers in zone</div></div>
       </div>
     </div>
   `;
@@ -344,59 +348,138 @@ function buildZoneEntryCard(kpi, index, dbResult) {
 
   if (!dbResult) {
     section.querySelector('.kpi-metric-value').textContent = 'ERROR';
-    section.querySelector('.kpi-interaction-time-value').textContent = 'ERROR';
     return section;
   }
 
-  const { rows } = dbResult.data;
-  const canvas = section.querySelector('.kpi-graph');
-  const metricValue = section.querySelector('.kpi-metric-value');
-  const employeeBadge = section.querySelector('.kpi-employee-badge');
-  const interactionTimeEl = section.querySelector('.kpi-interaction-time-value');
+  const { rows, manSeries, womanSeries, childSeries } = dbResult.data;
+  const canvas = section.querySelector('.kpi-graph-zone');
+  const totalEl = section.querySelector('.kpi-metric-value');
+  const dwellEl = section.querySelector('.bh-dwell-time-value');
 
-  const cumulativeUniqueSeries = rows.map(r => r.cumulativeUnique ?? 0);
-  const maxUnique = cumulativeUniqueSeries.length ? Math.max(...cumulativeUniqueSeries) : 10;
+  const seriesMax = Math.max(0, ...manSeries, ...womanSeries, ...childSeries);
 
-  const graph = new TimeSeriesGraph(canvas, {
-    yMax: Math.ceil(maxUnique * 1.2) || 10,
-    lineColor: '#8b5cf6',
+  const graph = new MultiSeriesGraph(canvas, {
+    series: [
+      { values: manSeries,   color: FOOTFALL_COLORS.male,   label: 'Male' },
+      { values: womanSeries, color: FOOTFALL_COLORS.female, label: 'Female' },
+      { values: childSeries, color: FOOTFALL_COLORS.child,  label: 'Child' },
+    ],
+    yMax: Math.ceil(seriesMax * 1.5) || 5,
     playheadColor: '#6b7280',
     showLiveCount: true,
   });
-  graph.setValues(cumulativeUniqueSeries);
-
-  // Precompute cumulative interaction seconds
-  const cumulativeInteraction = rows.map(((acc) => (row) => {
-    acc += (row.employee === true && (row.customer ?? 0) > 0) ? 1 : 0;
-    return acc;
-  })(0));
 
   const updateForTime = () => {
     if (!rows.length) {
-      metricValue.textContent = '0';
-      if (employeeBadge) { employeeBadge.textContent = 'Employee: --'; employeeBadge.classList.remove('employee-present', 'employee-absent'); }
-      if (interactionTimeEl) interactionTimeEl.textContent = '00:00';
+      totalEl.textContent = '0';
+      dwellEl.textContent = '00:00';
       graph.render();
       return;
     }
     const idx = Math.min(Math.floor(video.currentTime || 0), rows.length - 1);
     const row = rows[idx];
-
-    metricValue.textContent = String(row.cumulativeUnique ?? 0);
-
-    if (employeeBadge) {
-      const present = row.employee === true;
-      employeeBadge.textContent = present ? 'Employee: Present' : 'Employee: Absent';
-      employeeBadge.classList.toggle('employee-present', present);
-      employeeBadge.classList.toggle('employee-absent', !present);
-    }
-
-    if (interactionTimeEl) {
-      interactionTimeEl.textContent = formatTime(cumulativeInteraction[idx] ?? 0);
-    }
-
+    totalEl.textContent = String(row.total_count ?? (row.man_count + row.woman_count + row.child_count));
+    dwellEl.textContent = formatTime(row.avg_dwell_time || 0);
     graph.setCurrentIndex(idx);
-    graph.setValueAt(idx, row.cumulativeUnique ?? 0);
+    graph.render();
+  };
+
+  const ro = new ResizeObserver(() => {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    graph.render();
+  });
+  ro.observe(canvas);
+
+  video.addEventListener('loadedmetadata', updateForTime);
+  video.addEventListener('timeupdate', updateForTime);
+
+  return section;
+}
+
+function buildTrialRoomCard(kpi, index, dbResult) {
+  const camLabel = `CAM-${String(index + 1).padStart(2, '0')}`;
+  const displayTitle = kpi.label || KPI_LABELS[kpi.type] || kpi.type.toUpperCase();
+
+  const section = document.createElement('section');
+  section.className = 'kpi-card';
+  section.dataset.kpiIndex = index;
+  section.innerHTML = `
+    <div class="kpi-header">
+      <div class="kpi-title-wrap">
+        <span class="kpi-title-icon" aria-hidden="true">${KPI_ICONS[kpi.type] || ''}</span>
+        <h2 class="kpi-title">${displayTitle}</h2>
+      </div>
+      <span class="kpi-badge">ACTIVE</span>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-video-container">
+        <span class="kpi-video-label">${camLabel}</span>
+        <video class="kpi-video" controls muted playsinline autoplay loop></video>
+      </div>
+      <div class="kpi-right">
+        <div class="kpi-metric-label">CUSTOMER COUNT</div>
+        <div class="kpi-metric-value bh-trial-count">--</div>
+        <canvas class="kpi-graph kpi-graph-trial" width="600" height="160"></canvas>
+        <div class="kpi-legend"><div>Customers in trial room</div></div>
+        <div class="kpi-metric-label">UNIQUE CUSTOMERS</div>
+        <div class="kpi-metric-value bh-trial-unique">--</div>
+        <div class="kpi-metric-label">AVG DWELL TIME</div>
+        <div class="kpi-metric-value bh-dwell-time-value">--:--</div>
+        <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
+      </div>
+    </div>
+  `;
+
+  const video = section.querySelector('.kpi-video');
+  video.src = kpi.videoUrl;
+
+  if (!dbResult) {
+    section.querySelector('.kpi-metric-value').textContent = 'ERROR';
+    return section;
+  }
+
+  const { events, customerCountSeries } = dbResult.data;
+  const canvas = section.querySelector('.kpi-graph-trial');
+  const countEl = section.querySelector('.bh-trial-count');
+  const uniqueEl = section.querySelector('.bh-trial-unique');
+  const dwellEl = section.querySelector('.bh-dwell-time-value');
+
+  const maxCount = Math.max(0, ...customerCountSeries);
+  const graph = new TimeSeriesGraph(canvas, {
+    yMax: Math.ceil(maxCount * 1.5) || 5,
+    lineColor: '#8b5cf6',
+    playheadColor: '#6b7280',
+    showLiveCount: true,
+  });
+  graph.setValues(customerCountSeries);
+
+  const findEvent = (currentTime) => {
+    let lo = 0, hi = events.length - 1, result = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (events[mid].timeSeconds <= currentTime) { result = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    return result >= 0 ? events[result] : null;
+  };
+
+  const updateForTime = () => {
+    if (!events.length) {
+      countEl.textContent = '0';
+      uniqueEl.textContent = '0';
+      dwellEl.textContent = '00:00';
+      graph.render();
+      return;
+    }
+    const currentTime = video.currentTime || 0;
+    const idx = Math.min(Math.floor(currentTime), customerCountSeries.length - 1);
+    const evt = findEvent(currentTime);
+    countEl.textContent = String(evt?.customer_count ?? 0);
+    uniqueEl.textContent = String(evt?.unique_count ?? 0);
+    dwellEl.textContent = formatTime(evt?.avg_dwell_time || 0);
+    graph.setCurrentIndex(idx);
     graph.render();
   };
 
@@ -582,6 +665,8 @@ export async function renderDashboard(appEl, config) {
         card = buildZoneEntryCard(kpi, i, dbResult);
       } else if (kpi.type === 'billing') {
         card = buildBillingCard(kpi, i, dbResult);
+      } else if (kpi.type === 'trial-room') {
+        card = buildTrialRoomCard(kpi, i, dbResult);
       } else {
         card = buildErrorCard(kpi, i, new Error(`Unknown KPI type: ${kpi.type}`));
       }
