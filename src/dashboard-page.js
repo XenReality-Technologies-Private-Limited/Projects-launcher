@@ -526,6 +526,8 @@ function buildBillingCard(kpi, index, dbResult) {
         <div class="kpi-metric-label">INTERACTION TIME</div>
         <div class="kpi-metric-value bh-interaction-time-value">--:--</div>
         <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
+        <div class="kpi-metric-label">QUEUE SIZE</div>
+        <div class="kpi-metric-value">1</div>
         <canvas class="kpi-graph" width="600" height="160"></canvas>
         <div class="kpi-legend"><div>Customer count over time</div></div>
       </div>
