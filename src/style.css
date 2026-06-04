@@ -618,6 +618,7 @@ body {
 .billing-queue-badge {
   display: inline-flex;
   align-items: center;
+  width: fit-content;
   padding: 5px 14px;
   border-radius: 8px;
   border: 1px solid;

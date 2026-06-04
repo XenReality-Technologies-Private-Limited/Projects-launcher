@@ -526,9 +526,8 @@ function buildBillingCard(kpi, index, dbResult) {
         <div class="kpi-metric-label">INTERACTION TIME</div>
         <div class="kpi-metric-value bh-interaction-time-value">--:--</div>
         <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
-        <div class="kpi-metric-label">QUEUE SIZE</div>
         <div class="billing-queue-badge bq-low">
-          <span class="bq-status">&lt; 2</span>
+          <span class="bq-status">Queue Size &lt; 2</span>
         </div>
         <canvas class="kpi-graph" width="600" height="160"></canvas>
         <div class="kpi-legend"><div>Customer count over time</div></div>
@@ -585,7 +584,7 @@ function buildBillingCard(kpi, index, dbResult) {
     interactionTimeEl.textContent = formatTime(row.interaction_time_seconds || 0);
 
     const queueSize = row.queue_size != null ? Number(row.queue_size) : 1;
-    const [queueClass, queueLabel] = queueSize < 2 ? ['bq-low', '< 2'] : queueSize <= 3 ? ['bq-medium', '2 – 3'] : ['bq-high', '> 3'];
+    const [queueClass, queueLabel] = queueSize < 2 ? ['bq-low', 'Queue Size < 2'] : queueSize <= 3 ? ['bq-medium', 'Queue Size 2–3'] : ['bq-high', 'Queue Size > 3'];
     queueBadgeEl.className = `billing-queue-badge ${queueClass}`;
     queueBadgeEl.querySelector('.bq-status').textContent = queueLabel;
 
