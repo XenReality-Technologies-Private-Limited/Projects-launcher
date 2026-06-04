@@ -527,7 +527,10 @@ function buildBillingCard(kpi, index, dbResult) {
         <div class="kpi-metric-value bh-interaction-time-value">--:--</div>
         <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
         <div class="kpi-metric-label">QUEUE SIZE</div>
-        <div class="kpi-metric-value">1</div>
+        <div class="billing-queue-badge bq-low">
+          <span class="bq-number">1</span>
+          <span class="bq-status">LOW</span>
+        </div>
         <canvas class="kpi-graph" width="600" height="160"></canvas>
         <div class="kpi-legend"><div>Customer count over time</div></div>
       </div>
@@ -548,6 +551,7 @@ function buildBillingCard(kpi, index, dbResult) {
   const employeeBadge = section.querySelector('.kpi-employee-badge');
   const employeeTimeEl = section.querySelector('.bh-employee-time-value');
   const interactionTimeEl = section.querySelector('.bh-interaction-time-value');
+  const queueBadgeEl = section.querySelector('.billing-queue-badge');
 
   const maxCustomer = Math.max(0, ...customerSeries);
   const graph = new TimeSeriesGraph(canvas, {
@@ -580,6 +584,12 @@ function buildBillingCard(kpi, index, dbResult) {
 
     employeeTimeEl.textContent = formatTime(row.employee_time_seconds || 0);
     interactionTimeEl.textContent = formatTime(row.interaction_time_seconds || 0);
+
+    const queueSize = row.queue_size != null ? Number(row.queue_size) : 1;
+    const [queueClass, queueLabel] = queueSize < 2 ? ['bq-low', 'LOW'] : queueSize <= 3 ? ['bq-medium', 'MEDIUM'] : ['bq-high', 'HIGH'];
+    queueBadgeEl.className = `billing-queue-badge ${queueClass}`;
+    queueBadgeEl.querySelector('.bq-number').textContent = String(queueSize);
+    queueBadgeEl.querySelector('.bq-status').textContent = queueLabel;
 
     graph.setCurrentIndex(idx);
     graph.setValueAt(idx, row.customer_count ?? 0);
