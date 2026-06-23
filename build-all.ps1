@@ -12,19 +12,19 @@ if (Test-Path $out) { Remove-Item $out -Recurse -Force }
 New-Item -ItemType Directory -Path $out | Out-Null
 
 function Invoke-Npm {
-  param([string]$Args)
-  # Run npm without capturing stderr so PowerShell doesn't treat
-  # Vite's deprecation warnings as fatal errors.
-  $null = npm $Args.Split(' ')
-  if ($LASTEXITCODE -ne 0) { throw "npm $Args failed (exit $LASTEXITCODE)" }
+  param([string]$Cmd)
+  # $Args is a PowerShell automatic variable (array) — never use it as a param name.
+  # Run npm without capturing stderr so Vite deprecation warnings don't become errors.
+  $null = npm $Cmd.Split(' ')
+  if ($LASTEXITCODE -ne 0) { throw "npm $Cmd failed (exit $LASTEXITCODE)" }
 }
 
 function Build-PoC {
   param([string]$Dir, [string]$Subpath)
   Write-Host "Building $Subpath ..." -ForegroundColor Cyan
   Push-Location $Dir
-  Invoke-Npm 'install --prefer-offline'
-  Invoke-Npm 'run build'
+  Invoke-Npm -Cmd 'install --prefer-offline'
+  Invoke-Npm -Cmd 'run build'
   $dist = Join-Path $Dir 'dist'
   $dest = Join-Path $out $Subpath
   Copy-Item $dist $dest -Recurse
@@ -35,8 +35,8 @@ function Build-PoC {
 # Main launcher (goes to root)
 Write-Host "Building launcher..." -ForegroundColor Cyan
 Push-Location $root
-Invoke-Npm 'install --prefer-offline'
-Invoke-Npm 'run build'
+Invoke-Npm -Cmd 'install --prefer-offline'
+Invoke-Npm -Cmd 'run build'
 Copy-Item (Join-Path $root 'dist\*') $out -Recurse
 Pop-Location
 Write-Host "  Done -> _deploy/" -ForegroundColor Green
