@@ -1,0 +1,29 @@
+{
+  "stores": [
+    {
+      "storeCode": "1014",
+      "location": "Malleshwaram, Bangalore",
+      "statusPageSlug": "bata1014"
+    },
+    {
+      "storeCode": "9441",
+      "location": "Brigade Road, Bangalore",
+      "statusPageSlug": "bata1454"
+    },
+    {
+      "storeCode": "3019",
+      "location": "Delhi",
+      "statusPageSlug": "bata3019"
+    },
+    {
+      "storeCode": "3036",
+      "location": "Noida",
+      "statusPageSlug": "bata3036"
+    },
+    {
+      "storeCode": "3708",
+      "location": "Gurgaon",
+      "statusPageSlug": "bata3708"
+    }
+  ]
+}

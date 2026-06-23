@@ -2,3 +2,9 @@ node_modules
 public/videos
 dist
 _deploy
+
+# PoC sub-projects
+pocs/*/node_modules
+pocs/*/dist
+pocs/*/.env
+pocs/*/public/videos

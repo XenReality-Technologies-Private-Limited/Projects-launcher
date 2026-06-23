@@ -1,0 +1,610 @@
+:root {
+  --page-bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --primary: #2563eb;
+  --danger: #ef4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --text-primary: #111827;
+  --text-muted: #6b7280;
+  --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ── Header ── */
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 64px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 24px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.header-brand-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.header-status {
+  background-color: #10b981;
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.header-clock {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+/* ── Main layout ── */
+.dashboard-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.kpi-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ── KPI Card ── */
+.kpi-card {
+  border-radius: 22px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  padding: 18px 18px 20px;
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.kpi-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kpi-title-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.kpi-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+/* ── Badges ── */
+.kpi-badge {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.35);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.badge-present {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.badge-absent {
+  background: rgba(239, 68, 68, 0.15);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.badge-open {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.badge-closed {
+  background: rgba(107, 114, 128, 0.12);
+  color: #4b5563;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.badge-alert {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-ok {
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-neutral {
+  background: rgba(107, 114, 128, 0.1);
+  color: #6b7280;
+  border: 1px solid rgba(107, 114, 128, 0.25);
+}
+
+.badge-event {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+  border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.badge-event.active {
+  background: rgba(37, 99, 235, 0.25);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.6);
+  animation: flash 0.4s ease;
+}
+
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* ── Card body ── */
+.kpi-body {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.kpi-video-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: #000000;
+  aspect-ratio: 16 / 9;
+  min-height: 360px;
+  align-self: start;
+}
+
+@media (max-width: 900px) {
+  .kpi-video-container { min-height: unset; width: 100%; }
+  .kpi-body { grid-template-columns: 1fr; }
+  #app { padding-inline: 12px; }
+}
+
+.kpi-video-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+
+.kpi-video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #000000;
+  object-fit: contain;
+}
+
+/* ── Right panel ── */
+.kpi-right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.kpi-metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.kpi-metric-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.kpi-metric-sub {
+  font-size: 0.65em;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-top: -4px;
+}
+
+.kpi-graph {
+  width: 100%;
+  height: 160px;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  background: #ffffff;
+  display: block;
+}
+
+.kpi-legend {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ── Badge row (multiple badges side by side) ── */
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+/* ── Cashier payout flags row ── */
+.cashier-payout-flags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flag-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.flag-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* ── Table clearance grid ── */
+.table-state-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.table-state-grid-7 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.table-cell {
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.table-cell-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.table-cell-state {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.table-cell-secs {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.table-cell.state-clean {
+  background: rgba(16, 185, 129, 0.07);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+.table-cell.state-clean .table-cell-state { color: #047857; }
+
+.table-cell.state-occupied {
+  background: rgba(107, 114, 128, 0.07);
+  border-color: rgba(107, 114, 128, 0.3);
+}
+.table-cell.state-occupied .table-cell-state { color: #4b5563; }
+
+.table-cell.state-unclean {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+.table-cell.state-unclean .table-cell-state { color: #b91c1c; }
+
+.table-cell.state-alert {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.6);
+  animation: pulse-border 1s ease infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(239, 68, 68, 0.6); }
+  50% { border-color: rgba(239, 68, 68, 0.2); }
+}
+
+/* ── Transaction log table ── */
+.txn-table-wrap {
+  overflow-y: auto;
+  max-height: 180px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+}
+
+.txn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+
+.txn-table thead th {
+  padding: 6px 8px;
+  text-align: left;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  background: #f9fafb;
+  border-bottom: 1px solid var(--card-border);
+  position: sticky;
+  top: 0;
+}
+
+.txn-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.txn-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.txn-table td {
+  padding: 6px 8px;
+  color: var(--text-primary);
+}
+
+.txn-time {
+  font-family: 'Courier New', monospace;
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.txn-ok  { color: #047857; font-weight: 600; }
+.txn-alert { color: #b91c1c; font-weight: 600; }
+
+.txn-empty {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 14px 8px;
+  font-size: 0.78rem;
+}
+
+/* ── Divider ── */
+.kpi-divider {
+  height: 1px;
+  background: var(--card-border);
+  margin: 2px 0;
+}
+
+/* ── Presence pair (side-by-side Cashier + Staff) ── */
+.presence-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Event rows (cash staff card) ── */
+.event-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  background: rgba(107, 114, 128, 0.04);
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.event-row-icon {
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: color 0.25s;
+}
+
+.event-row-label {
+  flex: 1;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.event-row-status {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+
+/* Cash → Staff: red alert style when active */
+.event-row-alert.active {
+  background: rgba(239, 68, 68, 0.09);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+.event-row-alert.active .event-row-icon { color: #ef4444; }
+.event-row-alert.active .event-row-status { color: #b91c1c; }
+
+/* Customer Cash: blue info style when active */
+.event-row-info.active {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.38);
+}
+.event-row-info.active .event-row-icon { color: #2563eb; }
+.event-row-info.active .event-row-status { color: #1d4ed8; }
+
+/* ── Event log (timestamped entries below Cash → Staff row) ── */
+.event-log {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.event-log-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: rgba(239, 68, 68, 0.06);
+  border-left: 3px solid #ef4444;
+  border-radius: 0 6px 6px 0;
+}
+
+.event-log-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  flex-shrink: 0;
+}
+
+.event-log-time {
+  font-family: 'Courier New', monospace;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: #b91c1c;
+  white-space: nowrap;
+}
+
+.event-log-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Blue variant for customer cash log */
+.event-log-entry-info {
+  background: rgba(37, 99, 235, 0.06);
+  border-left-color: #2563eb;
+}
+
+.event-log-dot-info {
+  background: #2563eb;
+}
+
+.event-log-time-info {
+  color: #1d4ed8;
+}
+
+/* ── Apron / Food Safety Gear legend ── */
+.apron-legend-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 6px; }
+.apron-legend-table thead th { padding: 6px 10px; text-align: left; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); background: #f9fafb; border-bottom: 1px solid var(--card-border); }
+.apron-legend-table tbody tr { border-bottom: 1px solid #f3f4f6; }
+.apron-legend-table tbody tr:last-child { border-bottom: none; }
+.apron-legend-table td { padding: 10px; color: var(--text-primary); vertical-align: middle; line-height: 1.5; }
+.apron-legend-table td:first-child { white-space: nowrap; font-weight: 600; }
+.colour-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.colour-dot-green  { background: #10b981; }
+.colour-dot-yellow { background: #f59e0b; }
+.colour-dot-red    { background: #ef4444; }

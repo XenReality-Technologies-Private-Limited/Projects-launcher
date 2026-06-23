@@ -4,7 +4,7 @@
 
 $ErrorActionPreference = 'Continue'
 $root  = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$pocs  = Split-Path -Parent $root   # parent of New_POC_Website
+$pocs  = Join-Path $root 'pocs'
 $out   = Join-Path $root '_deploy'
 
 # Clean output directory
@@ -42,15 +42,15 @@ Pop-Location
 Write-Host "  Done -> _deploy/" -ForegroundColor Green
 
 # PoC builds
-Build-PoC (Join-Path $pocs 'HalliMane_POC')            'halliMane'
-Build-PoC (Join-Path $pocs 'KalyanKendra_POC')         'kalyanKendra'
-Build-PoC (Join-Path $pocs 'Kushals')                  'kushals'
-Build-PoC (Join-Path $pocs 'retail-edge-Paragon\dashboard') 'paragon'
-Build-PoC (Join-Path $pocs 'reliance-demo')            'reliance'
-Build-PoC (Join-Path $pocs 'retail-edge-sultan\dashboard')  'sulthan'
-Build-PoC (Join-Path $pocs 'TechnoSport')              'technoSport'
-Build-PoC (Join-Path $pocs 'US_Polo_POC')              'usPolo'
-Build-PoC (Join-Path $pocs 'V-Bazaar\dashboard')       'vBazaar'
+Build-PoC (Join-Path $pocs 'halliMane')    'halliMane'
+Build-PoC (Join-Path $pocs 'kalyanKendra') 'kalyanKendra'
+Build-PoC (Join-Path $pocs 'kushals')      'kushals'
+Build-PoC (Join-Path $pocs 'paragon')      'paragon'
+Build-PoC (Join-Path $pocs 'reliance')     'reliance'
+Build-PoC (Join-Path $pocs 'sulthan')      'sulthan'
+Build-PoC (Join-Path $pocs 'technoSport')  'technoSport'
+Build-PoC (Join-Path $pocs 'usPolo')       'usPolo'
+Build-PoC (Join-Path $pocs 'vBazaar')      'vBazaar'
 
 Write-Host ""
 Write-Host "All builds complete. Assets assembled in _deploy/" -ForegroundColor Yellow

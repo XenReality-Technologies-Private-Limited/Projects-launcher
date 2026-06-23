@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>XenReality Surveillance Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/report.css" />
+    <!-- Report download libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <header class="dashboard-header">
+        <div class="header-logo">
+          <img src="https://d108xxen99ni2a.cloudfront.net/surecount_logo.png" alt="XenReality" class="header-logo-img" />
+        </div>
+        <div class="header-right">
+          <button class="btn-report" id="btn-open-report" title="Open Analytics Report">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Report
+          </button>
+          <span class="header-status">SYSTEM ONLINE</span>
+          <span class="header-clock" id="ist-clock">--:--:--</span>
+        </div>
+      </header>
+
+      <main class="dashboard-main">
+        <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <h2 class="kpi-title">FOOTFALL</h2>
+            </div>
+            <span class="kpi-badge">ACTIVE</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-01</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/reliance_demos/footfall_comp.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">FOOTFALL</div>
+              <div class="kpi-metric-value">--</div>
+              <canvas class="kpi-graph" width="600" height="160"></canvas>
+              <div class="kpi-legend">
+                <div>Blue: Male · Pink: Female · Yellow: Child</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-card" id="kpi-apple-zone" data-kpi="apple-zone">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </span>
+              <h2 class="kpi-title">APPLE ZONE</h2>
+            </div>
+            <span class="kpi-employee-badge">Employee: --</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-02</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/reliance_demos/apple_zone_comp.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">UNIQUE CUSTOMERS</div>
+              <div class="kpi-metric-value">--</div>
+              <canvas class="kpi-graph" width="600" height="160"></canvas>
+              <div class="kpi-metric-label">INTERACTION TIME</div>
+              <div class="kpi-metric-value kpi-interaction-time-value">--</div>
+              <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
+              <div class="kpi-legend">
+                <div>Customers in zone (0–8)</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="kpi-card" id="kpi-first-zone" data-kpi="first-zone">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              </span>
+              <h2 class="kpi-title">FIRST ZONE</h2>
+            </div>
+            <span class="kpi-badge">ACTIVE</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-03</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/reliance_greetings/first_zone_compressed.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-value" style="display:none">--</div>
+              <div class="first-zone-counts">
+                <div>
+                  <div class="kpi-metric-label">APPLE ZONE</div>
+                  <div class="kpi-metric-value first-zone-apple-count" style="color:#10b981">--</div>
+                </div>
+                <div>
+                  <div class="kpi-metric-label">ANDROID ZONE</div>
+                  <div class="kpi-metric-value first-zone-android-count" style="color:#f97316">--</div>
+                </div>
+              </div>
+              <canvas class="kpi-graph" style="margin-top:12px;" width="600" height="160"></canvas>
+              <div class="kpi-legend">
+                <div>Green: Apple &middot; Orange: Android</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-card" id="kpi-greetings" data-kpi="greetings">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </span>
+              <h2 class="kpi-title">GREETINGS</h2>
+            </div>
+            <span class="kpi-badge">ACTIVE</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-04</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/reliance_greetings/greetings_final.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">ATTENDED</div>
+              <div class="kpi-metric-value">--</div>
+              <div class="kpi-metric-label">AVERAGE WAIT TIME</div>
+              <div class="kpi-metric-value kpi-wait-time-value">--</div>
+              <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
+              <canvas class="kpi-graph" width="600" height="160"></canvas>
+              <div class="kpi-legend">
+                <div>Average Wait Time</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- ======= Report Modal ======= -->
+    <div id="report-modal-overlay" class="report-modal-overlay" aria-modal="true" role="dialog">
+      <div class="report-container">
+
+        <!-- Bata-style Sticky Header -->
+        <div class="report-sticky-header">
+
+          <!-- Row 1: Header bar (matches Bata XenTrack header exactly) -->
+          <div class="rpt-top-bar">
+            <div class="rpt-xr-block">
+              <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" class="rpt-xr-logo" />
+            </div>
+            <div class="rpt-surecount-section">
+              <img src="https://d108xxen99ni2a.cloudfront.net/surecount_logo.png" alt="SureCount AI" class="rpt-surecount-img" />
+            </div>
+            <span class="rpt-center-title">Store Analytics Report</span>
+            <div class="rpt-header-actions">
+              <div class="report-download-wrap">
+                <button class="btn-download" id="btn-report-download">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Download
+                </button>
+                <div class="report-format-picker" id="report-format-picker">
+                  <button class="format-option" id="dl-pdf">
+                    <div class="format-icon pdf">PDF</div>
+                    <div>
+                      <div style="font-weight:600">PDF Report</div>
+                      <div style="font-size:0.72rem;color:#9ca3af">Multi-page, print-ready</div>
+                    </div>
+                  </button>
+                  <button class="format-option" id="dl-excel">
+                    <div class="format-icon excel">XLS</div>
+                    <div>
+                      <div style="font-weight:600">Excel Spreadsheet</div>
+                      <div style="font-size:0.72rem;color:#9ca3af">All data tables, .xlsx</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <button class="btn-close-report" id="btn-close-report">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Close
+              </button>
+            </div>
+          </div>
+
+          <!-- Row 2: Always-visible Bata-style filter bar -->
+          <div class="rpt-filter-row" id="report-filter-bar">
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">From</span>
+              <input type="date" id="rpt-from-date" class="rpt-filter-input" />
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">To</span>
+              <input type="date" id="rpt-to-date" class="rpt-filter-input" />
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">Store</span>
+              <div class="filter-ms-wrap" id="store-ms-wrap">
+                <button class="filter-ms-trigger" id="store-ms-trigger" type="button">
+                  <span id="store-ms-label">All Stores</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="filter-ms-dropdown" id="store-ms-dropdown">
+                  <div class="filter-ms-search-wrap">
+                    <input type="text" id="store-ms-search" class="filter-ms-search" placeholder="Search stores…" autocomplete="off" />
+                  </div>
+                  <div class="filter-ms-list" id="store-ms-list"></div>
+                  <div class="filter-ms-footer">
+                    <button class="filter-ms-clear" id="store-ms-clear" type="button">Clear all</button>
+                    <button class="filter-ms-apply" id="store-ms-apply" type="button">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">Region</span>
+              <select class="filter-select" id="filter-region">
+                <option value="">All Regions</option>
+                <option>North</option>
+                <option>South</option>
+                <option>East</option>
+                <option>West</option>
+              </select>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">State</span>
+              <select class="filter-select" id="filter-state">
+                <option value="">All States</option>
+              </select>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">City</span>
+              <select class="filter-select" id="filter-city">
+                <option value="">All Cities</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="report-content-area" id="report-content-area">
+          <!-- Built by report.js -->
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Loading overlay for PDF generation -->
+    <div class="report-loading-overlay" id="report-loading-overlay">
+      <div class="report-loading-spinner"></div>
+      <div class="report-loading-text">Generating PDF…</div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
