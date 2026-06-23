@@ -1,19 +1,14 @@
 const PROJECTS = [
-  { name: 'Bata',           url: 'https://bata.xenreality.com/' },
-  { name: 'EasyBuy',        url: 'https://ebsurecount.xenreality.com/' },
-  { name: 'Emo Energy',     url: 'https://emo.xenreality.com/' },
-  { name: 'Halli Mane PoC', url: 'https://halli.xenreality.com/' },
-  { name: 'Kalyan Kendra',  url: 'https://kalyan.xenreality.com/' },
-  { name: 'Kushals',        url: 'https://kushals.xenreality.com/' },
-  { name: 'MMIPL',          url: 'https://mmipl.xenreality.com/' },
-  { name: 'Nikshan',        url: 'https://nikshan.xenreality.com/' },
-  { name: 'Paragon',        url: 'https://paragon.xenreality.com/' },
-  { name: 'Reliance',       url: 'https://test.xenreality.com/' },
-  { name: 'Sulthan',        url: 'https://sulthan.xenreality.com/' },
-  { name: 'TechnoSport',    url: 'https://techno.xenreality.com/' },
-  { name: 'Us-Polo',        url: 'https://arvind.xenreality.com/' },
-  { name: 'V Bazaar',       url: 'https://aws.xenreality.com/' },
-  { name: 'Key Motors',     url: null },
+  { name: 'Halli Mane',    url: '/halliMane/' },
+  { name: 'Kalyan Kendra', url: '/kalyanKendra/' },
+  { name: 'Kushals',       url: '/kushals/' },
+  { name: 'Paragon',       url: '/paragon/' },
+  { name: 'Reliance',      url: '/reliance/' },
+  { name: 'Sulthan',       url: '/sulthan/' },
+  { name: 'TechnoSport',   url: '/technoSport/' },
+  { name: 'Us-Polo',       url: '/usPolo/' },
+  { name: 'V Bazaar',      url: '/vBazaar/' },
+  { name: 'Key Motors',    url: null },
 ];
 
 const PALETTE = [
@@ -53,13 +48,14 @@ function cardHTML(project) {
     </a>`;
 }
 
-export function renderProjectsPage(appEl) {
+export function renderProjectsPage(appEl, onLogout) {
   appEl.innerHTML = `
     <header class="site-header">
       <div class="header-logo">
         <img src="/xenlogo.png" alt="XenReality" class="logo-img" />
       </div>
       <span class="header-title">XenReality Projects</span>
+      <div class="header-right-wrap">
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor"
              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -68,6 +64,8 @@ export function renderProjectsPage(appEl) {
         </svg>
         <input id="search-input" class="search-input" type="text"
                placeholder="Search projects…" autocomplete="off" />
+      </div>
+      <button id="logout-btn" class="logout-btn" title="Sign out">Sign out</button>
       </div>
     </header>
 
@@ -78,6 +76,8 @@ export function renderProjectsPage(appEl) {
       <p id="no-results" class="no-results hidden">No projects match your search.</p>
     </main>
   `;
+
+  appEl.querySelector('#logout-btn').addEventListener('click', onLogout);
 
   const input = appEl.querySelector('#search-input');
   const grid  = appEl.querySelector('#projects-grid');

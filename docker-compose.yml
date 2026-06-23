@@ -3,38 +3,16 @@ networks:
     name: xennet
     external: true
 
-volumes:
-  api-data:
-
 services:
   xentrack-dash:
     build:
       context: .
       dockerfile: Dockerfile
-    image: xentrack-dash:1.0
+    image: xentrack-dash:2.0
     container_name: xentrack-dash
     networks:
       - xennet
     restart: unless-stopped
-    depends_on:
-      - api
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-  api:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    image: poc-api:1.0
-    container_name: poc-api
-    networks:
-      - xennet
-    restart: unless-stopped
-    volumes:
-      - api-data:/data
     logging:
       driver: "json-file"
       options:

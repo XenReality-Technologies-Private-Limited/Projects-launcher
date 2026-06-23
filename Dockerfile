@@ -1,12 +1,7 @@
-FROM node:25-trixie-slim AS builder
-WORKDIR /root/xenreality
-COPY . /root/xenreality/
-RUN npm install && \
-    npm run build
-
-# To fix 404 routing issue, Read: https://stackoverflow.com/questions/43555282/react-js-application-showing-404-not-found-in-nginx-server
+# Run build-all.ps1 (Windows) or build-all.sh (Linux) before building this image.
+# The _deploy/ directory must exist and contain all built PoC assets.
 FROM nginx:1.29.4-alpine-slim
-COPY --from=builder /root/xenreality/dist /usr/share/nginx/html
+COPY _deploy/ /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
