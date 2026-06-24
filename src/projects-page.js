@@ -6,7 +6,6 @@ const PROJECTS = [
   { name: 'TechnoSport',   url: '/technoSport/' },
   { name: 'Us-Polo',       url: '/usPolo/' },
   { name: 'V Bazaar',      url: '/vBazaar/' },
-  { name: 'Key Motors',    url: null },
 ];
 
 const PALETTE = [
