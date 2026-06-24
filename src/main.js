@@ -6,6 +6,8 @@ import { renderProjectsPage } from './projects-page.js';
 function boot() {
   const app = document.getElementById('app');
   if (pb.authStore.isValid) {
+    const poc = pb.authStore.record?.poc;
+    if (poc) { window.location.replace('/' + poc + '/'); return; }
     renderProjectsPage(app, () => { pb.authStore.clear(); boot(); });
   } else {
     renderEmployeeLogin(() => boot());
