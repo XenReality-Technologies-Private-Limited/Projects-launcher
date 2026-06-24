@@ -42,7 +42,7 @@ async function createDatabase() {
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/sql.js@1.14.0/dist/${file}`,
   });
 
-  const response = await fetch('/reliance.db');
+  const response = await fetch(import.meta.env.BASE_URL + 'reliance.db');
   if (!response.ok) {
     throw new Error(`Failed to fetch reliance.db: ${response.status} ${response.statusText}`);
   }
