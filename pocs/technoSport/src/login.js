@@ -2,7 +2,7 @@ import pb from './pb.js';
 
 const LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp';
 const POC_NAME = 'TechnoSport';
-const COLLECTION = 'technoSport_users';
+const COLLECTION = 'xr_employees';
 
 export function requireAuth(onAuthed) {
   if (pb.authStore.isValid) { onAuthed(); return; }

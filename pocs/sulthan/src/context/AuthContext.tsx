@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function login(usernameOrEmail: string, password: string) {
-    const authData = await pb.collection('sulthan_users').authWithPassword(usernameOrEmail, password);
+    const authData = await pb.collection('xr_employees').authWithPassword(usernameOrEmail, password);
     setUser({
       id: authData.record.id,
       email: authData.record.email,
