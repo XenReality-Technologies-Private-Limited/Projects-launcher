@@ -37,6 +37,11 @@ export function renderEmployeeLogin(onSuccess) {
     btn.textContent = 'Signing in…';
     try {
       await pb.collection('xr_employees').authWithPassword(identity, password);
+      const poc = pb.authStore.record?.poc;
+      if (poc) {
+        window.location.replace('/' + poc + '/');
+        return;
+      }
       el.remove();
       onSuccess();
     } catch {
