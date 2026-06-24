@@ -27,7 +27,7 @@ let SQL: any = null;
 
 async function initSql(): Promise<any> {
   if (SQL) return SQL;
-  SQL = await initSqlJs({ locateFile: (file: string) => `${import.meta.env.BASE_URL}${file}` });
+  SQL = await initSqlJs({ locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/${file}` });
   return SQL;
 }
 

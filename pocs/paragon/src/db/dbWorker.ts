@@ -22,7 +22,7 @@ let manifest: ManifestEntry[] = [];
 
 async function getSQL(): Promise<SqlJsStatic> {
   if (!SQL) {
-    SQL = await initSqlJs({ locateFile: (file: string) => `${import.meta.env.BASE_URL}${file}` });
+    SQL = await initSqlJs({ locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/sql.js@1.14.1/dist/${file}` });
   }
   return SQL;
 }
