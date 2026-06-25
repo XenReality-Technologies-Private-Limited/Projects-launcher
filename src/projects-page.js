@@ -2,6 +2,7 @@ const PROJECTS = [
   { name: 'Halli Mane',    url: '/halliMane/' },
   { name: 'Kalyan Kendra', url: '/kalyanKendra/' },
   { name: 'Kushals',       url: '/kushals/' },
+  { name: 'Paragon',       url: 'https://paragon.xenreality.com' },
   { name: 'Reliance',      url: '/reliance/' },
   { name: 'TechnoSport',   url: '/technoSport/' },
   { name: 'Us-Polo',       url: '/usPolo/' },
