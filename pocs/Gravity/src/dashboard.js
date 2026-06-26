@@ -87,6 +87,7 @@ function buildZoneDwellTime(data) {
     <div class="kpi-metric-label">DWELL TIME</div>
     <div class="kpi-metric-value" id="zd-dwell">--:--</div>
     <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
+    <div class="kpi-metric-label" style="margin-top:12px;">PEOPLE IN ZONE OVER TIME</div>
     <canvas class="kpi-graph" id="zd-graph" width="600" height="120"></canvas>
     <div class="kpi-legend">People currently in zone</div>
   `);
@@ -116,6 +117,7 @@ function buildVestCompliance(data) {
   const sec = makeCard('Vest Compliance Alert', icon, 'CAM-03', `${CF}/vest_compliance_alert_annotated.mp4`, `
     <div class="kpi-metric-label">TOTAL ALERTS</div>
     <div class="kpi-metric-value alert-value" id="vc-alerts">--</div>
+    <div class="kpi-metric-label" style="margin-top:12px;">ALERTS OVER TIME</div>
     <canvas class="kpi-graph" id="vc-graph" width="600" height="120"></canvas>
     <div class="kpi-legend">Cumulative vest compliance alerts</div>
   `);
