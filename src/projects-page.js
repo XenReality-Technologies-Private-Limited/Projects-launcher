@@ -1,4 +1,5 @@
 const PROJECTS = [
+  { name: 'Gravity',       url: '/gravity/' },
   { name: 'Halli Mane',    url: '/halliMane/' },
   { name: 'Kalyan Kendra', url: '/kalyanKendra/' },
   { name: 'Kushals',       url: '/kushals/' },

@@ -42,6 +42,7 @@ Pop-Location
 Write-Host "  Done -> _deploy/" -ForegroundColor Green
 
 # PoC builds
+Build-PoC (Join-Path $pocs 'gravity')      'gravity'
 Build-PoC (Join-Path $pocs 'halliMane')    'halliMane'
 Build-PoC (Join-Path $pocs 'kalyanKendra') 'kalyanKendra'
 Build-PoC (Join-Path $pocs 'kushals')      'kushals'

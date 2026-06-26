@@ -16,6 +16,12 @@ COPY src/ ./src/
 COPY public/ ./public/
 RUN npm install --prefer-offline && npm run build
 
+# ── gravity ──
+COPY pocs/gravity/package*.json ./pocs/gravity/
+RUN cd pocs/gravity && npm install --prefer-offline
+COPY pocs/gravity/ ./pocs/gravity/
+RUN cd pocs/gravity && npm run build
+
 # ── halliMane ──
 COPY pocs/halliMane/package*.json ./pocs/halliMane/
 RUN cd pocs/halliMane && npm install --prefer-offline
@@ -73,6 +79,7 @@ RUN cd pocs/vBazaar && npm run build
 # ── Assemble _deploy/ ──
 RUN mkdir -p _deploy && \
     cp -r dist/.           _deploy/           && \
+    cp -r pocs/gravity/dist       _deploy/gravity       && \
     cp -r pocs/halliMane/dist    _deploy/halliMane    && \
     cp -r pocs/kalyanKendra/dist _deploy/kalyanKendra && \
     cp -r pocs/kushals/dist      _deploy/kushals      && \
