@@ -47,36 +47,28 @@ function buildStoreEntrance(data) {
   const yMax = Math.max(...data.maleSeries, ...data.femaleSeries, ...data.childSeries, 1);
 
   const sec = makeCard('Store Entrance', icon, 'CAM-01', `${CF}/store_entrance_annotated.mp4`, `
-    <div class="kpi-metric-label">TOTAL FOOTFALL</div>
+    <div class="kpi-metric-label">FOOTFALL</div>
     <div class="kpi-metric-value" id="se-total">--</div>
-    <div class="demographic-row">
-      <div><div class="demo-label" style="color:#3b82f6">&#9632; MALE</div><div class="demo-value" id="se-male">--</div></div>
-      <div><div class="demo-label" style="color:#ec4899">&#9632; FEMALE</div><div class="demo-value" id="se-female">--</div></div>
-      <div><div class="demo-label" style="color:#f59e0b">&#9632; CHILD</div><div class="demo-value" id="se-child">--</div></div>
-    </div>
-    <canvas class="kpi-graph" id="se-graph" width="600" height="120"></canvas>
+    <canvas class="kpi-graph" id="se-graph" width="600" height="160"></canvas>
     <div class="kpi-legend">Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
   `);
 
-  const video   = sec.querySelector('.kpi-video');
-  const graph   = new MultiSeriesGraph(sec.querySelector('#se-graph'), {
+  const video = sec.querySelector('.kpi-video');
+  const graph = new MultiSeriesGraph(sec.querySelector('#se-graph'), {
     series: [
       { values: data.maleSeries,   color: '#3b82f6' },
       { values: data.femaleSeries, color: '#ec4899' },
       { values: data.childSeries,  color: '#f59e0b' },
     ],
     yMax,
+    showLiveCount: true,
   });
   attachResizeObserver(sec.querySelector('#se-graph'), () => graph.render());
 
   video.addEventListener('timeupdate', () => {
     const idx = Math.min(Math.floor(video.currentTime), data.rows.length - 1);
     const row = data.rows[idx] || {};
-    const m = row.male || 0, f = row.female || 0, c = row.child || 0;
-    sec.querySelector('#se-total').textContent  = m + f + c;
-    sec.querySelector('#se-male').textContent   = m;
-    sec.querySelector('#se-female').textContent = f;
-    sec.querySelector('#se-child').textContent  = c;
+    sec.querySelector('#se-total').textContent = (row.male || 0) + (row.female || 0) + (row.child || 0);
     graph.setCurrentIndex(idx);
     graph.render();
   });
