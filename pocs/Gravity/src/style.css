@@ -125,7 +125,7 @@ body {
 /* ── Card body: video left, KPIs right ── */
 .kpi-body {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 20px;
   align-items: stretch;
 }
@@ -136,7 +136,7 @@ body {
   border-radius: 12px;
   border: 1px solid var(--card-border);
   background: #000;
-  min-height: 420px;
+  min-height: 300px;
 }
 
 .kpi-video-label {
