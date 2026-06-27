@@ -19,10 +19,20 @@ export class TimeSeriesGraph {
     const end = this.currentIndex, start = Math.max(0, end - 59);
     const windowValues = this.values.slice(start, end + 1);
     if (!windowValues.length) return;
-    const pL = 8, pR = 8, pT = 8, pB = 8;
+    const pL = 28, pR = 8, pT = 8, pB = 8;
     const iW = width - pL - pR, iH = height - pT - pB;
     const maxIndex = windowValues.length - 1;
     ctx.save();
+    // Y-axis labels
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = `${11 * window.devicePixelRatio}px system-ui, sans-serif`;
+    ctx.textAlign = 'right';
+    const ticks = [0, Math.round(this.yMax / 2), Math.round(this.yMax)];
+    ticks.forEach(v => {
+      const y = pT + iH - (v / this.yMax) * iH;
+      ctx.textBaseline = v === 0 ? 'bottom' : v === this.yMax ? 'top' : 'middle';
+      ctx.fillText(String(v), pL - 4, y);
+    });
     ctx.strokeStyle = '#4b5563'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pL, height - pB); ctx.lineTo(width - pR, height - pB); ctx.stroke();
     ctx.strokeStyle = this.lineColor; ctx.lineWidth = 2; ctx.setLineDash([]); ctx.beginPath();
