@@ -46,7 +46,7 @@ function buildStoreEntrance(data) {
   const icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
   const yMax = Math.max(...data.maleSeries, ...data.femaleSeries, ...data.childSeries, 1);
 
-  const sec = makeCard('Store Entrance', icon, 'CAM-01', `${CF}/store_entrance_annotated.mp4`, `
+  const sec = makeCard('Store Entrance', icon, 'CAM-01', `${CF}/store_entrance_annotated%20(1).mp4`, `
     <div class="kpi-metric-label">FOOTFALL</div>
     <div class="kpi-metric-value" id="se-total">--</div>
     <canvas class="kpi-graph" id="se-graph" width="600" height="160"></canvas>
@@ -84,7 +84,7 @@ function buildZoneDwellTime(data) {
   const sec = makeCard('Zone Dwell Time', icon, 'CAM-02', `${CF}/zone_dwell_time_annotated.mp4`, `
     <div class="kpi-metric-label">PEOPLE IN ZONE</div>
     <div class="kpi-metric-value" id="zd-people">--</div>
-    <div class="kpi-metric-label">DWELL TIME</div>
+    <div class="kpi-metric-label">CUMULATIVE DWELL TIME</div>
     <div class="kpi-metric-value" id="zd-dwell">--:--</div>
     <div style="font-size:0.65em;color:#9ca3af;letter-spacing:0.05em;margin-top:-4px;">Minutes : Seconds</div>
     <div class="kpi-metric-label" style="margin-top:12px;">PEOPLE IN ZONE OVER TIME</div>
@@ -114,7 +114,7 @@ function buildVestCompliance(data) {
   const icon = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
   const yMax = Math.max(...data.alertSeries, 1);
 
-  const sec = makeCard('Vest Compliance Alert', icon, 'CAM-03', `${CF}/vest_compliance_alert_annotated.mp4`, `
+  const sec = makeCard('Unattended Customer Alert', icon, 'CAM-03', `${CF}/vest_compliance_alert_annotated.mp4`, `
     <div class="kpi-metric-label">TOTAL ALERTS</div>
     <div class="kpi-metric-value alert-value" id="vc-alerts">--</div>
     <div class="kpi-metric-label" style="margin-top:12px;">ALERTS OVER TIME</div>
