@@ -119,7 +119,7 @@ function buildVestCompliance(data) {
     <div class="kpi-metric-value alert-value" id="vc-alerts">--</div>
     <div class="kpi-metric-label" style="margin-top:12px;">ALERTS OVER TIME</div>
     <canvas class="kpi-graph" id="vc-graph" width="600" height="120"></canvas>
-    <div class="kpi-legend">Cumulative vest compliance alerts</div>
+    <div class="kpi-legend">Cumulative unattended drawer alerts</div>
   `);
 
   const video = sec.querySelector('.kpi-video');
