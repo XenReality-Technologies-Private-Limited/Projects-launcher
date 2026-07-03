@@ -1,4 +1,5 @@
 import './style.css';
+import { requireAuth } from './login.js';
 import { createDatabase, loadFootfall, loadPhoneUsage, loadTableCleanliness, loadWaterService } from './db.js';
 import { renderDashboard } from './dashboard.js';
 
@@ -41,4 +42,4 @@ async function bootstrap() {
   }
 }
 
-bootstrap();
+requireAuth(bootstrap);
