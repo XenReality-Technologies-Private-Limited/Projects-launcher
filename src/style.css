@@ -102,7 +102,7 @@ body {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(4, 180px);
+  grid-template-columns: repeat(5, 180px);
   justify-content: center;
   gap: 16px;
 }
