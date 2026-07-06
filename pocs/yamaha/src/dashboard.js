@@ -95,7 +95,7 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:100;"></iframe>
+    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:none;z-index:200;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
