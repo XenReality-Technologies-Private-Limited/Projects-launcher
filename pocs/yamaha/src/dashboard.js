@@ -95,7 +95,8 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:none;z-index:200;"></iframe>
+    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
+    <button id="live-back-btn" style="display:none;position:fixed;top:12px;right:16px;z-index:400;background:#003087;color:#fff;border:none;border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);">← PoC</button>
 
     <div class="dash-body" id="poc-body">
 
@@ -508,23 +509,31 @@ export function renderDashboard(app, data, videos) {
   syncToFrame(0);
 
   // ── PoC / Live toggle ────────────────────────────────────────────────────
-  const pocBody   = document.getElementById('poc-body');
-  const liveFrame = document.getElementById('live-frame');
-  const btnPoc    = document.getElementById('btn-poc');
-  const btnLive   = document.getElementById('btn-live');
+  const pocBody    = document.getElementById('poc-body');
+  const liveFrame  = document.getElementById('live-frame');
+  const liveBackBtn = document.getElementById('live-back-btn');
+  const dashHeader = document.querySelector('.dash-header');
+  const btnPoc     = document.getElementById('btn-poc');
+  const btnLive    = document.getElementById('btn-live');
 
-  btnLive.addEventListener('click', () => {
-    pocBody.style.display   = 'none';
-    liveFrame.style.display = 'block';
-    btnLive.classList.add('active');
-    btnPoc.classList.remove('active');
+  function switchToLive() {
+    pocBody.style.display    = 'none';
+    dashHeader.style.display = 'none';
+    liveFrame.style.display  = 'block';
+    liveBackBtn.style.display = 'block';
     allVids.forEach(v => v.pause());
-  });
+  }
 
-  btnPoc.addEventListener('click', () => {
-    liveFrame.style.display = 'none';
-    pocBody.style.display   = '';
+  function switchToPoc() {
+    liveFrame.style.display   = 'none';
+    liveBackBtn.style.display = 'none';
+    dashHeader.style.display  = '';
+    pocBody.style.display     = '';
     btnPoc.classList.add('active');
     btnLive.classList.remove('active');
-  });
+  }
+
+  btnLive.addEventListener('click', switchToLive);
+  btnPoc.addEventListener('click', switchToPoc);
+  liveBackBtn.addEventListener('click', switchToPoc);
 }
