@@ -113,14 +113,15 @@ export function renderDashboard(app, data, videos) {
         <div class="section-label">Key Performance Indicators</div>
         <div class="kpi-grid kpi-grid-4">
 
-          <!-- Passerby: IN+OUT combined -->
+          <!-- Passerby: IN+OUT combined, M/F/C breakdown -->
           <div class="kpi-card fade-in" style="--kpi-color:#003087">
             <div class="kpi-label">Passerby</div>
             <div class="kpi-value" id="kpi-pb">0</div>
             <div class="kpi-sub">Total (In + Out)</div>
             <div class="kpi-demo" style="margin-top:4px;">
-              <span class="kpi-badge" id="kpi-pb-in"><span class="badge-dot" style="background:#3B82F6"></span>In: 0</span>
-              <span class="kpi-badge" id="kpi-pb-out"><span class="badge-dot" style="background:#F59E0B"></span>Out: 0</span>
+              <span class="kpi-badge" id="kpi-pb-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-pb-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-pb-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
             </div>
           </div>
 
@@ -429,16 +430,19 @@ export function renderDashboard(app, data, videos) {
 
   // ── syncToFrame ───────────────────────────────────────────────────────────
   function syncToFrame(t) {
-    // Passerby: show in+out combined
+    // Passerby: show in+out combined with M/F/C breakdown
     const pbRow = findRow(data.passerby, t);
-    let pbIn = 0, pbOut = 0;
+    let pbTotal = 0, pbM = 0, pbF = 0, pbC = 0;
     if (pbRow) {
-      pbIn  = pbRow.in.reduce((a, b) => a + b, 0);
-      pbOut = pbRow.out.reduce((a, b) => a + b, 0);
+      pbM = (pbRow.in[0] || 0) + (pbRow.out[0] || 0);
+      pbF = (pbRow.in[1] || 0) + (pbRow.out[1] || 0);
+      pbC = (pbRow.in[2] || 0) + (pbRow.out[2] || 0);
+      pbTotal = pbM + pbF + pbC;
     }
-    setTxt('kpi-pb',    pbIn + pbOut);
-    setTxt('kpi-pb-in',  `In: ${pbIn}`);
-    setTxt('kpi-pb-out', `Out: ${pbOut}`);
+    setTxt('kpi-pb',   pbTotal);
+    setTxt('kpi-pb-m', `M: ${pbM} (${pctOf(pbM, pbTotal)}%)`);
+    setTxt('kpi-pb-f', `F: ${pbF} (${pctOf(pbF, pbTotal)}%)`);
+    setTxt('kpi-pb-c', `C: ${pbC} (${pctOf(pbC, pbTotal)}%)`);
 
     // Footfall: in count only
     const ftRow = findRow(data.footfall, t);
@@ -458,11 +462,11 @@ export function renderDashboard(app, data, videos) {
     // Funnel: passerby bar scales to session max; footfall relative to passerby
     const pbBarEl = document.getElementById('funnel-pb-bar');
     const ftBarEl = document.getElementById('funnel-ft-bar');
-    setTxt('funnel-pb-count', pbIn);
+    setTxt('funnel-pb-count', pbTotal);
     setTxt('funnel-ft-count', ftIn);
-    if (pbBarEl) pbBarEl.style.width = pbIn > 0 ? '100%' : '0%';
-    if (ftBarEl) ftBarEl.style.width = pbIn > 0 ? `${Math.min(100, Math.round((ftIn / pbIn) * 100))}%` : '0%';
-    const convRate = Math.min(1, pbIn > 0 ? ftIn / pbIn : 0);
+    if (pbBarEl) pbBarEl.style.width = pbTotal > 0 ? '100%' : '0%';
+    if (ftBarEl) ftBarEl.style.width = pbTotal > 0 ? `${Math.min(100, Math.round((ftIn / pbTotal) * 100))}%` : '0%';
+    const convRate = Math.min(1, pbTotal > 0 ? ftIn / pbTotal : 0);
     setTxt('funnel-pct-badge', `${Math.round(convRate * 100)}%`);
     updateRateArc(convRate);
 
