@@ -38,6 +38,26 @@ function queryTableByTime(db, tableName) {
   return rows;
 }
 
+function computeFifoDwellSeconds(rows) {
+  const dwellAtIndex = [];
+  const queue = [];
+  let prevIn = 0, prevOut = 0, totalDwell = 0, totalExits = 0;
+  for (let i = 0; i < rows.length; i++) {
+    const inTotal  = rows[i].in.reduce((a, b) => a + b, 0);
+    const outTotal = rows[i].out.reduce((a, b) => a + b, 0);
+    const deltaIn  = Math.max(0, inTotal  - prevIn);
+    const deltaOut = Math.max(0, outTotal - prevOut);
+    for (let j = 0; j < deltaIn;  j++) queue.push(i);
+    for (let j = 0; j < deltaOut; j++) {
+      if (queue.length > 0) { totalDwell += (i - queue.shift()); totalExits++; }
+    }
+    prevIn  = inTotal;
+    prevOut = outTotal;
+    dwellAtIndex.push(totalExits > 0 ? totalDwell / totalExits : 0);
+  }
+  return dwellAtIndex;
+}
+
 export async function loadDB(dbUrl) {
   const SQL = await getSqlInstance();
   const resp = await fetch(dbUrl);
@@ -72,7 +92,10 @@ export async function loadDB(dbUrl) {
     interactionTimeSecs: Math.floor(Number(r.interaction_time_seconds) || 0),
   }));
 
-  return { passerby, footfall, empInteractions };
+  const ftDwellTimes = computeFifoDwellSeconds(footfall);
+  const maxFtDwell   = Math.max(...ftDwellTimes, 1);
+
+  return { passerby, footfall, empInteractions, ftDwellTimes, maxFtDwell };
 }
 
 export function findRow(rows, currentTime) {

@@ -15,6 +15,14 @@ function fmtMmSs(secs) {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
+function fmtDwell(secs) {
+  const s = Math.round(secs);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return r > 0 ? `${m}m ${r}s` : `${m}m`;
+}
+
 function greetingsUnattended(t) {
   if (t >= 530) return 5;
   if (t >= 510) return 4;
@@ -100,52 +108,35 @@ export function renderDashboard(app, data, videos) {
         </div>
       </div>
 
-      <!-- KPI CARDS (3 cards) -->
+      <!-- KPI CARDS: 3 cards in a 4-col grid (same proportions as Kushals/TechnoSport) -->
       <div class="kpi-section">
         <div class="section-label">Key Performance Indicators</div>
-        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="kpi-grid kpi-grid-4">
 
-          <!-- Passerby -->
+          <!-- Passerby: IN+OUT combined -->
           <div class="kpi-card fade-in" style="--kpi-color:#003087">
             <div class="kpi-label">Passerby</div>
-            <div class="kpi-inout-grid" style="margin-top:4px;">
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">IN</div>
-                <div class="kpi-inout-num" id="kpi-pb-in">0</div>
-              </div>
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">OUT</div>
-                <div class="kpi-inout-num" id="kpi-pb-out">0</div>
-              </div>
-            </div>
-            <div class="kpi-demo" style="margin-top:6px;">
-              <span class="kpi-badge" id="kpi-pb-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
-              <span class="kpi-badge" id="kpi-pb-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
-              <span class="kpi-badge" id="kpi-pb-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
+            <div class="kpi-value" id="kpi-pb">0</div>
+            <div class="kpi-sub">Total (In + Out)</div>
+            <div class="kpi-demo" style="margin-top:4px;">
+              <span class="kpi-badge" id="kpi-pb-in"><span class="badge-dot" style="background:#3B82F6"></span>In: 0</span>
+              <span class="kpi-badge" id="kpi-pb-out"><span class="badge-dot" style="background:#F59E0B"></span>Out: 0</span>
             </div>
           </div>
 
-          <!-- Footfall -->
+          <!-- Footfall: IN count only -->
           <div class="kpi-card fade-in" style="--kpi-color:#00AEEF">
             <div class="kpi-label">Footfall</div>
-            <div class="kpi-inout-grid" style="margin-top:4px;">
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">IN</div>
-                <div class="kpi-inout-num" id="kpi-ft-in">0</div>
-              </div>
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">OUT</div>
-                <div class="kpi-inout-num" id="kpi-ft-out">0</div>
-              </div>
-            </div>
-            <div class="kpi-demo" style="margin-top:6px;">
+            <div class="kpi-value" id="kpi-ft">0</div>
+            <div class="kpi-sub">In Count</div>
+            <div class="kpi-demo" style="margin-top:4px;">
               <span class="kpi-badge" id="kpi-ft-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
               <span class="kpi-badge" id="kpi-ft-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
               <span class="kpi-badge" id="kpi-ft-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
             </div>
           </div>
 
-          <!-- Greetings: Greeted | Unattended -->
+          <!-- Greetings: Greeted | Unattended side-by-side -->
           <div class="kpi-card fade-in" style="--kpi-color:#00A651">
             <div class="kpi-label">Greetings</div>
             <div class="kpi-inout-grid" style="margin-top:4px;">
@@ -179,7 +170,7 @@ export function renderDashboard(app, data, videos) {
                   <span class="funnel-stage-count" id="funnel-pb-count">0</span>
                 </div>
                 <div class="funnel-bar-track">
-                  <div class="funnel-bar" id="funnel-pb-bar" style="background:#003087;width:100%"></div>
+                  <div class="funnel-bar" id="funnel-pb-bar" style="background:#003087;width:0%"></div>
                 </div>
               </div>
               <div class="funnel-connector">
@@ -224,29 +215,52 @@ export function renderDashboard(app, data, videos) {
         </div>
       </div>
 
-      <!-- EMPLOYEE - CUSTOMER INTERACTION -->
-      <div class="analytics-section" style="padding-top:16px;">
-        <div class="card">
-          <div class="card-title">Employee - Customer Interaction</div>
-          <div class="card-subtitle">Live presence and interaction metrics from employee camera</div>
-          <div class="interact-stats">
-            <div class="interact-stat">
-              <div class="interact-stat-val" id="istat-emp-count" style="color:#003087;">0</div>
-              <div class="interact-stat-lbl">Employees Present</div>
-            </div>
-            <div class="interact-stat">
-              <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
-              <div class="interact-stat-lbl">Customers Present</div>
-            </div>
-            <div class="interact-stat">
-              <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
-              <div class="interact-stat-lbl">Employee Time</div>
-            </div>
-            <div class="interact-stat">
-              <div class="interact-stat-val" id="istat-int-time" style="color:#EC4899;">00:00</div>
-              <div class="interact-stat-lbl">Interaction Time</div>
+      <!-- METRICS: Zone Dwell Time + Employee-Customer Interaction -->
+      <div class="metrics-section">
+        <div class="two-col">
+
+          <div class="card">
+            <div class="card-title">Zone Dwell Time</div>
+            <div class="card-subtitle">Average time customers spend in store</div>
+            <div class="dwell-rows">
+              <div class="dwell-row-item">
+                <div class="dwell-label-row">
+                  <span class="dwell-zone-name">
+                    <span class="dwell-zone-dot" style="background:#00AEEF"></span>
+                    Store Floor
+                  </span>
+                  <span class="dwell-value" id="dwell-val">0s</span>
+                </div>
+                <div class="dwell-track">
+                  <div class="dwell-bar" id="dwell-bar" style="background:#00AEEF;width:0%"></div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-title">Employee - Customer Interaction</div>
+            <div class="card-subtitle">Live presence and interaction metrics</div>
+            <div class="interact-stats">
+              <div class="interact-stat">
+                <div class="interact-stat-val" id="istat-emp-count" style="color:#003087;">0</div>
+                <div class="interact-stat-lbl">Employees Present</div>
+              </div>
+              <div class="interact-stat">
+                <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
+                <div class="interact-stat-lbl">Customers Present</div>
+              </div>
+              <div class="interact-stat">
+                <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
+                <div class="interact-stat-lbl">Employee Time</div>
+              </div>
+              <div class="interact-stat">
+                <div class="interact-stat-val" id="istat-int-time" style="color:#EC4899;">00:00</div>
+                <div class="interact-stat-lbl">Interaction Time</div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -396,7 +410,7 @@ export function renderDashboard(app, data, videos) {
   updateClock();
   setInterval(updateClock, 1000);
 
-  // ── DOM helper ────────────────────────────────────────────────────────────
+  // ── DOM helpers ────────────────────────────────────────────────────────────
   function setTxt(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = typeof val === 'number' ? val.toLocaleString() : val;
@@ -408,38 +422,32 @@ export function renderDashboard(app, data, videos) {
     const arcEl = document.getElementById('rate-arc');
     const pctEl = document.getElementById('rate-pct');
     const stEl  = document.getElementById('rate-status');
-    if (arcEl) arcEl.setAttribute('d', arcPath(24, 24, 18, 135, 135 + r * 270));
-    if (arcEl) arcEl.setAttribute('stroke', color);
+    if (arcEl) { arcEl.setAttribute('d', arcPath(24, 24, 18, 135, 135 + r * 270)); arcEl.setAttribute('stroke', color); }
     if (pctEl) { pctEl.textContent = `${Math.round(r * 100)}%`; pctEl.style.color = color; }
     if (stEl)  { stEl.textContent = rateLabel(r); stEl.style.color = color; }
   }
 
   // ── syncToFrame ───────────────────────────────────────────────────────────
   function syncToFrame(t) {
-    // Passerby
+    // Passerby: show in+out combined
     const pbRow = findRow(data.passerby, t);
-    let pbIn = 0, pbOut = 0, pm = 0, pf = 0, pc = 0;
+    let pbIn = 0, pbOut = 0;
     if (pbRow) {
-      [pm, pf, pc] = pbRow.in;
-      pbIn  = pm + pf + pc;
+      pbIn  = pbRow.in.reduce((a, b) => a + b, 0);
       pbOut = pbRow.out.reduce((a, b) => a + b, 0);
     }
-    setTxt('kpi-pb-in',  pbIn);
-    setTxt('kpi-pb-out', pbOut);
-    setTxt('kpi-pb-m', `M: ${pm} (${pctOf(pm, pbIn)}%)`);
-    setTxt('kpi-pb-f', `F: ${pf} (${pctOf(pf, pbIn)}%)`);
-    setTxt('kpi-pb-c', `C: ${pc} (${pctOf(pc, pbIn)}%)`);
+    setTxt('kpi-pb',    pbIn + pbOut);
+    setTxt('kpi-pb-in',  `In: ${pbIn}`);
+    setTxt('kpi-pb-out', `Out: ${pbOut}`);
 
-    // Footfall
+    // Footfall: in count only
     const ftRow = findRow(data.footfall, t);
-    let ftIn = 0, ftOut = 0, fm = 0, ff = 0, fc = 0;
+    let ftIn = 0, fm = 0, ff = 0, fc = 0;
     if (ftRow) {
       [fm, ff, fc] = ftRow.in;
-      ftIn  = fm + ff + fc;
-      ftOut = ftRow.out.reduce((a, b) => a + b, 0);
+      ftIn = fm + ff + fc;
     }
-    setTxt('kpi-ft-in',  ftIn);
-    setTxt('kpi-ft-out', ftOut);
+    setTxt('kpi-ft',   ftIn);
     setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftIn)}%)`);
     setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftIn)}%)`);
     setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftIn)}%)`);
@@ -447,17 +455,24 @@ export function renderDashboard(app, data, videos) {
     // Greetings (hardcoded step function)
     setTxt('kpi-greet-un', greetingsUnattended(t));
 
-    // Funnel
-    const maxPb = Math.max(pbIn, 1);
+    // Funnel: passerby bar scales to session max; footfall relative to passerby
+    const pbBarEl = document.getElementById('funnel-pb-bar');
+    const ftBarEl = document.getElementById('funnel-ft-bar');
     setTxt('funnel-pb-count', pbIn);
     setTxt('funnel-ft-count', ftIn);
-    const ftBar = document.getElementById('funnel-ft-bar');
-    if (ftBar) ftBar.style.width = `${Math.round((ftIn / maxPb) * 100)}%`;
+    if (pbBarEl) pbBarEl.style.width = pbIn > 0 ? '100%' : '0%';
+    if (ftBarEl) ftBarEl.style.width = pbIn > 0 ? `${Math.min(100, Math.round((ftIn / pbIn) * 100))}%` : '0%';
     const convRate = Math.min(1, pbIn > 0 ? ftIn / pbIn : 0);
     setTxt('funnel-pct-badge', `${Math.round(convRate * 100)}%`);
-
-    // Store performance arc
     updateRateArc(convRate);
+
+    // Zone Dwell Time
+    const ftIdx = data.footfall.findIndex(r => r.t > t);
+    const dwellIdx = ftIdx > 0 ? ftIdx - 1 : (ftIdx === -1 ? data.ftDwellTimes.length - 1 : 0);
+    const dwellSecs = data.ftDwellTimes[dwellIdx] || 0;
+    setTxt('dwell-val', fmtDwell(dwellSecs));
+    const dwellBarEl = document.getElementById('dwell-bar');
+    if (dwellBarEl) dwellBarEl.style.width = `${Math.round((dwellSecs / data.maxFtDwell) * 100)}%`;
 
     // Employee-Customer Interaction
     const empRow = findRow(data.empInteractions, t);

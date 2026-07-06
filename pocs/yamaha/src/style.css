@@ -217,6 +217,18 @@ body {
 .video-grid-5 .video-tile:nth-child(4) { grid-column: 2 / 4; }
 .video-grid-5 .video-tile:nth-child(5) { grid-column: 4 / 6; }
 
+/* ── Metrics Section ────────────────────────────────────────────────────────── */
+.metrics-section { padding: 20px 24px 0; }
+
+/* ── Dwell Time ─────────────────────────────────────────────────────────────── */
+.dwell-rows { display: flex; flex-direction: column; gap: 14px; }
+.dwell-label-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+.dwell-zone-name { font-size: 12px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
+.dwell-zone-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dwell-value     { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.dwell-track { height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+.dwell-bar   { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(.4,0,.2,1); }
+
 /* ── HeatMap Legend ─────────────────────────────────────────────────────────── */
 .heatmap-section {
   padding: 20px 24px 0;
