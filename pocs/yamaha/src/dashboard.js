@@ -237,23 +237,24 @@ export function renderDashboard(app, data, videos) {
 
           <div class="card">
             <div class="card-title">Employee - Customer Interaction</div>
-            <div class="card-subtitle">Live presence and interaction metrics</div>
+            <div class="card-subtitle">Billing zone engagement time</div>
+            <div class="interact-main">
+              <div class="interact-big" id="istat-int-time">00:00</div>
+              <div class="interact-sublabel">Avg. Interaction Duration</div>
+            </div>
+            <div class="interact-bar-wrap">
+              <div class="interact-bar-track">
+                <div class="interact-bar" id="istat-int-bar" style="width:0%"></div>
+              </div>
+            </div>
             <div class="interact-stats">
-              <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-emp-count" style="color:#003087;">0</div>
-                <div class="interact-stat-lbl">Employees Present</div>
-              </div>
-              <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
-                <div class="interact-stat-lbl">Customers Present</div>
-              </div>
               <div class="interact-stat">
                 <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
                 <div class="interact-stat-lbl">Employee Time</div>
               </div>
               <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-int-time" style="color:#EC4899;">00:00</div>
-                <div class="interact-stat-lbl">Interaction Time</div>
+                <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
+                <div class="interact-stat-lbl">Customers Present</div>
               </div>
             </div>
           </div>
@@ -306,6 +307,8 @@ export function renderDashboard(app, data, videos) {
 
     </div>
   `;
+
+  const maxInteractionSecs = Math.max(...data.empInteractions.map(r => r.interactionTimeSecs), 1);
 
   // ── Wire videos ──────────────────────────────────────────────────────────
   const vidPasserby  = document.getElementById('vid-passerby');
@@ -477,10 +480,11 @@ export function renderDashboard(app, data, videos) {
     // Employee-Customer Interaction
     const empRow = findRow(data.empInteractions, t);
     if (empRow) {
-      setTxt('istat-emp-count',  empRow.employeeCount);
+      setTxt('istat-int-time',  fmtMmSs(empRow.interactionTimeSecs));
+      setTxt('istat-emp-time',  fmtMmSs(empRow.employeeTimeSecs));
       setTxt('istat-cust-count', empRow.customerCount);
-      setTxt('istat-emp-time',   fmtMmSs(empRow.employeeTimeSecs));
-      setTxt('istat-int-time',   fmtMmSs(empRow.interactionTimeSecs));
+      const intBarEl = document.getElementById('istat-int-bar');
+      if (intBarEl) intBarEl.style.width = `${Math.round((empRow.interactionTimeSecs / maxInteractionSecs) * 100)}%`;
     }
   }
 
