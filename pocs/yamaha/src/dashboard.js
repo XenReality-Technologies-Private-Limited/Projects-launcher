@@ -259,10 +259,10 @@ export function renderDashboard(app, data, videos) {
 
           <div class="card">
             <div class="card-title">Employee - Customer Interaction</div>
-            <div class="card-subtitle">Billing zone engagement time</div>
+            <div class="card-subtitle">Cumulative time both employee &amp; customer were present together</div>
             <div class="interact-main">
-              <div class="interact-big" id="istat-int-time">00:00</div>
-              <div class="interact-sublabel">Interaction Duration</div>
+              <div class="interact-big" id="istat-int-time">0s</div>
+              <div class="interact-sublabel">Total Co-Presence Time</div>
             </div>
             <div class="interact-bar-wrap">
               <div class="interact-bar-track">
@@ -271,12 +271,12 @@ export function renderDashboard(app, data, videos) {
             </div>
             <div class="interact-stats">
               <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
-                <div class="interact-stat-lbl">Employee Time</div>
+                <div class="interact-stat-val" id="istat-emp-status" style="color:#10B981;">Present</div>
+                <div class="interact-stat-lbl">Employee at Store</div>
               </div>
               <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
-                <div class="interact-stat-lbl">Customers Present</div>
+                <div class="interact-stat-val" id="istat-cust-status" style="color:#10B981;">Present</div>
+                <div class="interact-stat-lbl">Customers at Store</div>
               </div>
             </div>
           </div>
@@ -486,11 +486,17 @@ export function renderDashboard(app, data, videos) {
 
     // Employee-Customer Interaction (hardcoded)
     const intSecs = cumulativeInteraction(t);
-    setTxt('istat-int-time', fmtMmSs(intSecs));
-    setTxt('istat-emp-time', fmtMmSs(intSecs));
-    setTxt('istat-cust-count', 2);
+    setTxt('istat-int-time', fmtDwell(intSecs));
     const intBarEl = document.getElementById('istat-int-bar');
     if (intBarEl) intBarEl.style.width = `${Math.round((intSecs / MAX_INTERACTION_SECS) * 100)}%`;
+    const empStatusEl = document.getElementById('istat-emp-status');
+    if (empStatusEl) {
+      const present = empPresent(t) === 1;
+      empStatusEl.textContent = present ? 'Present' : 'Absent';
+      empStatusEl.style.color = present ? '#10B981' : '#EF4444';
+    }
+    const custStatusEl = document.getElementById('istat-cust-status');
+    if (custStatusEl) { custStatusEl.textContent = 'Present'; custStatusEl.style.color = '#10B981'; }
   }
 
   syncToFrame(0);

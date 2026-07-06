@@ -314,7 +314,7 @@ body {
   padding: 8px 0 16px;
 }
 .interact-big {
-  font-size: 26px; font-weight: 800; color: var(--brand-purple); line-height: 1;
+  font-size: 26px; font-weight: 800; color: #F58220; line-height: 1;
   margin-bottom: 4px;
 }
 .interact-sublabel { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
@@ -322,7 +322,7 @@ body {
 .interact-bar-wrap { width: 100%; margin: 14px 0; }
 .interact-bar-track { height: 10px; background: #f1f5f9; border-radius: 5px; overflow: hidden; }
 .interact-bar {
-  height: 100%; background: linear-gradient(90deg, #8B5CF6, #a78bfa);
+  height: 100%; background: linear-gradient(90deg, #F58220, #ffaa5e);
   border-radius: 5px; transition: width .8s cubic-bezier(.4,0,.2,1);
 }
 
