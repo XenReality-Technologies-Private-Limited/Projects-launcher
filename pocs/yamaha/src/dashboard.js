@@ -23,6 +23,28 @@ function fmtDwell(secs) {
   return r > 0 ? `${m}m ${r}s` : `${m}m`;
 }
 
+// Employee presence intervals (hardcoded):
+// [0, 5)   → present
+// [5, 72)  → absent
+// [72, 160) → present  (1:12 – 2:40)
+// [160, 274) → absent
+// [274, end) → present (4:34 – end)
+// Customers always 2 throughout.
+
+function empPresent(t) {
+  return (t < 5 || (t >= 72 && t < 160) || t >= 274) ? 1 : 0;
+}
+
+function cumulativeInteraction(t) {
+  let cum = Math.max(0, Math.min(t, 5));           // [0, 5)
+  if (t > 72)  cum += Math.min(t, 160) - 72;       // [72, 160)
+  if (t > 274) cum += t - 274;                      // [274, end)
+  return Math.floor(cum);
+}
+
+// Max at full video (14:59 = 899s): 5 + 88 + 625 = 718s
+const MAX_INTERACTION_SECS = 718;
+
 function greetingsUnattended(t) {
   if (t >= 530) return 5;
   if (t >= 510) return 4;
@@ -249,8 +271,8 @@ export function renderDashboard(app, data, videos) {
             </div>
             <div class="interact-stats">
               <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
-                <div class="interact-stat-lbl">Employee Time</div>
+                <div class="interact-stat-val" id="istat-emp-count" style="color:#8B5CF6;">0</div>
+                <div class="interact-stat-lbl">Employee at Store</div>
               </div>
               <div class="interact-stat">
                 <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
@@ -307,8 +329,6 @@ export function renderDashboard(app, data, videos) {
 
     </div>
   `;
-
-  const maxInteractionSecs = Math.max(...data.empInteractions.map(r => r.interactionTimeSecs), 1);
 
   // ── Wire videos ──────────────────────────────────────────────────────────
   const vidPasserby  = document.getElementById('vid-passerby');
@@ -464,15 +484,13 @@ export function renderDashboard(app, data, videos) {
     const dwellBarEl = document.getElementById('dwell-bar');
     if (dwellBarEl) dwellBarEl.style.width = `${Math.round((dwellSecs / data.maxFtDwell) * 100)}%`;
 
-    // Employee-Customer Interaction
-    const empRow = findRow(data.empInteractions, t);
-    if (empRow) {
-      setTxt('istat-int-time',  fmtMmSs(empRow.interactionTimeSecs));
-      setTxt('istat-emp-time',  fmtMmSs(empRow.employeeTimeSecs));
-      setTxt('istat-cust-count', empRow.customerCount);
-      const intBarEl = document.getElementById('istat-int-bar');
-      if (intBarEl) intBarEl.style.width = `${Math.round((empRow.interactionTimeSecs / maxInteractionSecs) * 100)}%`;
-    }
+    // Employee-Customer Interaction (hardcoded)
+    const intSecs = cumulativeInteraction(t);
+    setTxt('istat-int-time', fmtMmSs(intSecs));
+    setTxt('istat-emp-count', empPresent(t));
+    setTxt('istat-cust-count', 2);
+    const intBarEl = document.getElementById('istat-int-bar');
+    if (intBarEl) intBarEl.style.width = `${Math.round((intSecs / MAX_INTERACTION_SECS) * 100)}%`;
   }
 
   syncToFrame(0);
