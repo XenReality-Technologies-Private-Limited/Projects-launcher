@@ -262,7 +262,7 @@ export function renderDashboard(app, data, videos) {
             <div class="card-subtitle">Billing zone engagement time</div>
             <div class="interact-main">
               <div class="interact-big" id="istat-int-time">00:00</div>
-              <div class="interact-sublabel">Avg. Interaction Duration</div>
+              <div class="interact-sublabel">Interaction Duration</div>
             </div>
             <div class="interact-bar-wrap">
               <div class="interact-bar-track">
@@ -271,12 +271,12 @@ export function renderDashboard(app, data, videos) {
             </div>
             <div class="interact-stats">
               <div class="interact-stat">
-                <div class="interact-stat-val" id="istat-emp-count" style="color:#8B5CF6;">0</div>
-                <div class="interact-stat-lbl">Employee at Store</div>
+                <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
+                <div class="interact-stat-lbl">Employee Time at Counter</div>
               </div>
               <div class="interact-stat">
                 <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
-                <div class="interact-stat-lbl">Customers Present</div>
+                <div class="interact-stat-lbl">Customers at Billing</div>
               </div>
             </div>
           </div>
@@ -487,7 +487,7 @@ export function renderDashboard(app, data, videos) {
     // Employee-Customer Interaction (hardcoded)
     const intSecs = cumulativeInteraction(t);
     setTxt('istat-int-time', fmtMmSs(intSecs));
-    setTxt('istat-emp-count', empPresent(t));
+    setTxt('istat-emp-time', fmtMmSs(intSecs));
     setTxt('istat-cust-count', 2);
     const intBarEl = document.getElementById('istat-int-bar');
     if (intBarEl) intBarEl.style.width = `${Math.round((intSecs / MAX_INTERACTION_SECS) * 100)}%`;
