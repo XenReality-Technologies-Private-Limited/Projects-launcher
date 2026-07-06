@@ -96,9 +96,9 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <div id="live-back-btn" style="display:none;position:fixed;top:8px;right:12px;z-index:400;display:none;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:6px 12px 6px 8px;box-shadow:0 2px 10px rgba(0,0,0,.18);">
-      <button id="live-poc-btn" style="background:#003087;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;">← PoC</button>
-      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:36px;object-fit:contain;" />
+    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;background:#0f172a;height:60px;padding:0 20px 0 16px;border-radius:0 0 0 10px;">
+      <button id="live-poc-btn" style="background:#1e3a6e;color:#fff;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;">← PoC</button>
+      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:36px;object-fit:contain;filter:brightness(0) invert(1);" />
     </div>
 
     <div class="dash-body" id="poc-body">
