@@ -28,24 +28,26 @@ function pctOf(n, total) {
   return total > 0 ? Math.round((n / total) * 100) : 0;
 }
 
-function pctBadges(mId, fId, cId) {
-  return `
-    <div class="kpi-demo">
-      <span class="kpi-badge" id="${mId}"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
-      <span class="kpi-badge" id="${fId}"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
-      <span class="kpi-badge" id="${cId}"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
-    </div>`;
+function rateColor(r) {
+  if (r >= 0.5) return '#10B981';
+  if (r >= 0.25) return '#F59E0B';
+  return '#EF4444';
+}
+function rateLabel(r) {
+  if (r >= 0.5) return 'Excellent';
+  if (r >= 0.25) return 'Good';
+  return 'Can Improve';
 }
 
-function buildKpiCard({ id, label, sublabel, color, extraHtml = '' }) {
-  return `
-    <div class="kpi-card fade-in" style="--kpi-color:${color}">
-      <div class="kpi-label">${label}</div>
-      <div class="kpi-value" id="${id}">0</div>
-      ${sublabel ? `<div class="kpi-sub">${sublabel}</div>` : ''}
-      ${extraHtml}
-    </div>`;
+function arcPath(cx, cy, r, startDeg, endDeg) {
+  const rad = (d) => (d * Math.PI) / 180;
+  const lg  = endDeg - startDeg > 180 ? 1 : 0;
+  const sx = cx + r * Math.cos(rad(startDeg)), sy = cy + r * Math.sin(rad(startDeg));
+  const ex = cx + r * Math.cos(rad(endDeg)),   ey = cy + r * Math.sin(rad(endDeg));
+  return `M ${sx} ${sy} A ${r} ${r} 0 ${lg} 1 ${ex} ${ey}`;
 }
+
+const ARC_BG = arcPath(24, 24, 18, 135, 405);
 
 export function renderDashboard(app, data, videos) {
   app.innerHTML = `
@@ -61,6 +63,7 @@ export function renderDashboard(app, data, videos) {
 
     <div class="dash-body">
 
+      <!-- VIDEOS -->
       <div class="video-section">
         <div class="video-grid video-grid-5">
           <div class="video-tile">
@@ -77,7 +80,7 @@ export function renderDashboard(app, data, videos) {
           </div>
           <div class="video-tile">
             <video id="vid-emp" preload="metadata" playsinline></video>
-            <div class="video-tile-label">Employee Interaction</div>
+            <div class="video-tile-label">Employee - Customer Interaction</div>
           </div>
           <div class="video-tile">
             <video id="vid-heatmap" preload="metadata" playsinline></video>
@@ -97,51 +100,157 @@ export function renderDashboard(app, data, videos) {
         </div>
       </div>
 
+      <!-- KPI CARDS (3 cards) -->
       <div class="kpi-section">
         <div class="section-label">Key Performance Indicators</div>
-        <div class="kpi-grid kpi-grid-4">
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
 
-          ${buildKpiCard({
-            id: 'kpi-pb', label: 'Passerby', sublabel: 'Outside Store',
-            color: '#003087',
-            extraHtml: pctBadges('kpi-pb-m', 'kpi-pb-f', 'kpi-pb-c'),
-          })}
+          <!-- Passerby -->
+          <div class="kpi-card fade-in" style="--kpi-color:#003087">
+            <div class="kpi-label">Passerby</div>
+            <div class="kpi-inout-grid" style="margin-top:4px;">
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">IN</div>
+                <div class="kpi-inout-num" id="kpi-pb-in">0</div>
+              </div>
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">OUT</div>
+                <div class="kpi-inout-num" id="kpi-pb-out">0</div>
+              </div>
+            </div>
+            <div class="kpi-demo" style="margin-top:6px;">
+              <span class="kpi-badge" id="kpi-pb-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-pb-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-pb-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
+            </div>
+          </div>
 
-          ${buildKpiCard({
-            id: 'kpi-ft', label: 'Footfall', sublabel: 'In Count',
-            color: '#E50000',
-            extraHtml: pctBadges('kpi-ft-m', 'kpi-ft-f', 'kpi-ft-c'),
-          })}
+          <!-- Footfall -->
+          <div class="kpi-card fade-in" style="--kpi-color:#00AEEF">
+            <div class="kpi-label">Footfall</div>
+            <div class="kpi-inout-grid" style="margin-top:4px;">
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">IN</div>
+                <div class="kpi-inout-num" id="kpi-ft-in">0</div>
+              </div>
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">OUT</div>
+                <div class="kpi-inout-num" id="kpi-ft-out">0</div>
+              </div>
+            </div>
+            <div class="kpi-demo" style="margin-top:6px;">
+              <span class="kpi-badge" id="kpi-ft-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-ft-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
+              <span class="kpi-badge" id="kpi-ft-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
+            </div>
+          </div>
 
-          ${buildKpiCard({
-            id: 'kpi-greet', label: 'Greetings', sublabel: 'Unattended Customers',
-            color: '#00A651',
-            extraHtml: `
-              <div class="kpi-demo">
-                <span class="kpi-badge"><span class="badge-dot" style="background:#00A651"></span>Greeted: 0</span>
-                <span class="kpi-badge"><span class="badge-dot" style="background:#EF4444"></span>Unattended: <span id="kpi-greet-un">0</span></span>
-              </div>`,
-          })}
-
-          ${buildKpiCard({
-            id: 'kpi-emp-count', label: 'Employee Interaction', sublabel: 'Live Stats',
-            color: '#8B5CF6',
-            extraHtml: `
-              <div class="kpi-demo" style="flex-direction:column;gap:4px;margin-top:6px;">
-                <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                  <span class="kpi-badge"><span class="badge-dot" style="background:#3B82F6"></span>Employees: <span id="kpi-emp-cnt">0</span></span>
-                  <span class="kpi-badge"><span class="badge-dot" style="background:#F59E0B"></span>Customers: <span id="kpi-cust-cnt">0</span></span>
-                </div>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                  <span class="kpi-badge"><span class="badge-dot" style="background:#8B5CF6"></span>Emp Time: <span id="kpi-emp-time">00:00</span></span>
-                  <span class="kpi-badge"><span class="badge-dot" style="background:#EC4899"></span>Interact: <span id="kpi-int-time">00:00</span></span>
-                </div>
-              </div>`,
-          })}
+          <!-- Greetings: Greeted | Unattended -->
+          <div class="kpi-card fade-in" style="--kpi-color:#00A651">
+            <div class="kpi-label">Greetings</div>
+            <div class="kpi-inout-grid" style="margin-top:4px;">
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">Greeted</div>
+                <div class="kpi-inout-num" style="color:#00A651;">0</div>
+              </div>
+              <div class="kpi-inout-col">
+                <div class="kpi-inout-lbl">Unattended</div>
+                <div class="kpi-inout-num" id="kpi-greet-un" style="color:#EF4444;">0</div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
 
+      <!-- ANALYTICS: Funnel + Store Performance -->
+      <div class="analytics-section">
+        <div class="two-col">
+
+          <div class="card">
+            <div class="card-title">Customer Journey Funnel</div>
+            <div class="card-subtitle">Live conversion from passerby to store entry</div>
+            <div class="funnel-wrap">
+              <div class="funnel-stage">
+                <div class="funnel-stage-header">
+                  <div class="funnel-dot" style="background:#003087"></div>
+                  <span class="funnel-stage-label">Passerby</span>
+                  <span class="funnel-stage-sublabel">Outside Store</span>
+                  <span class="funnel-stage-count" id="funnel-pb-count">0</span>
+                </div>
+                <div class="funnel-bar-track">
+                  <div class="funnel-bar" id="funnel-pb-bar" style="background:#003087;width:100%"></div>
+                </div>
+              </div>
+              <div class="funnel-connector">
+                <span class="funnel-arrow">↓</span>
+                <span class="funnel-pct-badge" id="funnel-pct-badge" style="background:#003087">0%</span>
+                <span class="funnel-conv-label">conversion</span>
+              </div>
+              <div class="funnel-stage">
+                <div class="funnel-stage-header">
+                  <div class="funnel-dot" style="background:#00AEEF"></div>
+                  <span class="funnel-stage-label">Footfall</span>
+                  <span class="funnel-stage-sublabel">Store Entry</span>
+                  <span class="funnel-stage-count" id="funnel-ft-count">0</span>
+                </div>
+                <div class="funnel-bar-track">
+                  <div class="funnel-bar" id="funnel-ft-bar" style="background:#00AEEF;width:0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Store Performance</div>
+            <div class="card-subtitle">Passerby to store entry conversion rate</div>
+            <div class="rate-cards-grid rate-cards-single">
+              <div class="rate-card">
+                <div class="rate-card-inner">
+                  <svg viewBox="0 0 48 48" width="52" height="52" style="flex-shrink:0">
+                    <path d="${ARC_BG}" fill="none" stroke="#E5E7EB" stroke-width="5" stroke-linecap="round"/>
+                    <path id="rate-arc" d="${arcPath(24,24,18,135,135)}" fill="none" stroke="#EF4444" stroke-width="5" stroke-linecap="round" class="rate-arc"/>
+                  </svg>
+                  <div class="rate-info">
+                    <div class="rate-pct" id="rate-pct" style="color:#EF4444">0%</div>
+                    <div class="rate-label">Passerby → Store Entry</div>
+                    <div class="rate-status" id="rate-status" style="color:#EF4444">Can Improve</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EMPLOYEE - CUSTOMER INTERACTION -->
+      <div class="analytics-section" style="padding-top:16px;">
+        <div class="card">
+          <div class="card-title">Employee - Customer Interaction</div>
+          <div class="card-subtitle">Live presence and interaction metrics from employee camera</div>
+          <div class="interact-stats">
+            <div class="interact-stat">
+              <div class="interact-stat-val" id="istat-emp-count" style="color:#003087;">0</div>
+              <div class="interact-stat-lbl">Employees Present</div>
+            </div>
+            <div class="interact-stat">
+              <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
+              <div class="interact-stat-lbl">Customers Present</div>
+            </div>
+            <div class="interact-stat">
+              <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
+              <div class="interact-stat-lbl">Employee Time</div>
+            </div>
+            <div class="interact-stat">
+              <div class="interact-stat-val" id="istat-int-time" style="color:#EC4899;">00:00</div>
+              <div class="interact-stat-lbl">Interaction Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEATMAP GUIDE -->
       <div class="heatmap-section">
         <div class="heatmap-legend-card">
           <div class="card-title">Heat Map Guide</div>
@@ -221,11 +330,7 @@ export function renderDashboard(app, data, videos) {
     slaves.forEach(v => { if (Math.abs(v.currentTime - t) > SYNC_THRESHOLD) v.currentTime = t; });
     allVids.forEach(v => v.play());
   });
-
-  document.getElementById('btn-pause').addEventListener('click', () => {
-    allVids.forEach(v => v.pause());
-  });
-
+  document.getElementById('btn-pause').addEventListener('click', () => allVids.forEach(v => v.pause()));
   document.getElementById('btn-reset').addEventListener('click', () => {
     allVids.forEach(v => { v.pause(); v.currentTime = 0; v.playbackRate = 1; });
     playbackSpeed = 1;
@@ -262,9 +367,7 @@ export function renderDashboard(app, data, videos) {
 
   master.addEventListener('timeupdate', () => {
     const t = master.currentTime || 0;
-    slaves.forEach(v => {
-      if (!v.paused && Math.abs(v.currentTime - t) > SYNC_THRESHOLD) v.currentTime = t;
-    });
+    slaves.forEach(v => { if (!v.paused && Math.abs(v.currentTime - t) > SYNC_THRESHOLD) v.currentTime = t; });
     if (!isSeeking && duration > 0) {
       const pctVal = (t / duration) * 100;
       seekBar.value = pctVal;
@@ -293,48 +396,76 @@ export function renderDashboard(app, data, videos) {
   updateClock();
   setInterval(updateClock, 1000);
 
-  // ── syncToFrame ───────────────────────────────────────────────────────────
+  // ── DOM helper ────────────────────────────────────────────────────────────
   function setTxt(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = typeof val === 'number' ? val.toLocaleString() : val;
   }
 
+  function updateRateArc(rate) {
+    const r     = Math.min(1, Math.max(0, rate));
+    const color = rateColor(r);
+    const arcEl = document.getElementById('rate-arc');
+    const pctEl = document.getElementById('rate-pct');
+    const stEl  = document.getElementById('rate-status');
+    if (arcEl) arcEl.setAttribute('d', arcPath(24, 24, 18, 135, 135 + r * 270));
+    if (arcEl) arcEl.setAttribute('stroke', color);
+    if (pctEl) { pctEl.textContent = `${Math.round(r * 100)}%`; pctEl.style.color = color; }
+    if (stEl)  { stEl.textContent = rateLabel(r); stEl.style.color = color; }
+  }
+
+  // ── syncToFrame ───────────────────────────────────────────────────────────
   function syncToFrame(t) {
     // Passerby
     const pbRow = findRow(data.passerby, t);
+    let pbIn = 0, pbOut = 0, pm = 0, pf = 0, pc = 0;
     if (pbRow) {
-      const [pm, pf, pc] = pbRow.in;
-      const ptotal = pm + pf + pc;
-      setTxt('kpi-pb', ptotal);
-      setTxt('kpi-pb-m', `M: ${pm} (${pctOf(pm, ptotal)}%)`);
-      setTxt('kpi-pb-f', `F: ${pf} (${pctOf(pf, ptotal)}%)`);
-      setTxt('kpi-pb-c', `C: ${pc} (${pctOf(pc, ptotal)}%)`);
+      [pm, pf, pc] = pbRow.in;
+      pbIn  = pm + pf + pc;
+      pbOut = pbRow.out.reduce((a, b) => a + b, 0);
     }
+    setTxt('kpi-pb-in',  pbIn);
+    setTxt('kpi-pb-out', pbOut);
+    setTxt('kpi-pb-m', `M: ${pm} (${pctOf(pm, pbIn)}%)`);
+    setTxt('kpi-pb-f', `F: ${pf} (${pctOf(pf, pbIn)}%)`);
+    setTxt('kpi-pb-c', `C: ${pc} (${pctOf(pc, pbIn)}%)`);
 
     // Footfall
     const ftRow = findRow(data.footfall, t);
+    let ftIn = 0, ftOut = 0, fm = 0, ff = 0, fc = 0;
     if (ftRow) {
-      const [fm, ff, fc] = ftRow.in;
-      const ftotal = fm + ff + fc;
-      setTxt('kpi-ft', ftotal);
-      setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftotal)}%)`);
-      setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftotal)}%)`);
-      setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftotal)}%)`);
+      [fm, ff, fc] = ftRow.in;
+      ftIn  = fm + ff + fc;
+      ftOut = ftRow.out.reduce((a, b) => a + b, 0);
     }
+    setTxt('kpi-ft-in',  ftIn);
+    setTxt('kpi-ft-out', ftOut);
+    setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftIn)}%)`);
+    setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftIn)}%)`);
+    setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftIn)}%)`);
 
-    // Greetings (hardcoded step function, greeted always 0)
-    const unattended = greetingsUnattended(t);
-    setTxt('kpi-greet', unattended);
-    setTxt('kpi-greet-un', unattended);
+    // Greetings (hardcoded step function)
+    setTxt('kpi-greet-un', greetingsUnattended(t));
 
-    // Employee Interaction
+    // Funnel
+    const maxPb = Math.max(pbIn, 1);
+    setTxt('funnel-pb-count', pbIn);
+    setTxt('funnel-ft-count', ftIn);
+    const ftBar = document.getElementById('funnel-ft-bar');
+    if (ftBar) ftBar.style.width = `${Math.round((ftIn / maxPb) * 100)}%`;
+    const convRate = Math.min(1, pbIn > 0 ? ftIn / pbIn : 0);
+    setTxt('funnel-pct-badge', `${Math.round(convRate * 100)}%`);
+
+    // Store performance arc
+    updateRateArc(convRate);
+
+    // Employee-Customer Interaction
     const empRow = findRow(data.empInteractions, t);
     if (empRow) {
-      setTxt('kpi-emp-count', empRow.employeeCount);
-      setTxt('kpi-emp-cnt', empRow.employeeCount);
-      setTxt('kpi-cust-cnt', empRow.customerCount);
-      setTxt('kpi-emp-time', fmtMmSs(empRow.employeeTimeSecs));
-      setTxt('kpi-int-time', fmtMmSs(empRow.interactionTimeSecs));
+      setTxt('istat-emp-count',  empRow.employeeCount);
+      setTxt('istat-cust-count', empRow.customerCount);
+      setTxt('istat-emp-time',   fmtMmSs(empRow.employeeTimeSecs));
+      setTxt('istat-int-time',   fmtMmSs(empRow.interactionTimeSecs));
     }
   }
 

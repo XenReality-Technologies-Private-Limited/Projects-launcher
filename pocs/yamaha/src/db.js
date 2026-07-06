@@ -21,8 +21,9 @@ function parseCount(val) {
 }
 
 function hmsToSeconds(hms) {
+  // DB format is MM:SS:FF (minutes:seconds:frames), not HH:MM:SS
   const parts = String(hms).split(':').map(Number);
-  return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  return parts[0] * 60 + parts[1];
 }
 
 function queryTableByTime(db, tableName) {
