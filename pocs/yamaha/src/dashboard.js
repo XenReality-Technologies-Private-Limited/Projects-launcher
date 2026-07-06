@@ -272,11 +272,11 @@ export function renderDashboard(app, data, videos) {
             <div class="interact-stats">
               <div class="interact-stat">
                 <div class="interact-stat-val" id="istat-emp-time" style="color:#8B5CF6;">00:00</div>
-                <div class="interact-stat-lbl">Employee Time at Counter</div>
+                <div class="interact-stat-lbl">Employee Time</div>
               </div>
               <div class="interact-stat">
                 <div class="interact-stat-val" id="istat-cust-count" style="color:#00AEEF;">0</div>
-                <div class="interact-stat-lbl">Customers at Billing</div>
+                <div class="interact-stat-lbl">Customers Present</div>
               </div>
             </div>
           </div>
