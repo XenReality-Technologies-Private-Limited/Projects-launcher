@@ -76,6 +76,12 @@ RUN cd pocs/vBazaar && npm install --prefer-offline
 COPY pocs/vBazaar/ ./pocs/vBazaar/
 RUN cd pocs/vBazaar && npm run build
 
+# ── yamaha ──
+COPY pocs/yamaha/package*.json ./pocs/yamaha/
+RUN cd pocs/yamaha && npm install --prefer-offline
+COPY pocs/yamaha/ ./pocs/yamaha/
+RUN cd pocs/yamaha && npm run build
+
 # ── Assemble _deploy/ ──
 RUN mkdir -p _deploy && \
     cp -r dist/.           _deploy/           && \
@@ -88,7 +94,8 @@ RUN mkdir -p _deploy && \
     cp -r pocs/sulthan/dist      _deploy/sulthan      && \
     cp -r pocs/technoSport/dist  _deploy/technoSport  && \
     cp -r pocs/usPolo/dist       _deploy/usPolo       && \
-    cp -r pocs/vBazaar/dist      _deploy/vBazaar
+    cp -r pocs/vBazaar/dist      _deploy/vBazaar && \
+    cp -r pocs/yamaha/dist       _deploy/yamaha
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
 FROM nginx:1.29.4-alpine-slim

@@ -4,8 +4,9 @@ const PROJECTS = [
   { name: 'Kalyan Kendra', url: '/kalyanKendra/' },
   { name: 'Kushals',       url: '/kushals/' },
   { name: 'Paragon',       url: '/paragon/' },
-  { name: 'Reliance',      url: '/reliance/' },
+  { name: 'Reliance',       url: '/reliance/' },
   { name: 'TechnoSport',   url: '/technoSport/' },
+  { name: 'Thomsun - Yamaha', url: '/yamaha/' },
   { name: 'Us-Polo',       url: '/usPolo/' },
   { name: 'V Bazaar',      url: '/vBazaar/' },
 ];

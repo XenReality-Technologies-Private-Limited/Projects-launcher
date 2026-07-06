@@ -52,6 +52,7 @@ Build-PoC (Join-Path $pocs 'sulthan')      'sulthan'
 Build-PoC (Join-Path $pocs 'technoSport')  'technoSport'
 Build-PoC (Join-Path $pocs 'usPolo')       'usPolo'
 Build-PoC (Join-Path $pocs 'vBazaar')      'vBazaar'
+Build-PoC (Join-Path $pocs 'yamaha')       'yamaha'
 
 Write-Host ""
 Write-Host "All builds complete. Assets assembled in _deploy/" -ForegroundColor Yellow
