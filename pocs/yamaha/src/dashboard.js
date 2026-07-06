@@ -96,9 +96,9 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;background:#fff;height:60px;padding:0 20px 0 16px;border-radius:0 0 0 10px;box-shadow:-2px 2px 8px rgba(0,0,0,.12);pointer-events:none;">
+    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;background:#fff;height:56px;padding:0 16px 0 16px;border-radius:0;box-shadow:none;border-bottom:1px solid #e2e8f0;border-left:1px solid #e2e8f0;pointer-events:none;">
       <button id="live-poc-btn" style="background:#003087;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;pointer-events:auto;">← PoC</button>
-      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:36px;object-fit:contain;" />
+      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:34px;object-fit:contain;" />
     </div>
 
     <div class="dash-body" id="poc-body">
