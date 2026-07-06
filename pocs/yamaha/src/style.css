@@ -61,6 +61,7 @@ body {
 .header-right {
   display: flex; align-items: center; padding-right: 16px; gap: 10px;
 }
+.header-customer-logo { height: 48px; object-fit: contain; }
 
 /* ── Dashboard Body ─────────────────────────────────────────────────────────── */
 .dash-body { padding: 0 0 40px; }

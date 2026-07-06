@@ -65,7 +65,7 @@ export function renderDashboard(app, data, videos) {
       </div>
       <div class="header-title">Thomsun - Yamaha Dashboard</div>
       <div class="header-right">
-        <span id="ist-clock" style="font-size:13px;font-weight:600;color:#475569;font-family:monospace;padding-right:4px;"></span>
+        <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" />
       </div>
     </header>
 
@@ -396,19 +396,6 @@ export function renderDashboard(app, data, videos) {
     const t = master.currentTime || 0;
     slaves.forEach(v => { v.currentTime = t; });
   });
-
-  // ── IST clock ────────────────────────────────────────────────────────────
-  function updateClock() {
-    const now = new Date();
-    const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-    const hh = String(ist.getHours()).padStart(2, '0');
-    const mm = String(ist.getMinutes()).padStart(2, '0');
-    const ss = String(ist.getSeconds()).padStart(2, '0');
-    const el = document.getElementById('ist-clock');
-    if (el) el.textContent = `IST ${hh}:${mm}:${ss}`;
-  }
-  updateClock();
-  setInterval(updateClock, 1000);
 
   // ── DOM helpers ────────────────────────────────────────────────────────────
   function setTxt(id, val) {
