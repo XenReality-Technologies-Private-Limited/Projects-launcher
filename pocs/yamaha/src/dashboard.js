@@ -96,8 +96,11 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;background:#fff;height:56px;padding:0 16px 0 16px;border-radius:0;box-shadow:none;border-bottom:1px solid #e2e8f0;border-left:1px solid #e2e8f0;pointer-events:none;">
-      <button id="live-poc-btn" style="background:#003087;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;pointer-events:auto;">← PoC</button>
+    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;height:56px;padding:0 16px;pointer-events:none;">
+      <div class="view-toggle" style="pointer-events:auto;">
+        <button class="view-toggle-btn" id="live-poc-btn">PoC</button>
+        <button class="view-toggle-btn active" id="live-live-btn">Live</button>
+      </div>
       <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:34px;object-fit:contain;" />
     </div>
 
@@ -519,13 +522,16 @@ export function renderDashboard(app, data, videos) {
   const btnPoc     = document.getElementById('btn-poc');
   const btnLive    = document.getElementById('btn-live');
 
-  const livePocBtn = document.getElementById('live-poc-btn');
+  const livePocBtn  = document.getElementById('live-poc-btn');
+  const liveLiveBtn = document.getElementById('live-live-btn');
 
   function switchToLive() {
     pocBody.style.display     = 'none';
     dashHeader.style.display  = 'none';
     liveFrame.style.display   = 'block';
     liveBackBtn.style.display = 'flex';
+    liveLiveBtn.classList.add('active');
+    livePocBtn.classList.remove('active');
     allVids.forEach(v => v.pause());
   }
 
