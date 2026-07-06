@@ -221,15 +221,11 @@ export function renderDashboard(app, data, videos) {
         <div class="two-col">
 
           <div class="card">
-            <div class="card-title">Zone Dwell Time</div>
+            <div class="card-title">Dwell Time</div>
             <div class="card-subtitle">Average time customers spend in store</div>
             <div class="dwell-rows">
               <div class="dwell-row-item">
                 <div class="dwell-label-row">
-                  <span class="dwell-zone-name">
-                    <span class="dwell-zone-dot" style="background:#00AEEF"></span>
-                    Store Floor
-                  </span>
                   <span class="dwell-value" id="dwell-val">0s</span>
                 </div>
                 <div class="dwell-track">
