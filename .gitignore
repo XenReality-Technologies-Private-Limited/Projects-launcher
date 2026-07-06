@@ -8,3 +8,8 @@ pocs/*/node_modules
 pocs/*/dist
 pocs/*/.env
 pocs/*/public/videos
+
+# Local data / test files
+pocs/*/*.db
+pocs/*/*.py
+pocs/*/*.csv
