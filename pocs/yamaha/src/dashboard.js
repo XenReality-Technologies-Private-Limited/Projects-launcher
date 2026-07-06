@@ -96,7 +96,10 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <button id="live-back-btn" style="display:none;position:fixed;top:12px;right:16px;z-index:400;background:#003087;color:#fff;border:none;border-radius:20px;padding:7px 18px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25);">← PoC</button>
+    <div id="live-back-btn" style="display:none;position:fixed;top:8px;right:12px;z-index:400;display:none;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:6px 12px 6px 8px;box-shadow:0 2px 10px rgba(0,0,0,.18);">
+      <button id="live-poc-btn" style="background:#003087;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;font-family:'Open Sans',sans-serif;cursor:pointer;">← PoC</button>
+      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:36px;object-fit:contain;" />
+    </div>
 
     <div class="dash-body" id="poc-body">
 
@@ -516,11 +519,13 @@ export function renderDashboard(app, data, videos) {
   const btnPoc     = document.getElementById('btn-poc');
   const btnLive    = document.getElementById('btn-live');
 
+  const livePocBtn = document.getElementById('live-poc-btn');
+
   function switchToLive() {
-    pocBody.style.display    = 'none';
-    dashHeader.style.display = 'none';
-    liveFrame.style.display  = 'block';
-    liveBackBtn.style.display = 'block';
+    pocBody.style.display     = 'none';
+    dashHeader.style.display  = 'none';
+    liveFrame.style.display   = 'block';
+    liveBackBtn.style.display = 'flex';
     allVids.forEach(v => v.pause());
   }
 
@@ -535,5 +540,5 @@ export function renderDashboard(app, data, videos) {
 
   btnLive.addEventListener('click', switchToLive);
   btnPoc.addEventListener('click', switchToPoc);
-  liveBackBtn.addEventListener('click', switchToPoc);
+  livePocBtn.addEventListener('click', switchToPoc);
 }
