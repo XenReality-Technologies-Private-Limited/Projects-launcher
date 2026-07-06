@@ -63,6 +63,19 @@ body {
 }
 .header-customer-logo { height: 48px; object-fit: contain; }
 
+.view-toggle {
+  display: flex; background: rgba(255,255,255,0.15); border-radius: 8px;
+  padding: 3px; gap: 2px;
+}
+.view-toggle-btn {
+  padding: 5px 16px; border: none; border-radius: 6px; font-size: 13px;
+  font-weight: 600; font-family: inherit; cursor: pointer;
+  background: transparent; color: rgba(255,255,255,0.7); transition: all .2s;
+}
+.view-toggle-btn.active {
+  background: #fff; color: #003087;
+}
+
 /* ── Dashboard Body ─────────────────────────────────────────────────────────── */
 .dash-body { padding: 0 0 40px; }
 

@@ -87,11 +87,17 @@ export function renderDashboard(app, data, videos) {
       </div>
       <div class="header-title">Thomsun - Yamaha Dashboard</div>
       <div class="header-right">
+        <div class="view-toggle" id="view-toggle">
+          <button class="view-toggle-btn active" id="btn-poc">PoC</button>
+          <button class="view-toggle-btn" id="btn-live">Live</button>
+        </div>
         <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" />
       </div>
     </header>
 
-    <div class="dash-body">
+    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:100;"></iframe>
+
+    <div class="dash-body" id="poc-body">
 
       <!-- VIDEOS -->
       <div class="video-section">
@@ -500,4 +506,25 @@ export function renderDashboard(app, data, videos) {
   }
 
   syncToFrame(0);
+
+  // ── PoC / Live toggle ────────────────────────────────────────────────────
+  const pocBody   = document.getElementById('poc-body');
+  const liveFrame = document.getElementById('live-frame');
+  const btnPoc    = document.getElementById('btn-poc');
+  const btnLive   = document.getElementById('btn-live');
+
+  btnLive.addEventListener('click', () => {
+    pocBody.style.display   = 'none';
+    liveFrame.style.display = 'block';
+    btnLive.classList.add('active');
+    btnPoc.classList.remove('active');
+    allVids.forEach(v => v.pause());
+  });
+
+  btnPoc.addEventListener('click', () => {
+    liveFrame.style.display = 'none';
+    pocBody.style.display   = '';
+    btnPoc.classList.add('active');
+    btnLive.classList.remove('active');
+  });
 }
