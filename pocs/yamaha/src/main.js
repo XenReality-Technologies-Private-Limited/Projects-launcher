@@ -9,8 +9,8 @@ const DB_URL = `${CF}/Yamaha.db`;
 const VIDEOS = {
   passerby:    `${CF}/passerby_output%20(2).mp4`,
   footfall:    `${CF}/footfall_output%20(1).mp4`,
-  greetings:   `${CF}/greetings_output%20(2).mp4`,
-  empInteract: `${CF}/employee_interactions_output.mp4`,
+  greetings:   `${CF}/greetings_output%20(3).mp4`,
+  empInteract: `${CF}/employee_interactions_output%20(1).mp4`,
   heatmap:     `${CF}/heatmap_output%20(1).mp4`,
 };
 
