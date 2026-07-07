@@ -101,7 +101,7 @@ export function renderDashboard(app, data, videos) {
         <button class="view-toggle-btn" id="live-poc-btn">PoC</button>
         <button class="view-toggle-btn active" id="live-live-btn">Live</button>
       </div>
-      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" style="height:34px;object-fit:contain;" />
+      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" class="header-customer-logo" />
     </div>
 
     <div class="dash-body" id="poc-body">
