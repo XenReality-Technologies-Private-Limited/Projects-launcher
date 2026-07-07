@@ -95,7 +95,7 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
+    <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
@@ -518,6 +518,7 @@ export function renderDashboard(app, data, videos) {
 
   btnLive.addEventListener('click', () => {
     pocBody.style.display       = 'none';
+    if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = 'https://aws.xenreality.com/';
     liveFrame.style.display     = 'block';
     // Make header transparent — toggle stays in place, live site shows through
     dashHeader.style.background = 'transparent';
