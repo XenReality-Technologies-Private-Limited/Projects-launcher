@@ -53,6 +53,7 @@ function greetingsGreeted(t) {
 }
 
 function greetingsUnattended(t) {
+  if (t >= 530) return 3;
   if (t >= 111) return 2;
   if (t >= 110) return 1;
   return 0;
