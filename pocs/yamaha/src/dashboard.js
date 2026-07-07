@@ -456,17 +456,17 @@ export function renderDashboard(app, data, videos) {
     setTxt('kpi-pb-f', `F: ${pbF} (${pctOf(pbF, pbTotal)}%)`);
     setTxt('kpi-pb-c', `C: ${pbC} (${pctOf(pbC, pbTotal)}%)`);
 
-    // Footfall: in count only
-    const ftRow = findRow(data.footfall, t);
-    let ftIn = 0, fm = 0, ff = 0, fc = 0;
-    if (ftRow) {
-      [fm, ff, fc] = ftRow.in;
-      ftIn = fm + ff + fc;
-    }
-    setTxt('kpi-ft',   ftIn);
-    setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftIn)}%)`);
-    setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftIn)}%)`);
-    setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftIn)}%)`);
+    // Footfall: in count only, 2s display delay + initial offset of 2
+    const FOOTFALL_INITIAL = 2;
+    const ftRow = findRow(data.footfall, Math.max(0, t - 2));
+    let fm = 0, ff = 0, fc = 0;
+    if (ftRow) [fm, ff, fc] = ftRow.in;
+    const ftIn    = fm + ff + fc;
+    const ftTotal = ftIn + FOOTFALL_INITIAL;
+    setTxt('kpi-ft',   ftTotal);
+    setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftTotal)}%)`);
+    setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftTotal)}%)`);
+    setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftTotal)}%)`);
 
     // Greetings (hardcoded step function)
     setTxt('kpi-greet-un', greetingsUnattended(t));
@@ -475,10 +475,10 @@ export function renderDashboard(app, data, videos) {
     const pbBarEl = document.getElementById('funnel-pb-bar');
     const ftBarEl = document.getElementById('funnel-ft-bar');
     setTxt('funnel-pb-count', pbTotal);
-    setTxt('funnel-ft-count', ftIn);
+    setTxt('funnel-ft-count', ftTotal);
     if (pbBarEl) pbBarEl.style.width = pbTotal > 0 ? '100%' : '0%';
-    if (ftBarEl) ftBarEl.style.width = pbTotal > 0 ? `${Math.min(100, Math.round((ftIn / pbTotal) * 100))}%` : '0%';
-    const convRate = Math.min(1, pbTotal > 0 ? ftIn / pbTotal : 0);
+    if (ftBarEl) ftBarEl.style.width = pbTotal > 0 ? `${Math.min(100, Math.round((ftTotal / pbTotal) * 100))}%` : '0%';
+    const convRate = Math.min(1, pbTotal > 0 ? ftTotal / pbTotal : 0);
     setTxt('funnel-pct-badge', `${Math.round(convRate * 100)}%`);
     updateRateArc(convRate);
 
