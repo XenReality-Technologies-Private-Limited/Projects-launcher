@@ -25,7 +25,7 @@
   --transition:     all .2s ease;
 }
 
-html { scroll-behavior: smooth; }
+html, body { overflow: hidden; height: 100%; scroll-behavior: smooth; }
 
 body {
   font-family: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
@@ -78,7 +78,7 @@ body {
 }
 
 /* ── Dashboard Body ─────────────────────────────────────────────────────────── */
-.dash-body { padding: 0 0 40px; }
+.dash-body { padding: 0 0 40px; height: calc(100vh - 56px); overflow-y: auto; }
 
 /* ── Section Labels ─────────────────────────────────────────────────────────── */
 .section-label {

@@ -95,7 +95,7 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:none;z-index:200;"></iframe>
+    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
@@ -508,22 +508,38 @@ export function renderDashboard(app, data, videos) {
   syncToFrame(0);
 
   // ── PoC / Live toggle ────────────────────────────────────────────────────
-  const pocBody  = document.getElementById('poc-body');
-  const liveFrame = document.getElementById('live-frame');
-  const btnPoc   = document.getElementById('btn-poc');
-  const btnLive  = document.getElementById('btn-live');
+  const pocBody    = document.getElementById('poc-body');
+  const liveFrame  = document.getElementById('live-frame');
+  const btnPoc     = document.getElementById('btn-poc');
+  const btnLive    = document.getElementById('btn-live');
+  const dashHeader = document.querySelector('.dash-header');
+  const headerTitle   = dashHeader.querySelector('.header-title');
+  const headerXrBlock = dashHeader.querySelector('.header-xr-block');
 
   btnLive.addEventListener('click', () => {
-    pocBody.style.display  = 'none';
-    liveFrame.style.display = 'block';
+    pocBody.style.display       = 'none';
+    liveFrame.style.display     = 'block';
+    // Make header transparent — toggle stays in place, live site shows through
+    dashHeader.style.background = 'transparent';
+    dashHeader.style.boxShadow  = 'none';
+    dashHeader.style.pointerEvents = 'none';
+    dashHeader.querySelector('.header-right').style.pointerEvents = 'auto';
+    headerTitle.style.visibility   = 'hidden';
+    headerXrBlock.style.visibility = 'hidden';
     btnLive.classList.add('active');
     btnPoc.classList.remove('active');
     allVids.forEach(v => v.pause());
   });
 
   btnPoc.addEventListener('click', () => {
-    liveFrame.style.display = 'none';
-    pocBody.style.display   = '';
+    liveFrame.style.display     = 'none';
+    pocBody.style.display       = '';
+    dashHeader.style.background = '';
+    dashHeader.style.boxShadow  = '';
+    dashHeader.style.pointerEvents = '';
+    dashHeader.querySelector('.header-right').style.pointerEvents = '';
+    headerTitle.style.visibility   = '';
+    headerXrBlock.style.visibility = '';
     btnPoc.classList.add('active');
     btnLive.classList.remove('active');
   });
