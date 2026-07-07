@@ -45,10 +45,14 @@ function cumulativeInteraction(t) {
 // Max at full video (14:59 = 899s): 5 + 88 + 625 = 718s
 const MAX_INTERACTION_SECS = 718;
 
+function greetingsGreeted(t) {
+  if (t >= 529) return 3;
+  if (t >= 527) return 2;
+  if (t >= 386) return 1;
+  return 0;
+}
+
 function greetingsUnattended(t) {
-  if (t >= 530) return 5;
-  if (t >= 510) return 4;
-  if (t >= 509) return 3;
   if (t >= 111) return 2;
   if (t >= 110) return 1;
   return 0;
@@ -171,7 +175,7 @@ export function renderDashboard(app, data, videos) {
             <div class="kpi-inout-grid" style="margin-top:4px;">
               <div class="kpi-inout-col">
                 <div class="kpi-inout-lbl">Greeted</div>
-                <div class="kpi-inout-num" style="color:#00A651;">0</div>
+                <div class="kpi-inout-num" id="kpi-greet-grd" style="color:#00A651;">0</div>
               </div>
               <div class="kpi-inout-col">
                 <div class="kpi-inout-lbl">Unattended</div>
@@ -468,8 +472,9 @@ export function renderDashboard(app, data, videos) {
     setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftTotal)}%)`);
     setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftTotal)}%)`);
 
-    // Greetings (hardcoded step function)
-    setTxt('kpi-greet-un', greetingsUnattended(t));
+    // Greetings (hardcoded step functions)
+    setTxt('kpi-greet-grd', greetingsGreeted(t));
+    setTxt('kpi-greet-un',  greetingsUnattended(t));
 
     // Funnel: passerby bar scales to session max; footfall relative to passerby
     const pbBarEl = document.getElementById('funnel-pb-bar');
