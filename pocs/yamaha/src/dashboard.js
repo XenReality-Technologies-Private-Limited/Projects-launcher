@@ -85,7 +85,7 @@ export function renderDashboard(app, data, videos) {
       <div class="header-xr-block">
         <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
       </div>
-      <div class="header-title">Thomsun - Yamaha Dashboard</div>
+      <div class="header-title">Thomsun - Yamaha PoC Dashboard</div>
       <div class="header-right">
         <div class="view-toggle" id="view-toggle">
           <button class="view-toggle-btn active" id="btn-poc">PoC</button>
@@ -96,7 +96,7 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:12px;height:56px;padding:0 16px;pointer-events:none;">
+    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:10px;height:56px;padding:0 16px;pointer-events:none;">
       <div class="view-toggle" style="pointer-events:auto;">
         <button class="view-toggle-btn" id="live-poc-btn">PoC</button>
         <button class="view-toggle-btn active" id="live-live-btn">Live</button>
