@@ -95,14 +95,7 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-    <div id="live-back-btn" style="display:none;position:fixed;top:0;right:0;z-index:400;align-items:center;gap:10px;height:56px;padding:0 16px;pointer-events:none;">
-      <div class="view-toggle" style="pointer-events:auto;">
-        <button class="view-toggle-btn" id="live-poc-btn">PoC</button>
-        <button class="view-toggle-btn active" id="live-live-btn">Live</button>
-      </div>
-      <img src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" class="header-customer-logo" />
-    </div>
+    <iframe id="live-frame" src="https://aws.xenreality.com/" style="display:none;position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:none;z-index:200;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
@@ -515,36 +508,23 @@ export function renderDashboard(app, data, videos) {
   syncToFrame(0);
 
   // ── PoC / Live toggle ────────────────────────────────────────────────────
-  const pocBody    = document.getElementById('poc-body');
-  const liveFrame  = document.getElementById('live-frame');
-  const liveBackBtn = document.getElementById('live-back-btn');
-  const dashHeader = document.querySelector('.dash-header');
-  const btnPoc     = document.getElementById('btn-poc');
-  const btnLive    = document.getElementById('btn-live');
+  const pocBody  = document.getElementById('poc-body');
+  const liveFrame = document.getElementById('live-frame');
+  const btnPoc   = document.getElementById('btn-poc');
+  const btnLive  = document.getElementById('btn-live');
 
-  const livePocBtn  = document.getElementById('live-poc-btn');
-  const liveLiveBtn = document.getElementById('live-live-btn');
-
-  function switchToLive() {
-    pocBody.style.display     = 'none';
-    dashHeader.style.display  = 'none';
-    liveFrame.style.display   = 'block';
-    liveBackBtn.style.display = 'flex';
-    liveLiveBtn.classList.add('active');
-    livePocBtn.classList.remove('active');
+  btnLive.addEventListener('click', () => {
+    pocBody.style.display  = 'none';
+    liveFrame.style.display = 'block';
+    btnLive.classList.add('active');
+    btnPoc.classList.remove('active');
     allVids.forEach(v => v.pause());
-  }
+  });
 
-  function switchToPoc() {
-    liveFrame.style.display   = 'none';
-    liveBackBtn.style.display = 'none';
-    dashHeader.style.display  = '';
-    pocBody.style.display     = '';
+  btnPoc.addEventListener('click', () => {
+    liveFrame.style.display = 'none';
+    pocBody.style.display   = '';
     btnPoc.classList.add('active');
     btnLive.classList.remove('active');
-  }
-
-  btnLive.addEventListener('click', switchToLive);
-  btnPoc.addEventListener('click', switchToPoc);
-  livePocBtn.addEventListener('click', switchToPoc);
+  });
 }
