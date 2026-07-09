@@ -197,7 +197,7 @@ export default function App() {
 
               {/* Right items */}
               <div className="flex items-center justify-end flex-1 px-2 sm:px-5">
-                <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="h-10 sm:h-12 w-auto object-contain" />
+                <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="h-11 w-auto object-contain" />
               </div>
             </div>
 
