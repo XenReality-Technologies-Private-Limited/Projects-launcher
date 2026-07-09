@@ -1,15 +1,9 @@
+import { MultiSeriesGraph, TimeSeriesGraph } from './graph.js';
 import { findRow } from './db.js';
 
 const CF       = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar';
 const LOGO     = `${CF}/V-Bazaar-logo.png`;
 const LIVE_URL = 'https://xentrack.xenreality.com/vBazaarLive/';
-
-const SYNC_THRESHOLD = 0.15;
-
-function fmtTime(sec) {
-  const s = Math.floor(sec);
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-}
 
 function fmtMmSs(secs) {
   const m = Math.floor(secs / 60);
@@ -17,17 +11,42 @@ function fmtMmSs(secs) {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-function pctOf(n, total) {
-  return total > 0 ? Math.round((n / total) * 100) : 0;
-}
-
 function queueColor(count) {
   if (count < 2)  return { label: 'Queue < 2',   color: '#10B981' };
-  if (count <= 3) return { label: 'Queue 2 – 3', color: '#F59E0B' };
+  if (count <= 3) return { label: 'Queue 2–3',   color: '#F59E0B' };
   return                  { label: 'Queue > 3',  color: '#EF4444' };
 }
 
+// Build per-second value arrays from sparse timestamp rows
+function buildFootfallSeries(rows) {
+  if (!rows.length) return { male: [], female: [], child: [] };
+  const maxT = rows[rows.length - 1].t;
+  const male = [], female = [], child = [];
+  let ri = 0;
+  for (let s = 0; s <= maxT; s++) {
+    while (ri + 1 < rows.length && rows[ri + 1].t <= s) ri++;
+    const [m, f, c] = rows[ri].in;
+    male.push(m); female.push(f); child.push(c);
+  }
+  return { male, female, child };
+}
+
+function buildBillingSeries(rows) {
+  if (!rows.length) return { customerCount: [] };
+  const maxT = rows[rows.length - 1].t;
+  const customerCount = [];
+  let ri = 0;
+  for (let s = 0; s <= maxT; s++) {
+    while (ri + 1 < rows.length && rows[ri + 1].t <= s) ri++;
+    customerCount.push(rows[ri].customerCount);
+  }
+  return { customerCount };
+}
+
 export function renderDashboard(app, data, videos) {
+  const ftSeries   = buildFootfallSeries(data.footfall);
+  const billSeries = buildBillingSeries(data.billing);
+
   app.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
@@ -45,189 +64,142 @@ export function renderDashboard(app, data, videos) {
 
     <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
 
-    <div class="dash-body" id="poc-body">
+    <main class="dashboard-main" id="poc-body">
 
-      <!-- Shared video controls -->
-      <div class="controls-bar">
-        <button class="ctrl-btn ctrl-btn-play"  id="btn-play">&#9654; Play All</button>
-        <button class="ctrl-btn ctrl-btn-pause" id="btn-pause">&#9646;&#9646; Pause</button>
-        <button class="ctrl-btn ctrl-btn-reset" id="btn-reset">&#8635; Reset</button>
-        <button class="ctrl-btn ctrl-btn-speed" id="btn-speed">1x Speed</button>
-        <div class="video-seek-wrap">
-          <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0" step="0.1" />
-          <span class="time-display" id="time-display">0:00 / 0:00</span>
-        </div>
-      </div>
-
-      <div class="dashboard-main">
-
-        <!-- Footfall Card -->
-        <div class="kpi-card fade-in">
-          <div class="kpi-header">
-            <div class="kpi-title-wrap">
-              <h2 class="kpi-title" style="color:#8B1010">Footfall</h2>
-            </div>
-            <span class="kpi-cam-badge">Footfall Camera</span>
+      <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
+        <div class="kpi-header">
+          <div class="kpi-title-wrap">
+            <span class="kpi-title-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <h2 class="kpi-title">FOOTFALL</h2>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-video-container">
-              <span class="kpi-video-label">CAM-01 · Footfall</span>
-              <video id="vid-footfall" class="kpi-video" preload="metadata" playsinline></video>
-            </div>
-            <div class="kpi-right">
-              <div class="kpi-metric-label">Total In Count</div>
-              <div class="kpi-metric-value" id="kpi-ft" style="color:#8B1010">0</div>
-              <div class="kpi-demo-badges">
-                <span class="kpi-badge-item" id="kpi-ft-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
-                <span class="kpi-badge-item" id="kpi-ft-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
-                <span class="kpi-badge-item" id="kpi-ft-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
-              </div>
-            </div>
+          <span class="kpi-badge">ACTIVE</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-video-container">
+            <span class="kpi-video-label">CAM-01</span>
+            <video class="kpi-video" src="${videos.footfall}" controls muted playsinline autoplay loop></video>
+          </div>
+          <div class="kpi-right">
+            <div class="kpi-metric-label">FOOTFALL</div>
+            <div class="kpi-metric-value" id="ft-total">0</div>
+            <canvas class="kpi-graph" width="600" height="160"></canvas>
+            <div class="kpi-legend">Blue: Male &nbsp;·&nbsp; Pink: Female &nbsp;·&nbsp; Yellow: Child</div>
           </div>
         </div>
+      </section>
 
-        <!-- Billing Card -->
-        <div class="kpi-card fade-in" style="animation-delay:.1s">
-          <div class="kpi-header">
-            <div class="kpi-title-wrap">
-              <h2 class="kpi-title" style="color:#059669">Billing Counter</h2>
-            </div>
-            <span class="kpi-cam-badge" style="background:rgba(5,150,105,.1);color:#059669;border-color:rgba(5,150,105,.3)">Billing Camera</span>
+      <section class="kpi-card" id="kpi-billing" data-kpi="billing">
+        <div class="kpi-header">
+          <div class="kpi-title-wrap">
+            <span class="kpi-title-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </span>
+            <h2 class="kpi-title">BILLING COUNTER</h2>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-video-container">
-              <span class="kpi-video-label">CAM-02 · Billing</span>
-              <video id="vid-billing" class="kpi-video" preload="metadata" playsinline></video>
-            </div>
-            <div class="kpi-right">
-              <div class="kpi-metric-label">Customers at Register</div>
-              <div class="kpi-metric-value" id="kpi-bill-cust" style="color:#059669">0</div>
-              <div class="kpi-metric-label">Employee Time</div>
-              <div class="kpi-time-value" id="kpi-bill-emp-time">00:00</div>
-              <div class="kpi-metric-label">Interaction Time</div>
-              <div class="kpi-time-value" id="kpi-bill-int-time">00:00</div>
-              <div style="margin-top:14px;">
-                <div id="kpi-bill-queue" class="queue-badge">Queue &lt; 2</div>
-              </div>
-            </div>
+          <span class="kpi-badge" id="billing-queue-badge" style="background:rgba(16,185,129,.12);color:#047857;border-color:rgba(16,185,129,.35)">Queue &lt; 2</span>
+        </div>
+        <div class="kpi-body">
+          <div class="kpi-video-container">
+            <span class="kpi-video-label">CAM-02</span>
+            <video class="kpi-video" src="${videos.billing}" controls muted playsinline autoplay loop></video>
+          </div>
+          <div class="kpi-right">
+            <div class="kpi-metric-label">CUSTOMERS AT REGISTER</div>
+            <div class="kpi-metric-value" id="bill-cust">0</div>
+            <canvas class="kpi-graph" width="600" height="160"></canvas>
+            <div class="kpi-legend">Customers at billing counter over time</div>
+            <div class="kpi-metric-label">EMPLOYEE TIME</div>
+            <div class="kpi-metric-value" id="bill-emp-time" style="font-size:1.6rem">00:00</div>
+            <div class="kpi-metric-label">INTERACTION TIME</div>
+            <div class="kpi-metric-value" id="bill-int-time" style="font-size:1.6rem">00:00</div>
           </div>
         </div>
+      </section>
 
-      </div>
-    </div>
+    </main>
   `;
 
-  // ── Wire videos ───────────────────────────────────────────────────────────
-  const vidFootfall = document.getElementById('vid-footfall');
-  const vidBilling  = document.getElementById('vid-billing');
-  vidFootfall.src = videos.footfall;
-  vidBilling.src  = videos.billing;
+  // ── Footfall graph ────────────────────────────────────────────────────────
+  const ftSection = document.getElementById('kpi-footfall');
+  const ftVideo   = ftSection.querySelector('.kpi-video');
+  const ftCanvas  = ftSection.querySelector('.kpi-graph');
+  const ftTotalEl = document.getElementById('ft-total');
 
-  const master  = vidFootfall;
-  const slaves  = [vidBilling];
-  const allVids = [master, ...slaves];
-
-  // ── Controls ──────────────────────────────────────────────────────────────
-  const seekBar     = document.getElementById('seek-bar');
-  const timeDisplay = document.getElementById('time-display');
-  let isSeeking     = false;
-  let duration      = 0;
-  let playbackSpeed = 1;
-
-  function updateSeekFill(pctVal) {
-    const p = Math.max(0, Math.min(100, pctVal));
-    seekBar.style.background = `linear-gradient(to right, #8B1010 ${p}%, #cbd5e1 ${p}%)`;
-  }
-
-  document.getElementById('btn-play').addEventListener('click', () => {
-    const t = master.currentTime || 0;
-    slaves.forEach(v => { if (Math.abs(v.currentTime - t) > SYNC_THRESHOLD) v.currentTime = t; });
-    allVids.forEach(v => v.play());
-  });
-  document.getElementById('btn-pause').addEventListener('click', () => allVids.forEach(v => v.pause()));
-  document.getElementById('btn-reset').addEventListener('click', () => {
-    allVids.forEach(v => { v.pause(); v.currentTime = 0; v.playbackRate = 1; });
-    playbackSpeed = 1;
-    document.getElementById('btn-speed').textContent = '1x Speed';
-    seekBar.value = 0;
-    updateSeekFill(0);
-    timeDisplay.textContent = `0:00 / ${fmtTime(duration)}`;
-    syncToFrame(0);
+  const ftGraph = new MultiSeriesGraph(ftCanvas, {
+    series: [
+      { values: ftSeries.male,   color: '#2563eb', label: 'Male' },
+      { values: ftSeries.female, color: '#ec4899', label: 'Female' },
+      { values: ftSeries.child,  color: '#eab308', label: 'Child' },
+    ],
+    yMax: 50,
+    playheadColor: '#6b7280',
+    showLiveCount: true,
   });
 
-  const SPEED_STEPS = [1, 1.25, 1.5, 1.75, 2];
-  document.getElementById('btn-speed').addEventListener('click', () => {
-    const idx = SPEED_STEPS.indexOf(playbackSpeed);
-    playbackSpeed = SPEED_STEPS[(idx + 1) % SPEED_STEPS.length];
-    allVids.forEach(v => { v.playbackRate = playbackSpeed; });
-    document.getElementById('btn-speed').textContent = `${playbackSpeed}x Speed`;
+  const ftResizer = new ResizeObserver(() => {
+    const r = ftCanvas.getBoundingClientRect();
+    ftCanvas.width  = r.width  * window.devicePixelRatio;
+    ftCanvas.height = r.height * window.devicePixelRatio;
+    ftGraph.render();
+  });
+  ftResizer.observe(ftCanvas);
+
+  ftVideo.addEventListener('timeupdate', () => {
+    const idx = Math.min(Math.floor(ftVideo.currentTime || 0), Math.max(0, ftSeries.male.length - 1));
+    const row = findRow(data.footfall, ftVideo.currentTime || 0);
+    const [m, f, c] = row ? row.in : [0, 0, 0];
+    ftTotalEl.textContent = String(m + f + c);
+    ftGraph.setCurrentIndex(idx);
+    ftGraph.render();
   });
 
-  master.addEventListener('loadedmetadata', () => {
-    duration = master.duration || 0;
-    timeDisplay.textContent = `0:00 / ${fmtTime(duration)}`;
-  });
+  // ── Billing graph ─────────────────────────────────────────────────────────
+  const billSection  = document.getElementById('kpi-billing');
+  const billVideo    = billSection.querySelector('.kpi-video');
+  const billCanvas   = billSection.querySelector('.kpi-graph');
+  const billCustEl   = document.getElementById('bill-cust');
+  const billEmpEl    = document.getElementById('bill-emp-time');
+  const billIntEl    = document.getElementById('bill-int-time');
+  const billQueueBadge = document.getElementById('billing-queue-badge');
 
-  seekBar.addEventListener('mousedown', () => { isSeeking = true; });
-  seekBar.addEventListener('input', () => {
-    if (!duration) return;
-    const t = (seekBar.value / 100) * duration;
-    allVids.forEach(v => { v.currentTime = t; });
-    updateSeekFill(Number(seekBar.value));
-    timeDisplay.textContent = `${fmtTime(t)} / ${fmtTime(duration)}`;
-    syncToFrame(t);
-  });
-  seekBar.addEventListener('mouseup', () => { isSeeking = false; });
+  const maxCust = billSeries.customerCount.length
+    ? Math.max(...billSeries.customerCount, 5)
+    : 5;
 
-  master.addEventListener('timeupdate', () => {
-    const t = master.currentTime || 0;
-    slaves.forEach(v => { if (!v.paused && Math.abs(v.currentTime - t) > SYNC_THRESHOLD) v.currentTime = t; });
-    if (!isSeeking && duration > 0) {
-      const pctVal = (t / duration) * 100;
-      seekBar.value = pctVal;
-      updateSeekFill(pctVal);
+  const billGraph = new TimeSeriesGraph(billCanvas, {
+    lineColor: '#8B1010',
+    playheadColor: '#6b7280',
+    yMax: Math.ceil(maxCust * 1.2),
+    showLiveCount: true,
+  });
+  billGraph.setValues(billSeries.customerCount);
+
+  const billResizer = new ResizeObserver(() => {
+    const r = billCanvas.getBoundingClientRect();
+    billCanvas.width  = r.width  * window.devicePixelRatio;
+    billCanvas.height = r.height * window.devicePixelRatio;
+    billGraph.render();
+  });
+  billResizer.observe(billCanvas);
+
+  billVideo.addEventListener('timeupdate', () => {
+    const idx = Math.min(Math.floor(billVideo.currentTime || 0), Math.max(0, billSeries.customerCount.length - 1));
+    const row = findRow(data.billing, billVideo.currentTime || 0);
+    if (row) {
+      billCustEl.textContent = String(row.customerCount);
+      billEmpEl.textContent  = fmtMmSs(row.employeeTimeSecs);
+      billIntEl.textContent  = fmtMmSs(row.interactionTimeSecs);
+      const q = queueColor(row.customerCount);
+      billQueueBadge.textContent = q.label;
+      billQueueBadge.style.background   = q.color + '22';
+      billQueueBadge.style.color        = q.color;
+      billQueueBadge.style.borderColor  = q.color + '88';
     }
-    timeDisplay.textContent = `${fmtTime(t)} / ${fmtTime(duration)}`;
-    syncToFrame(t);
+    billGraph.setCurrentIndex(idx);
+    billGraph.render();
   });
-
-  master.addEventListener('ended', () => slaves.forEach(v => v.pause()));
-  master.addEventListener('seeked', () => {
-    const t = master.currentTime || 0;
-    slaves.forEach(v => { v.currentTime = t; });
-  });
-
-  // ── DOM helpers ───────────────────────────────────────────────────────────
-  function setTxt(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = typeof val === 'number' ? val.toLocaleString() : val;
-  }
-
-  // ── syncToFrame ───────────────────────────────────────────────────────────
-  function syncToFrame(t) {
-    // Footfall
-    const ftRow = findRow(data.footfall, t);
-    let fm = 0, ff = 0, fc = 0;
-    if (ftRow) [fm, ff, fc] = ftRow.in;
-    const ftTotal = fm + ff + fc;
-    setTxt('kpi-ft',   ftTotal);
-    setTxt('kpi-ft-m', `M: ${fm} (${pctOf(fm, ftTotal)}%)`);
-    setTxt('kpi-ft-f', `F: ${ff} (${pctOf(ff, ftTotal)}%)`);
-    setTxt('kpi-ft-c', `C: ${fc} (${pctOf(fc, ftTotal)}%)`);
-
-    // Billing
-    const billRow = findRow(data.billing, t);
-    if (billRow) {
-      setTxt('kpi-bill-cust',     billRow.customerCount);
-      setTxt('kpi-bill-emp-time', fmtMmSs(billRow.employeeTimeSecs));
-      setTxt('kpi-bill-int-time', fmtMmSs(billRow.interactionTimeSecs));
-      const q = queueColor(billRow.customerCount);
-      const qEl = document.getElementById('kpi-bill-queue');
-      if (qEl) { qEl.textContent = q.label; qEl.style.background = q.color; }
-    }
-  }
-
-  syncToFrame(0);
 
   // ── PoC / Live toggle ─────────────────────────────────────────────────────
   const pocBody    = document.getElementById('poc-body');
@@ -241,27 +213,26 @@ export function renderDashboard(app, data, videos) {
   btnLive.addEventListener('click', () => {
     pocBody.style.display = 'none';
     if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = LIVE_URL;
-    liveFrame.style.display     = 'block';
-    dashHeader.style.background = 'transparent';
-    dashHeader.style.boxShadow  = 'none';
-    dashHeader.style.pointerEvents = 'none';
+    liveFrame.style.display          = 'block';
+    dashHeader.style.background      = 'transparent';
+    dashHeader.style.boxShadow       = 'none';
+    dashHeader.style.pointerEvents   = 'none';
     dashHeader.querySelector('.header-right').style.pointerEvents = 'auto';
-    headerTitle.style.visibility   = 'hidden';
-    headerXrBlock.style.visibility = 'hidden';
+    headerTitle.style.visibility     = 'hidden';
+    headerXrBlock.style.visibility   = 'hidden';
     btnLive.classList.add('active');
     btnPoc.classList.remove('active');
-    allVids.forEach(v => v.pause());
   });
 
   btnPoc.addEventListener('click', () => {
-    liveFrame.style.display     = 'none';
-    pocBody.style.display       = '';
-    dashHeader.style.background = '';
-    dashHeader.style.boxShadow  = '';
-    dashHeader.style.pointerEvents = '';
+    liveFrame.style.display          = 'none';
+    pocBody.style.display            = '';
+    dashHeader.style.background      = '';
+    dashHeader.style.boxShadow       = '';
+    dashHeader.style.pointerEvents   = '';
     dashHeader.querySelector('.header-right').style.pointerEvents = '';
-    headerTitle.style.visibility   = '';
-    headerXrBlock.style.visibility = '';
+    headerTitle.style.visibility     = '';
+    headerXrBlock.style.visibility   = '';
     btnPoc.classList.add('active');
     btnLive.classList.remove('active');
   });

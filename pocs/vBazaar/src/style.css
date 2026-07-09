@@ -2,27 +2,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --brand-primary:  #8B1010;
-  --brand-green:    #059669;
-  --brand-blue:     #003087;
-
-  --bg-app:         #f0f2f7;
-  --text-primary:   #0f172a;
-  --text-secondary: #475569;
-  --text-muted:     #94a3b8;
-  --border-light:   #e2e8f0;
-
-  --transition:     all .2s ease;
+  --brand-primary: #8B1010;
+  --brand-blue:    #003087;
+  --text-primary:  #0f172a;
+  --text-muted:    #94a3b8;
 }
-
-html, body { overflow: hidden; height: 100%; }
 
 body {
   font-family: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
-  background: var(--bg-app);
+  background: #ffffff;
   color: var(--text-primary);
   font-size: 14px;
   line-height: 1.5;
+  min-height: 100vh;
 }
 
 /* ── Header ─────────────────────────────────────────────────────────────────── */
@@ -66,61 +58,7 @@ body {
   box-shadow: 0 1px 4px rgba(139,16,16,.3);
 }
 
-/* ── Dashboard Body ─────────────────────────────────────────────────────────── */
-.dash-body { padding: 0 0 40px; height: calc(100vh - 56px); overflow-y: auto; }
-
-/* ── Shared Controls Bar ────────────────────────────────────────────────────── */
-.controls-bar {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 24px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.ctrl-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 16px; border: none; border-radius: 6px;
-  font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
-  transition: var(--transition); letter-spacing: .02em;
-}
-.ctrl-btn-play  { background: var(--brand-primary); color: #fff; }
-.ctrl-btn-play:hover { background: #6b0c0c; }
-.ctrl-btn-pause { background: rgba(0,0,0,.06); color: #475569; }
-.ctrl-btn-pause:hover { background: rgba(0,0,0,.1); }
-.ctrl-btn-reset { background: rgba(0,0,0,.04); color: #94a3b8; }
-.ctrl-btn-reset:hover { background: rgba(0,0,0,.08); color: #475569; }
-.ctrl-btn-speed { background: rgba(139,16,16,.1); color: #8B1010; border: 1px solid rgba(139,16,16,.3); }
-.ctrl-btn-speed:hover { background: rgba(139,16,16,.2); }
-
-.video-seek-wrap {
-  flex: 1; display: flex; align-items: center; gap: 10px;
-}
-
-.seek-bar {
-  flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
-  background: #cbd5e1; border-radius: 2px; cursor: pointer; outline: none;
-}
-.seek-bar::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px; height: 14px; border-radius: 50%; margin-top: -5px;
-  background: var(--brand-primary); border: 2px solid #fff;
-  cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.4);
-}
-.seek-bar::-webkit-slider-runnable-track {
-  height: 4px; border-radius: 2px; background: transparent;
-}
-.seek-bar::-moz-range-thumb {
-  width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff;
-  background: var(--brand-primary); cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,.4);
-}
-.seek-bar::-moz-range-track {
-  height: 4px; border-radius: 2px; background: transparent;
-}
-
-.time-display { color: #64748b; font-size: 12px; font-weight: 500; white-space: nowrap; min-width: 90px; text-align: right; }
-
-/* ── Dashboard Main (card list) ─────────────────────────────────────────────── */
+/* ── Dashboard Main ─────────────────────────────────────────────────────────── */
 .dashboard-main {
   display: flex; flex-direction: column; gap: 20px;
   padding: 20px 24px 40px;
@@ -129,7 +67,7 @@ body {
 /* ── KPI Card (Reliance-style) ──────────────────────────────────────────────── */
 .kpi-card {
   border-radius: 22px;
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
   box-shadow: 0 18px 40px rgba(15,23,42,.12);
   padding: 18px 18px 20px;
@@ -142,15 +80,17 @@ body {
 
 .kpi-title-wrap { display: flex; align-items: center; gap: 10px; }
 
+.kpi-title-icon { display: flex; align-items: center; color: var(--brand-primary); }
+
 .kpi-title {
-  margin: 0; font-size: 1rem; font-weight: 700;
-  letter-spacing: .04em; text-transform: uppercase;
+  margin: 0; font-size: 1rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--text-primary);
 }
 
-.kpi-cam-badge {
+.kpi-badge {
   padding: 5px 12px; border-radius: 999px;
-  font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
-  background: rgba(139,16,16,.1); color: #8B1010; border: 1px solid rgba(139,16,16,.3);
+  font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
+  background: rgba(139,16,16,.12); color: #8B1010; border: 1px solid rgba(139,16,16,.35);
 }
 
 /* ── Card body: video left, data right ─────────────────────────────────────── */
@@ -166,6 +106,7 @@ body {
   border-radius: 12px; border: 1px solid #e5e7eb;
   background: #fff;
   aspect-ratio: 16 / 9;
+  min-height: 300px;
 }
 
 .kpi-video-label {
@@ -181,57 +122,33 @@ body {
 }
 
 .kpi-right {
-  display: flex; flex-direction: column; gap: 4px;
-  justify-content: center; min-height: 0;
+  display: flex; flex-direction: column; gap: 4px; min-height: 0;
 }
 
 .kpi-metric-label {
-  font-size: .68rem; font-weight: 700; letter-spacing: .1em;
-  text-transform: uppercase; color: #6b7280; margin-top: 10px;
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .18em;
+  color: #6b7280; margin-top: 8px;
 }
 .kpi-metric-label:first-child { margin-top: 0; }
 
 .kpi-metric-value {
-  font-size: 2.4rem; font-weight: 800;
-  line-height: 1.1; font-variant-numeric: tabular-nums;
-  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+  font-size: 2.2rem; font-weight: 600; color: var(--text-primary);
 }
 
-.kpi-time-value {
-  font-size: 1.6rem; font-weight: 700; color: var(--text-primary);
-  font-variant-numeric: tabular-nums; line-height: 1.1;
+/* ── Graph canvas ───────────────────────────────────────────────────────────── */
+.kpi-graph {
+  width: 100%; height: 120px; display: block;
+  border-radius: 8px; border: 1px solid #e5e7eb;
+  background: #f9fafb; margin-top: 8px;
 }
 
-/* ── M/F/C demo badges ──────────────────────────────────────────────────────── */
-.kpi-demo-badges {
-  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+.kpi-legend {
+  font-size: .7rem; color: #6b7280; margin-top: 4px;
 }
-
-.kpi-badge-item {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: #f1f5f9; border: 1px solid #e2e8f0;
-  border-radius: 4px; padding: 3px 8px;
-  font-size: 11px; font-weight: 600; color: #374151;
-}
-
-.badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
-/* ── Queue Badge ────────────────────────────────────────────────────────────── */
-.queue-badge {
-  display: inline-block; padding: 5px 16px; border-radius: 20px;
-  color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em;
-  background: #10B981; transition: background .3s;
-}
-
-/* ── Animations ─────────────────────────────────────────────────────────────── */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.fade-in { animation: fadeInUp .4s ease both; }
 
 /* ── Responsive ─────────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .controls-bar { flex-wrap: wrap; }
   .kpi-body { grid-template-columns: 1fr; }
+  .dashboard-main { padding: 12px 12px 40px; }
 }
