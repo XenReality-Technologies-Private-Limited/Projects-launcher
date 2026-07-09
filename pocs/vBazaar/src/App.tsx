@@ -196,32 +196,11 @@ export default function App() {
               </span>
 
               {/* Right items */}
-              <div className="flex items-center justify-end flex-1 px-2 sm:px-5 gap-2 sm:gap-5">
-                <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="hidden sm:block h-12 print:h-7 print:max-w-[110px] w-auto object-contain" />
-                <div className="flex items-center gap-2 print:hidden">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-black shrink-0"
-                    style={{ background: '#2E3192' }}>
-                    {userInitial}
-                  </div>
-                  <span className="hidden sm:inline text-sm font-semibold text-slate-600 capitalize">{userDisplay}</span>
-                </div>
-                <button onClick={handleSignOut}
-                  className="flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-red-500 transition-colors print:hidden">
-                  <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4">
-                    <path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M10 11l3-3-3-3M13 8H6"
-                      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  <span className="hidden sm:inline">Sign Out</span>
-                </button>
+              <div className="flex items-center justify-end flex-1 px-2 sm:px-5">
+                <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="h-10 sm:h-12 w-auto object-contain" />
               </div>
             </div>
 
-            {/* Mobile row — V-Bazaar logo */}
-            <div className="sm:hidden relative flex items-center px-3 py-2 border-t border-slate-100 bg-white">
-              <div className="absolute left-1/2 -translate-x-1/2">
-                <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="h-6 w-auto object-contain" />
-              </div>
-            </div>
           </header>
 
           {/* LINE 2: TABS */}

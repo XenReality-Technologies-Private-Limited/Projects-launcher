@@ -64,7 +64,7 @@ export function renderDashboard(app, data, videos) {
 
     <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
 
-    <div id="live-toggle-float" style="display:none;position:fixed;top:12px;right:16px;z-index:400;">
+    <div id="live-toggle-float" style="display:none;position:fixed;top:16px;right:84px;z-index:400;">
       <div class="view-toggle">
         <button class="view-toggle-btn active" id="btn-live-float">Live</button>
         <button class="view-toggle-btn" id="btn-poc-float">PoC</button>
