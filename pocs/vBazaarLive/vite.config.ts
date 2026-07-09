@@ -3,10 +3,25 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 
+const vBazaarSrc = path.resolve(__dirname, '../vBazaar/src');
+
 export default defineConfig({
   root: path.resolve(__dirname, '../vBazaar'),
   base: '/vBazaarLive/',
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    // './db' in vBazaar/src would resolve to the vanilla PoC's db.js instead of
+    // the React app's db/index.ts — redirect it to the TypeScript module.
+    {
+      name: 'redirect-poc-db',
+      resolveId(id: string, importer?: string) {
+        if (id === './db' && importer?.startsWith(vBazaarSrc)) {
+          return path.resolve(path.dirname(importer), 'db/index.ts');
+        }
+      },
+    },
+  ],
   define: {
     'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY ?? ''),
   },
