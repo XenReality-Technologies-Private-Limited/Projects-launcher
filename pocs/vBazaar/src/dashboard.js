@@ -62,14 +62,7 @@ export function renderDashboard(app, data, videos) {
       </div>
     </header>
 
-    <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
-
-    <div id="live-toggle-float" style="display:none;position:fixed;top:14px;right:130px;z-index:400;">
-      <div class="view-toggle">
-        <button class="view-toggle-btn active" id="btn-live-float">Live</button>
-        <button class="view-toggle-btn" id="btn-poc-float">PoC</button>
-      </div>
-    </div>
+    <iframe id="live-frame" src="" style="display:none;position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:none;z-index:200;"></iframe>
 
     <main class="dashboard-main" id="poc-body">
 
@@ -209,34 +202,24 @@ export function renderDashboard(app, data, videos) {
   });
 
   // ── PoC / Live toggle ─────────────────────────────────────────────────────
-  const pocBody       = document.getElementById('poc-body');
-  const liveFrame     = document.getElementById('live-frame');
-  const floatToggle   = document.getElementById('live-toggle-float');
-  const btnPoc        = document.getElementById('btn-poc');
-  const btnLive       = document.getElementById('btn-live');
-  const btnPocFloat   = document.getElementById('btn-poc-float');
-  const btnLiveFloat  = document.getElementById('btn-live-float');
-  const dashHeader    = document.querySelector('.dash-header');
+  // Header stays visible in both modes — iframe sits below it (top: 56px).
+  const pocBody   = document.getElementById('poc-body');
+  const liveFrame = document.getElementById('live-frame');
+  const btnPoc    = document.getElementById('btn-poc');
+  const btnLive   = document.getElementById('btn-live');
 
-  function goLive() {
-    pocBody.style.display      = 'none';
-    dashHeader.style.display   = 'none';
+  btnLive.addEventListener('click', () => {
+    pocBody.style.display = 'none';
     if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = LIVE_URL;
-    liveFrame.style.display    = 'block';
-    floatToggle.style.display  = 'block';
-  }
+    liveFrame.style.display = 'block';
+    btnLive.classList.add('active');
+    btnPoc.classList.remove('active');
+  });
 
-  function goPoc() {
-    liveFrame.style.display    = 'none';
-    floatToggle.style.display  = 'none';
-    dashHeader.style.display   = '';
-    pocBody.style.display      = '';
+  btnPoc.addEventListener('click', () => {
+    liveFrame.style.display = 'none';
+    pocBody.style.display   = '';
     btnPoc.classList.add('active');
     btnLive.classList.remove('active');
-  }
-
-  btnLive.addEventListener('click', goLive);
-  btnLiveFloat.addEventListener('click', goLive);
-  btnPoc.addEventListener('click', goPoc);
-  btnPocFloat.addEventListener('click', goPoc);
+  });
 }

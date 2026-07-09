@@ -62,6 +62,7 @@ const DEMO_FALLBACK = [
 ];
 
 export default function App() {
+  const isEmbedded = typeof window !== 'undefined' && window.self !== window.top;
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -176,8 +177,8 @@ export default function App() {
         {/* ── STICKY TOP BAR ── */}
         <div className="sticky top-0 z-50 shadow-[0_2px_8px_rgba(0,0,0,0.08)] print:hidden">
 
-          {/* LINE 1: HEADER */}
-          <header className="bg-white border-b border-slate-200">
+          {/* LINE 1: HEADER — hidden when embedded in the PoC wrapper iframe */}
+          {!isEmbedded && <header className="bg-white border-b border-slate-200">
             <div className="relative flex items-stretch h-12 sm:h-14">
               {/* Blue XenReality block */}
               <div className="flex items-center px-5 shrink-0 xr-logo-block" style={{ background: '#2E3192' }}>
@@ -201,7 +202,7 @@ export default function App() {
               </div>
             </div>
 
-          </header>
+          </header>}
 
           {/* LINE 2: TABS */}
           <div className="bg-white border-b border-slate-200">
