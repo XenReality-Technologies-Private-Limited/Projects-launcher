@@ -216,20 +216,11 @@ export default function App() {
               </div>
             </div>
 
-            {/* Mobile row — V-Bazaar logo + Print */}
+            {/* Mobile row — V-Bazaar logo */}
             <div className="sm:hidden relative flex items-center px-3 py-2 border-t border-slate-100 bg-white">
               <div className="absolute left-1/2 -translate-x-1/2">
                 <img src={VBAZAAR_LOGO} alt="V-Bazaar" className="h-6 w-auto object-contain" />
               </div>
-              <div className="flex-1" />
-              <button onClick={handlePrint}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:border-[#2E3192] hover:text-[#2E3192] transition-all">
-                <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4">
-                  <path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 9h8v5H4V9z"
-                    stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-                </svg>
-                Print
-              </button>
             </div>
           </header>
 
@@ -248,16 +239,6 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              {activeTab === 'dashboard' && (
-                <button onClick={handlePrint}
-                  className="hidden sm:flex items-center gap-2 ml-auto px-4 py-1.5 rounded-lg border border-slate-200 text-sm font-semibold text-slate-600 hover:border-[#2E3192] hover:text-[#2E3192] transition-all">
-                  <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4">
-                    <path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 9h8v5H4V9z"
-                      stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-                  </svg>
-                  Print
-                </button>
-              )}
             </div>
           </div>
 
