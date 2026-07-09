@@ -131,7 +131,7 @@ export function renderDashboard(app, data, urls) {
       <div class="header-surecount-block">
         <img src="https://d108xxen99ni2a.cloudfront.net/surecountai.png" alt="SureCount AI" />
       </div>
-      <div class="header-title">Kushals PoC Dashboard</div>
+      <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
         <img class="header-customer-logo" src="${urls.logo}" alt="Kushals" />
       </div>

@@ -177,7 +177,7 @@ export function renderDashboard(appEl, allData) {
       <div class="header-logo">
         <img src="/xenlogo.png" alt="XenReality" class="header-logo-img" />
       </div>
-      <span class="header-brand-name">Gravity PoC Dashboard</span>
+      <span class="header-brand-name">PoC Dashboard</span>
       <div class="header-right">
         <span class="header-status">SYSTEM ONLINE</span>
         <span class="header-clock" id="ist-clock">--:--:--</span>

@@ -357,7 +357,7 @@ export async function renderDashboard(appEl, cameras, allData) {
         <span class="header-brand-name">Kalyan Kendra</span>
       </div>
       <div class="header-center">
-        <span class="header-title">Surveillance Dashboard</span>
+        <span class="header-title">PoC Dashboard</span>
       </div>
       <div class="header-right">
         <span class="header-status">&#9679;&nbsp;System Online</span>
