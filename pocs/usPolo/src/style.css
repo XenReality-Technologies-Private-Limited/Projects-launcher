@@ -231,7 +231,7 @@ html, body {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: contain;
-  background: #000;
+  background: #fff;
   border-radius: 8px;
   display: block;
 }
@@ -924,7 +924,7 @@ html, body {
 .frame-video {
   width: 100%;
   display: block;
-  background: #000;
+  background: #fff;
   max-height: 70vh;
   object-fit: contain;
 }

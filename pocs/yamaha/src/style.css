@@ -101,7 +101,7 @@ body {
 
 .video-tile {
   position: relative;
-  background: #000;
+  background: #fff;
   border-radius: 8px;
   overflow: hidden;
   aspect-ratio: 16/9;
