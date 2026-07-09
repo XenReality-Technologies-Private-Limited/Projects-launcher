@@ -1,6 +1,6 @@
 import './style.css';
 import { requireAuth } from './login.js';
-import { loadDB } from './db.js';
+import { loadDB } from './poc-db.js';
 import { renderDashboard } from './dashboard.js';
 
 const CF = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar';
