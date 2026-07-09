@@ -76,10 +76,14 @@ RUN cd pocs/vBazaar && npm install --prefer-offline
 COPY pocs/vBazaar/ ./pocs/vBazaar/
 RUN cd pocs/vBazaar && npm run build
 
-# ── vBazaarLive (React live dashboard — built after vBazaar so ../vBazaar/src is available) ──
+# ── vBazaarLive (React live dashboard) ──
 COPY pocs/vBazaarLive/package*.json ./pocs/vBazaarLive/
 RUN cd pocs/vBazaarLive && npm install --prefer-offline
 COPY pocs/vBazaarLive/ ./pocs/vBazaarLive/
+# vBazaar PoC is already built — replace its node_modules with a symlink to
+# vBazaarLive's so that React source files under ../vBazaar/src/ can resolve React.
+RUN rm -rf pocs/vBazaar/node_modules && \
+    ln -s /app/pocs/vBazaarLive/node_modules pocs/vBazaar/node_modules
 RUN cd pocs/vBazaarLive && npm run build
 
 # ── yamaha ──

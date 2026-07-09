@@ -11,9 +11,6 @@ export default defineConfig({
     'process.env.GEMINI_API_KEY': JSON.stringify(process.env.GEMINI_API_KEY ?? ''),
   },
   resolve: {
-    // Resolve modules from vBazaarLive/node_modules first — source files are
-    // under ../vBazaar/ so standard node resolution wouldn't find React there.
-    modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
     alias: {
       '@': path.resolve(__dirname, '../vBazaar'),
     },
