@@ -1,16 +1,14 @@
 import { findRow } from './db.js';
 
-const CF    = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar';
-const LOGO  = `${CF}/V-Bazaar-logo.png`;
+const CF       = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar';
+const LOGO     = `${CF}/V-Bazaar-logo.png`;
 const LIVE_URL = 'https://xentrack.xenreality.com/vBazaarLive/';
 
 const SYNC_THRESHOLD = 0.15;
 
 function fmtTime(sec) {
   const s = Math.floor(sec);
-  const m = Math.floor(s / 60);
-  const r = s % 60;
-  return `${m}:${String(r).padStart(2, '0')}`;
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 function fmtMmSs(secs) {
@@ -23,10 +21,10 @@ function pctOf(n, total) {
   return total > 0 ? Math.round((n / total) * 100) : 0;
 }
 
-function queueClass(count) {
-  if (count < 2)  return { cls: 'bq-low',    label: 'Queue < 2',    color: '#10B981' };
-  if (count <= 3) return { cls: 'bq-medium',  label: 'Queue 2 – 3', color: '#F59E0B' };
-  return                  { cls: 'bq-high',   label: 'Queue > 3',   color: '#EF4444' };
+function queueColor(count) {
+  if (count < 2)  return { label: 'Queue < 2',   color: '#10B981' };
+  if (count <= 3) return { label: 'Queue 2 – 3', color: '#F59E0B' };
+  return                  { label: 'Queue > 3',  color: '#EF4444' };
 }
 
 export function renderDashboard(app, data, videos) {
@@ -49,78 +47,79 @@ export function renderDashboard(app, data, videos) {
 
     <div class="dash-body" id="poc-body">
 
-      <!-- VIDEOS -->
-      <div class="video-section">
-        <div class="video-grid video-grid-2">
-          <div class="video-tile">
-            <video id="vid-footfall" preload="metadata" playsinline></video>
-            <div class="video-tile-label">Footfall</div>
-          </div>
-          <div class="video-tile">
-            <video id="vid-billing" preload="metadata" playsinline></video>
-            <div class="video-tile-label">Billing Counter</div>
-          </div>
-        </div>
-
-        <div class="video-controls">
-          <button class="ctrl-btn ctrl-btn-play"  id="btn-play">&#9654; Play All</button>
-          <button class="ctrl-btn ctrl-btn-pause" id="btn-pause">&#9646;&#9646; Pause</button>
-          <button class="ctrl-btn ctrl-btn-reset" id="btn-reset">&#8635; Reset</button>
-          <button class="ctrl-btn ctrl-btn-speed" id="btn-speed">1x Speed</button>
-          <div class="video-seek-wrap">
-            <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0" step="0.1" />
-            <span class="time-display" id="time-display">0:00 / 0:00</span>
-          </div>
+      <!-- Shared video controls -->
+      <div class="controls-bar">
+        <button class="ctrl-btn ctrl-btn-play"  id="btn-play">&#9654; Play All</button>
+        <button class="ctrl-btn ctrl-btn-pause" id="btn-pause">&#9646;&#9646; Pause</button>
+        <button class="ctrl-btn ctrl-btn-reset" id="btn-reset">&#8635; Reset</button>
+        <button class="ctrl-btn ctrl-btn-speed" id="btn-speed">1x Speed</button>
+        <div class="video-seek-wrap">
+          <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0" step="0.1" />
+          <span class="time-display" id="time-display">0:00 / 0:00</span>
         </div>
       </div>
 
-      <!-- KPI CARDS -->
-      <div class="kpi-section">
-        <div class="section-label">Key Performance Indicators</div>
-        <div class="kpi-grid kpi-grid-2">
+      <div class="dashboard-main">
 
-          <!-- Footfall -->
-          <div class="kpi-card fade-in" style="--kpi-color:#003087">
-            <div class="kpi-label">Footfall</div>
-            <div class="kpi-value" id="kpi-ft">0</div>
-            <div class="kpi-sub">In Count</div>
-            <div class="kpi-demo" style="margin-top:6px;">
-              <span class="kpi-badge" id="kpi-ft-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
-              <span class="kpi-badge" id="kpi-ft-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
-              <span class="kpi-badge" id="kpi-ft-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
+        <!-- Footfall Card -->
+        <div class="kpi-card fade-in">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <h2 class="kpi-title" style="color:#8B1010">Footfall</h2>
             </div>
+            <span class="kpi-cam-badge">Footfall Camera</span>
           </div>
-
-          <!-- Billing -->
-          <div class="kpi-card fade-in" style="--kpi-color:#059669">
-            <div class="kpi-label">Billing Counter</div>
-            <div class="kpi-value" id="kpi-bill-cust">0</div>
-            <div class="kpi-sub">Customers at Register</div>
-            <div class="kpi-inout-grid" style="margin-top:10px;">
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">Employee Time</div>
-                <div class="kpi-inout-num" id="kpi-bill-emp-time" style="color:#059669;font-size:16px;">00:00</div>
-              </div>
-              <div class="kpi-inout-col">
-                <div class="kpi-inout-lbl">Interaction Time</div>
-                <div class="kpi-inout-num" id="kpi-bill-int-time" style="color:#059669;font-size:16px;">00:00</div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-01 · Footfall</span>
+              <video id="vid-footfall" class="kpi-video" preload="metadata" playsinline></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">Total In Count</div>
+              <div class="kpi-metric-value" id="kpi-ft" style="color:#8B1010">0</div>
+              <div class="kpi-demo-badges">
+                <span class="kpi-badge-item" id="kpi-ft-m"><span class="badge-dot" style="background:#3B82F6"></span>M: 0 (0%)</span>
+                <span class="kpi-badge-item" id="kpi-ft-f"><span class="badge-dot" style="background:#EC4899"></span>F: 0 (0%)</span>
+                <span class="kpi-badge-item" id="kpi-ft-c"><span class="badge-dot" style="background:#F59E0B"></span>C: 0 (0%)</span>
               </div>
             </div>
-            <div style="margin-top:10px;">
-              <div id="kpi-bill-queue" class="queue-badge bq-low">Queue &lt; 2</div>
-            </div>
           </div>
-
         </div>
-      </div>
 
+        <!-- Billing Card -->
+        <div class="kpi-card fade-in" style="animation-delay:.1s">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <h2 class="kpi-title" style="color:#059669">Billing Counter</h2>
+            </div>
+            <span class="kpi-cam-badge" style="background:rgba(5,150,105,.1);color:#059669;border-color:rgba(5,150,105,.3)">Billing Camera</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-02 · Billing</span>
+              <video id="vid-billing" class="kpi-video" preload="metadata" playsinline></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">Customers at Register</div>
+              <div class="kpi-metric-value" id="kpi-bill-cust" style="color:#059669">0</div>
+              <div class="kpi-metric-label">Employee Time</div>
+              <div class="kpi-time-value" id="kpi-bill-emp-time">00:00</div>
+              <div class="kpi-metric-label">Interaction Time</div>
+              <div class="kpi-time-value" id="kpi-bill-int-time">00:00</div>
+              <div style="margin-top:14px;">
+                <div id="kpi-bill-queue" class="queue-badge">Queue &lt; 2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   `;
 
-  // ── Wire videos ──────────────────────────────────────────────────────────
+  // ── Wire videos ───────────────────────────────────────────────────────────
   const vidFootfall = document.getElementById('vid-footfall');
   const vidBilling  = document.getElementById('vid-billing');
-
   vidFootfall.src = videos.footfall;
   vidBilling.src  = videos.billing;
 
@@ -128,7 +127,7 @@ export function renderDashboard(app, data, videos) {
   const slaves  = [vidBilling];
   const allVids = [master, ...slaves];
 
-  // ── Controls ─────────────────────────────────────────────────────────────
+  // ── Controls ──────────────────────────────────────────────────────────────
   const seekBar     = document.getElementById('seek-bar');
   const timeDisplay = document.getElementById('time-display');
   let isSeeking     = false;
@@ -137,7 +136,7 @@ export function renderDashboard(app, data, videos) {
 
   function updateSeekFill(pctVal) {
     const p = Math.max(0, Math.min(100, pctVal));
-    seekBar.style.background = `linear-gradient(to right, #8B1010 ${p}%, rgba(255,255,255,0.2) ${p}%)`;
+    seekBar.style.background = `linear-gradient(to right, #8B1010 ${p}%, #cbd5e1 ${p}%)`;
   }
 
   document.getElementById('btn-play').addEventListener('click', () => {
@@ -198,7 +197,7 @@ export function renderDashboard(app, data, videos) {
     slaves.forEach(v => { v.currentTime = t; });
   });
 
-  // ── DOM helpers ────────────────────────────────────────────────────────────
+  // ── DOM helpers ───────────────────────────────────────────────────────────
   function setTxt(id, val) {
     const el = document.getElementById(id);
     if (el) el.textContent = typeof val === 'number' ? val.toLocaleString() : val;
@@ -222,7 +221,7 @@ export function renderDashboard(app, data, videos) {
       setTxt('kpi-bill-cust',     billRow.customerCount);
       setTxt('kpi-bill-emp-time', fmtMmSs(billRow.employeeTimeSecs));
       setTxt('kpi-bill-int-time', fmtMmSs(billRow.interactionTimeSecs));
-      const q = queueClass(billRow.customerCount);
+      const q = queueColor(billRow.customerCount);
       const qEl = document.getElementById('kpi-bill-queue');
       if (qEl) { qEl.textContent = q.label; qEl.style.background = q.color; }
     }
@@ -230,7 +229,7 @@ export function renderDashboard(app, data, videos) {
 
   syncToFrame(0);
 
-  // ── PoC / Live toggle ────────────────────────────────────────────────────
+  // ── PoC / Live toggle ─────────────────────────────────────────────────────
   const pocBody    = document.getElementById('poc-body');
   const liveFrame  = document.getElementById('live-frame');
   const btnPoc     = document.getElementById('btn-poc');
@@ -240,7 +239,7 @@ export function renderDashboard(app, data, videos) {
   const headerXrBlock = dashHeader.querySelector('.header-xr-block');
 
   btnLive.addEventListener('click', () => {
-    pocBody.style.display       = 'none';
+    pocBody.style.display = 'none';
     if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = LIVE_URL;
     liveFrame.style.display     = 'block';
     dashHeader.style.background = 'transparent';
