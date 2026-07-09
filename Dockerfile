@@ -76,6 +76,12 @@ RUN cd pocs/vBazaar && npm install --prefer-offline
 COPY pocs/vBazaar/ ./pocs/vBazaar/
 RUN cd pocs/vBazaar && npm run build
 
+# ── vBazaarLive (React live dashboard — built after vBazaar so ../vBazaar/src is available) ──
+COPY pocs/vBazaarLive/package*.json ./pocs/vBazaarLive/
+RUN cd pocs/vBazaarLive && npm install --prefer-offline
+COPY pocs/vBazaarLive/ ./pocs/vBazaarLive/
+RUN cd pocs/vBazaarLive && npm run build
+
 # ── yamaha ──
 COPY pocs/yamaha/package*.json ./pocs/yamaha/
 RUN cd pocs/yamaha && npm install --prefer-offline
@@ -95,6 +101,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/technoSport/dist  _deploy/technoSport  && \
     cp -r pocs/usPolo/dist       _deploy/usPolo       && \
     cp -r pocs/vBazaar/dist      _deploy/vBazaar && \
+    cp -r pocs/vBazaarLive/dist  _deploy/vBazaarLive && \
     cp -r pocs/yamaha/dist       _deploy/yamaha
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
