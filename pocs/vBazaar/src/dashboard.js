@@ -52,7 +52,7 @@ export function renderDashboard(app, data, videos) {
       <div class="header-xr-block">
         <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
       </div>
-      <div class="header-title">V Bazaar PoC Dashboard</div>
+      <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
         <div class="view-toggle" id="view-toggle">
           <button class="view-toggle-btn" id="btn-live">Live</button>
