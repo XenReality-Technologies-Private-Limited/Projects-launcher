@@ -54,8 +54,8 @@ body {
   background: transparent; color: #64748b; transition: all .2s;
 }
 .view-toggle-btn.active {
-  background: var(--brand-primary); color: #fff;
-  box-shadow: 0 1px 4px rgba(139,16,16,.3);
+  background: #003087; color: #fff;
+  box-shadow: 0 1px 4px rgba(0,48,135,.3);
 }
 
 /* ── Dashboard Main ─────────────────────────────────────────────────────────── */
@@ -80,7 +80,7 @@ body {
 
 .kpi-title-wrap { display: flex; align-items: center; gap: 10px; }
 
-.kpi-title-icon { display: flex; align-items: center; color: var(--brand-primary); }
+.kpi-title-icon { display: flex; align-items: center; color: #003087; }
 
 .kpi-title {
   margin: 0; font-size: 1rem; font-weight: 600;
@@ -90,7 +90,7 @@ body {
 .kpi-badge {
   padding: 5px 12px; border-radius: 999px;
   font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
-  background: rgba(139,16,16,.12); color: #8B1010; border: 1px solid rgba(139,16,16,.35);
+  background: rgba(16,185,129,.12); color: #047857; border: 1px solid rgba(16,185,129,.35);
 }
 
 /* ── Card body: video left, data right ─────────────────────────────────────── */
@@ -106,7 +106,7 @@ body {
   border-radius: 12px; border: 1px solid #e5e7eb;
   background: #fff;
   aspect-ratio: 16 / 9;
-  min-height: 300px;
+  min-height: 360px;
 }
 
 .kpi-video-label {
@@ -138,7 +138,7 @@ body {
 
 /* ── Graph canvas ───────────────────────────────────────────────────────────── */
 .kpi-graph {
-  width: 100%; height: 120px; display: block;
+  width: 100%; height: 160px; display: block;
   border-radius: 8px; border: 1px solid #e5e7eb;
   background: #f9fafb; margin-top: 8px;
 }

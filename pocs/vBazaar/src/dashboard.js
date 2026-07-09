@@ -55,8 +55,8 @@ export function renderDashboard(app, data, videos) {
       <div class="header-title">V Bazaar PoC Dashboard</div>
       <div class="header-right">
         <div class="view-toggle" id="view-toggle">
-          <button class="view-toggle-btn active" id="btn-poc">PoC</button>
           <button class="view-toggle-btn" id="btn-live">Live</button>
+          <button class="view-toggle-btn active" id="btn-poc">PoC</button>
         </div>
         <img class="header-customer-logo" src="${LOGO}" alt="V Bazaar" />
       </div>
