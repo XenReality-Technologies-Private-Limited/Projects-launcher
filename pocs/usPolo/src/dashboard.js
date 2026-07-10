@@ -190,24 +190,13 @@ export function renderDashboard(app, analytics, rows, assetUrls) {
 
   app.innerHTML = `
     <!-- HEADER -->
-    <header class="header">
-      <div class="header-brand">
-        <div class="header-logo-wrap">
-          <img src="/us-polo-logo.png" alt="US Polo" class="header-logo"
-               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-          <div class="header-logo-fallback" style="display:none">US POLO</div>
-        </div>
-        <div class="header-divider"></div>
-        <div class="header-title">
-          <span class="header-powered">Powered by</span>
-          <span class="header-xen">XenReality Analytics</span>
-        </div>
+    <header class="dash-header">
+      <div class="header-xr-block">
+        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
       </div>
+      <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
-        <div class="header-session">
-          <span class="session-dot"></span>
-          <span class="session-label">Session Recording</span>
-        </div>
+        <img class="header-customer-logo" src="/us-polo-logo.png" alt="US Polo" onerror="this.style.display='none'" />
         <div id="clock-slot"></div>
       </div>
     </header>

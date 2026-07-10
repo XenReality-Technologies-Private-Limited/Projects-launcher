@@ -141,10 +141,10 @@ export function renderDashboard(app, data, videos) {
         </div>
       </div>
 
-      <!-- KPI CARDS: 3 cards in a 4-col grid (same proportions as Kushals/TechnoSport) -->
+      <!-- KPI CARDS: 5 cards -->
       <div class="kpi-section">
         <div class="section-label">Key Performance Indicators</div>
-        <div class="kpi-grid kpi-grid-4">
+        <div class="kpi-grid">
 
           <!-- Passerby: IN+OUT combined, M/F/C breakdown -->
           <div class="kpi-card fade-in" style="--kpi-color:#003087">
@@ -185,6 +185,23 @@ export function renderDashboard(app, data, videos) {
             </div>
           </div>
 
+          <!-- Store Performance: Passerby → Store Entry conversion rate -->
+          <div class="kpi-card fade-in" style="--kpi-color:#EF4444">
+            <div class="kpi-label">Store Performance</div>
+            <div class="kpi-value" id="kpi-sp-pct" style="color:#EF4444">0%</div>
+            <div class="kpi-sub">Passerby → Store Entry</div>
+            <div class="kpi-demo" style="margin-top:4px;">
+              <span class="kpi-badge" id="kpi-sp-status" style="background:rgba(239,68,68,.12);color:#EF4444;border-color:rgba(239,68,68,.35);">Can Improve</span>
+            </div>
+          </div>
+
+          <!-- Dwell Time -->
+          <div class="kpi-card fade-in" style="--kpi-color:#F97316">
+            <div class="kpi-label">Dwell Time</div>
+            <div class="kpi-value" id="kpi-dwell-kpi" style="color:#F97316">0s</div>
+            <div class="kpi-sub">Avg Time in Store</div>
+          </div>
+
         </div>
       </div>
 
@@ -221,48 +238,6 @@ export function renderDashboard(app, data, videos) {
                 </div>
                 <div class="funnel-bar-track">
                   <div class="funnel-bar" id="funnel-ft-bar" style="background:#00AEEF;width:0%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">Store Performance</div>
-            <div class="card-subtitle">Passerby to store entry conversion rate</div>
-            <div class="rate-cards-grid rate-cards-single">
-              <div class="rate-card">
-                <div class="rate-card-inner">
-                  <svg viewBox="0 0 48 48" width="52" height="52" style="flex-shrink:0">
-                    <path d="${ARC_BG}" fill="none" stroke="#E5E7EB" stroke-width="5" stroke-linecap="round"/>
-                    <path id="rate-arc" d="${arcPath(24,24,18,135,135)}" fill="none" stroke="#EF4444" stroke-width="5" stroke-linecap="round" class="rate-arc"/>
-                  </svg>
-                  <div class="rate-info">
-                    <div class="rate-pct" id="rate-pct" style="color:#EF4444">0%</div>
-                    <div class="rate-label">Passerby → Store Entry</div>
-                    <div class="rate-status" id="rate-status" style="color:#EF4444">Can Improve</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- METRICS: Zone Dwell Time + Employee-Customer Interaction -->
-      <div class="metrics-section">
-        <div class="two-col">
-
-          <div class="card">
-            <div class="card-title">Dwell Time</div>
-            <div class="card-subtitle">Average time customers spend in store</div>
-            <div class="dwell-rows">
-              <div class="dwell-row-item">
-                <div class="dwell-label-row">
-                  <span class="dwell-value" id="dwell-val">0s</span>
-                </div>
-                <div class="dwell-track">
-                  <div class="dwell-bar" id="dwell-bar" style="background:#00AEEF;width:0%"></div>
                 </div>
               </div>
             </div>
@@ -486,15 +461,20 @@ export function renderDashboard(app, data, videos) {
     if (ftBarEl) ftBarEl.style.width = pbTotal > 0 ? `${Math.min(100, Math.round((ftTotal / pbTotal) * 100))}%` : '0%';
     const convRate = Math.min(1, pbTotal > 0 ? ftTotal / pbTotal : 0);
     setTxt('funnel-pct-badge', `${Math.round(convRate * 100)}%`);
-    updateRateArc(convRate);
 
-    // Zone Dwell Time
+    // Store Performance KPI card
+    const spColor  = rateColor(convRate);
+    const spLabel  = rateLabel(convRate);
+    const spPctEl  = document.getElementById('kpi-sp-pct');
+    const spStatEl = document.getElementById('kpi-sp-status');
+    if (spPctEl)  { spPctEl.textContent = `${Math.round(convRate * 100)}%`; spPctEl.style.color = spColor; }
+    if (spStatEl) { spStatEl.textContent = spLabel; spStatEl.style.color = spColor; spStatEl.style.background = spColor + '22'; spStatEl.style.borderColor = spColor + '88'; }
+
+    // Dwell Time KPI card
     const ftIdx = data.footfall.findIndex(r => r.t > t);
     const dwellIdx = ftIdx > 0 ? ftIdx - 1 : (ftIdx === -1 ? data.ftDwellTimes.length - 1 : 0);
     const dwellSecs = data.ftDwellTimes[dwellIdx] || 0;
-    setTxt('dwell-val', fmtDwell(dwellSecs));
-    const dwellBarEl = document.getElementById('dwell-bar');
-    if (dwellBarEl) dwellBarEl.style.width = `${Math.round((dwellSecs / data.maxFtDwell) * 100)}%`;
+    setTxt('kpi-dwell-kpi', fmtDwell(dwellSecs));
 
     // Employee-Customer Interaction (hardcoded)
     const intSecs = cumulativeInteraction(t);

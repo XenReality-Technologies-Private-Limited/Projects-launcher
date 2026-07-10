@@ -173,15 +173,12 @@ function buildFloorHeatmap() {
 // ── Main render ───────────────────────────────────────────────────────────────
 export function renderDashboard(appEl, allData) {
   appEl.innerHTML = `
-    <header class="dashboard-header">
-      <div class="header-logo">
-        <img src="/xenlogo.png" alt="XenReality" class="header-logo-img" />
+    <header class="dash-header">
+      <div class="header-xr-block">
+        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
       </div>
-      <span class="header-brand-name">PoC Dashboard</span>
-      <div class="header-right">
-        <span class="header-status">SYSTEM ONLINE</span>
-        <span class="header-clock" id="ist-clock">--:--:--</span>
-      </div>
+      <div class="header-title">PoC Dashboard</div>
+      <div class="header-right"></div>
     </header>
     <main class="dashboard-main" id="dashboard-main"></main>
   `;

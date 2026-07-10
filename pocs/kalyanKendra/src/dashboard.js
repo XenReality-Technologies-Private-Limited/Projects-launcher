@@ -351,24 +351,17 @@ function buildTrialRoomCard(cam, data) {
 
 export async function renderDashboard(appEl, cameras, allData) {
   appEl.innerHTML = `
-    <header class="dashboard-header">
-      <div class="header-logo">
-        <img src="/xenlogo.png" alt="XenReality" class="header-logo-img" />
-        <span class="header-brand-name">Kalyan Kendra</span>
+    <header class="dash-header">
+      <div class="header-xr-block">
+        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
       </div>
-      <div class="header-center">
-        <span class="header-title">PoC Dashboard</span>
-      </div>
-      <div class="header-right">
-        <span class="header-status">&#9679;&nbsp;System Online</span>
-        <span class="header-clock" id="ist-clock">--:--:--</span>
-      </div>
+      <div class="header-title">PoC Dashboard</div>
+      <div class="header-right"></div>
     </header>
     <main class="dashboard-main" id="kpi-main"></main>`;
 
   const clockEl = appEl.querySelector('#ist-clock');
-  clockEl.textContent = formatISTTime();
-  setInterval(() => { clockEl.textContent = formatISTTime(); }, 1000);
+  if (clockEl) { clockEl.textContent = formatISTTime(); setInterval(() => { clockEl.textContent = formatISTTime(); }, 1000); }
 
   const main = appEl.querySelector('#kpi-main');
 

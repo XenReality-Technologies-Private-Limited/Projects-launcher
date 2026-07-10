@@ -1,5 +1,4 @@
 const PROJECTS = [
-  { name: 'Gravity',       url: '/gravity/' },
   { name: 'Halli Mane',    url: '/halliMane/' },
   { name: 'Kalyan Kendra', url: '/kalyanKendra/' },
   { name: 'Kushals',       url: '/kushals/' },
@@ -9,6 +8,7 @@ const PROJECTS = [
   { name: 'Thomsun - Yamaha', url: '/yamaha/' },
   { name: 'Us-Polo',       url: '/usPolo/' },
   { name: 'V Bazaar',      url: '/vBazaar/' },
+  { name: 'Gravity',       url: '/gravity/' },
 ];
 
 const PALETTE = [

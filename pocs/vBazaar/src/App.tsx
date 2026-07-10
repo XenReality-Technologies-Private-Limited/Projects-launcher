@@ -15,7 +15,6 @@ import {
 } from './api';
 
 const XENREALITY_LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp';
-const SURECOUNT_LOGO  = 'https://d108xxen99ni2a.cloudfront.net/surecountai.png';
 const VBAZAAR_LOGO    = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar/V-Bazaar-logo.png';
 
 type Tab = 'dashboard' | 'analysis';
@@ -163,9 +162,6 @@ export default function App() {
           <div className="flex items-center px-5 shrink-0 xr-logo-block" style={{ background: '#2E3192' }}>
             <img src={XENREALITY_LOGO} alt="XenReality" className="h-7 w-auto object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
           </div>
-          <div className="flex items-center gap-2 px-4 border-r border-slate-200 shrink-0">
-            <img src={SURECOUNT_LOGO} alt="SureCount AI" style={{ height: 32, maxWidth: 80, objectFit: 'contain' }} />
-          </div>
           <div className="flex-1 flex items-center justify-center">
             <span className="font-bold text-sm text-slate-700">V-Bazaar Dashboard</span>
           </div>
@@ -184,11 +180,6 @@ export default function App() {
               <div className="flex items-center px-5 shrink-0 xr-logo-block" style={{ background: '#2E3192' }}>
                 <img src={XENREALITY_LOGO} alt="XenReality" className="h-7 w-auto object-contain"
                   style={{ filter: 'brightness(0) invert(1)' }} />
-              </div>
-
-              {/* SureCount logo */}
-              <div className="flex items-center px-2 sm:px-4 border-r border-slate-200 shrink-0">
-                <img src={SURECOUNT_LOGO} alt="SureCount AI" className="h-7 sm:h-12 print:h-8 print:max-w-[80px] w-auto object-contain" />
               </div>
 
               {/* Title — absolutely centred */}
