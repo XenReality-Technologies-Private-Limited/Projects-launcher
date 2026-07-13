@@ -95,12 +95,14 @@ export function renderDashboard(app, data, videos) {
         <div class="view-toggle" id="view-toggle">
           <button class="view-toggle-btn active" id="btn-poc">PoC</button>
           <button class="view-toggle-btn" id="btn-live">Live</button>
+          <button class="view-toggle-btn" id="btn-fb">Fresh-Bakes</button>
         </div>
         <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" />
       </div>
     </header>
 
     <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
+    <iframe id="fb-frame"   src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
@@ -493,41 +495,59 @@ export function renderDashboard(app, data, videos) {
 
   syncToFrame(0);
 
-  // ── PoC / Live toggle ────────────────────────────────────────────────────
+  // ── PoC / Live / Fresh-Bakes toggle ─────────────────────────────────────
   const pocBody    = document.getElementById('poc-body');
   const liveFrame  = document.getElementById('live-frame');
+  const fbFrame    = document.getElementById('fb-frame');
   const btnPoc     = document.getElementById('btn-poc');
   const btnLive    = document.getElementById('btn-live');
+  const btnFb      = document.getElementById('btn-fb');
   const dashHeader = document.querySelector('.dash-header');
   const headerTitle   = dashHeader.querySelector('.header-title');
   const headerXrBlock = dashHeader.querySelector('.header-xr-block');
 
+  function hideAllFrames() {
+    liveFrame.style.display = 'none';
+    fbFrame.style.display   = 'none';
+  }
+
+  function setHeaderOverlay(on) {
+    dashHeader.style.background    = on ? 'transparent' : '';
+    dashHeader.style.boxShadow     = on ? 'none'        : '';
+    dashHeader.style.pointerEvents = on ? 'none'        : '';
+    dashHeader.querySelector('.header-right').style.pointerEvents = on ? 'auto' : '';
+    headerTitle.style.visibility   = on ? 'hidden' : '';
+    headerXrBlock.style.visibility = on ? 'hidden' : '';
+  }
+
+  function clearToggle() {
+    [btnPoc, btnLive, btnFb].forEach(b => b.classList.remove('active'));
+  }
+
   btnLive.addEventListener('click', () => {
-    pocBody.style.display       = 'none';
-    if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = 'https://aws.xenreality.com/';
-    liveFrame.style.display     = 'block';
-    // Make header transparent — toggle stays in place, live site shows through
-    dashHeader.style.background = 'transparent';
-    dashHeader.style.boxShadow  = 'none';
-    dashHeader.style.pointerEvents = 'none';
-    dashHeader.querySelector('.header-right').style.pointerEvents = 'auto';
-    headerTitle.style.visibility   = 'hidden';
-    headerXrBlock.style.visibility = 'hidden';
-    btnLive.classList.add('active');
-    btnPoc.classList.remove('active');
     allVids.forEach(v => v.pause());
+    pocBody.style.display = 'none';
+    hideAllFrames();
+    if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = 'https://aws.xenreality.com/';
+    liveFrame.style.display = 'block';
+    setHeaderOverlay(true);
+    clearToggle(); btnLive.classList.add('active');
+  });
+
+  btnFb.addEventListener('click', () => {
+    allVids.forEach(v => v.pause());
+    pocBody.style.display = 'none';
+    hideAllFrames();
+    if (!fbFrame.src || fbFrame.src === location.href) fbFrame.src = 'https://arvind.xenreality.com/';
+    fbFrame.style.display = 'block';
+    setHeaderOverlay(true);
+    clearToggle(); btnFb.classList.add('active');
   });
 
   btnPoc.addEventListener('click', () => {
-    liveFrame.style.display     = 'none';
-    pocBody.style.display       = '';
-    dashHeader.style.background = '';
-    dashHeader.style.boxShadow  = '';
-    dashHeader.style.pointerEvents = '';
-    dashHeader.querySelector('.header-right').style.pointerEvents = '';
-    headerTitle.style.visibility   = '';
-    headerXrBlock.style.visibility = '';
-    btnPoc.classList.add('active');
-    btnLive.classList.remove('active');
+    hideAllFrames();
+    pocBody.style.display = '';
+    setHeaderOverlay(false);
+    clearToggle(); btnPoc.classList.add('active');
   });
 }
