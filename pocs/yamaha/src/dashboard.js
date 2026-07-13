@@ -496,15 +496,16 @@ export function renderDashboard(app, data, videos) {
   syncToFrame(0);
 
   // ── PoC / Live / Fresh-Bakes toggle ─────────────────────────────────────
-  const pocBody    = document.getElementById('poc-body');
-  const liveFrame  = document.getElementById('live-frame');
-  const fbFrame    = document.getElementById('fb-frame');
-  const btnPoc     = document.getElementById('btn-poc');
-  const btnLive    = document.getElementById('btn-live');
-  const btnFb      = document.getElementById('btn-fb');
-  const dashHeader = document.querySelector('.dash-header');
+  const pocBody      = document.getElementById('poc-body');
+  const liveFrame    = document.getElementById('live-frame');
+  const fbFrame      = document.getElementById('fb-frame');
+  const btnPoc       = document.getElementById('btn-poc');
+  const btnLive      = document.getElementById('btn-live');
+  const btnFb        = document.getElementById('btn-fb');
+  const dashHeader   = document.querySelector('.dash-header');
   const headerTitle   = dashHeader.querySelector('.header-title');
   const headerXrBlock = dashHeader.querySelector('.header-xr-block');
+  const customerLogo  = dashHeader.querySelector('.header-customer-logo');
 
   function hideAllFrames() {
     liveFrame.style.display = 'none';
@@ -531,6 +532,7 @@ export function renderDashboard(app, data, videos) {
     if (!liveFrame.src || liveFrame.src === location.href) liveFrame.src = 'https://aws.xenreality.com/';
     liveFrame.style.display = 'block';
     setHeaderOverlay(true);
+    if (customerLogo) customerLogo.style.visibility = '';
     clearToggle(); btnLive.classList.add('active');
   });
 
@@ -541,6 +543,7 @@ export function renderDashboard(app, data, videos) {
     if (!fbFrame.src || fbFrame.src === location.href) fbFrame.src = 'https://arvind.xenreality.com/';
     fbFrame.style.display = 'block';
     setHeaderOverlay(true);
+    if (customerLogo) customerLogo.style.visibility = 'hidden';
     clearToggle(); btnFb.classList.add('active');
   });
 
@@ -548,6 +551,7 @@ export function renderDashboard(app, data, videos) {
     hideAllFrames();
     pocBody.style.display = '';
     setHeaderOverlay(false);
+    if (customerLogo) customerLogo.style.visibility = '';
     clearToggle(); btnPoc.classList.add('active');
   });
 }
