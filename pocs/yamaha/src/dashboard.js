@@ -97,7 +97,7 @@ export function renderDashboard(app, data, videos) {
           <button class="view-toggle-btn" id="btn-live">Yamaha</button>
           <button class="view-toggle-btn" id="btn-fb">Fresh-Bakes</button>
         </div>
-        <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Yamaha/thomsun.png" alt="Thomsun" />
+        <span class="header-customer-logo" style="font-size:1.1rem;font-weight:700;letter-spacing:0.04em;color:#fff;">Thomsun</span>
       </div>
     </header>
 
