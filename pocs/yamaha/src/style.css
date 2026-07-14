@@ -61,7 +61,7 @@ body {
 .header-right {
   display: flex; align-items: center; padding-right: 16px; gap: 10px;
 }
-.header-customer-logo { height: 32px; object-fit: contain; }
+.header-customer-logo { height: 32px; object-fit: contain; border-radius: 4px; padding: 2px 6px; background: #fff; }
 
 .view-toggle {
   display: flex; background: #e2e8f0; border-radius: 8px;
