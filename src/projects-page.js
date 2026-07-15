@@ -8,6 +8,7 @@ const PROJECTS = [
   { name: 'Thomsun - Yamaha', url: '/yamaha/' },
   { name: 'Us-Polo',       url: '/usPolo/' },
   { name: 'V Bazaar',      url: '/vBazaar/' },
+  { name: 'Hilite Mall',   url: '/hiliteMall/' },
   { name: 'Gravity',       url: '/gravity/' },
 ];
 

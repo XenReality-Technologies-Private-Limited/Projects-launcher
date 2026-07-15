@@ -92,6 +92,12 @@ RUN cd pocs/yamaha && npm install --prefer-offline
 COPY pocs/yamaha/ ./pocs/yamaha/
 RUN cd pocs/yamaha && npm run build
 
+# ── hiliteMall ──
+COPY pocs/hiliteMall/package*.json ./pocs/hiliteMall/
+RUN cd pocs/hiliteMall && npm install --prefer-offline
+COPY pocs/hiliteMall/ ./pocs/hiliteMall/
+RUN cd pocs/hiliteMall && npm run build
+
 # ── Assemble _deploy/ ──
 RUN mkdir -p _deploy && \
     cp -r dist/.           _deploy/           && \
@@ -106,7 +112,8 @@ RUN mkdir -p _deploy && \
     cp -r pocs/usPolo/dist       _deploy/usPolo       && \
     cp -r pocs/vBazaar/dist      _deploy/vBazaar && \
     cp -r pocs/vBazaarLive/dist  _deploy/vBazaarLive && \
-    cp -r pocs/yamaha/dist       _deploy/yamaha
+    cp -r pocs/yamaha/dist       _deploy/yamaha && \
+    cp -r pocs/hiliteMall/dist   _deploy/hiliteMall
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
 FROM nginx:1.29.4-alpine-slim
