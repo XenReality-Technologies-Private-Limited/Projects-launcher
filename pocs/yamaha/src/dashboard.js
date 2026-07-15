@@ -543,7 +543,7 @@ export function renderDashboard(app, data, videos) {
     if (!fbFrame.src || fbFrame.src === location.href) fbFrame.src = 'https://arvind.xenreality.com/';
     fbFrame.style.display = 'block';
     setHeaderOverlay(true);
-    if (customerLogo) customerLogo.style.visibility = 'hidden';
+    if (customerLogo) customerLogo.style.visibility = '';
     clearToggle(); btnFb.classList.add('active');
   });
 
