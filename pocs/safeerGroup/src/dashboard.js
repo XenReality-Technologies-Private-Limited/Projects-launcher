@@ -56,7 +56,7 @@ export async function initDashboard(appEl) {
 
   const camEvents = [data.cam1, data.cam2];
 
-  mainEl.innerHTML = CAMERAS.map((cam, i) => buildShell(cam, camEvents[i])).join('');
+  mainEl.innerHTML = CAMERAS.map(cam => buildShell(cam)).join('');
 
   CAMERAS.forEach((cam, i) => {
     const videoEl = appEl.querySelector(`#vid-cam${cam.id}`);
@@ -64,14 +64,7 @@ export async function initDashboard(appEl) {
   });
 }
 
-function buildShell(cam, events) {
-  const rows = events.map((ev, i) => `
-    <tr data-idx="${i}" data-secs="${ev.time_seconds}" class="row-future">
-      <td>${i + 1}</td>
-      <td class="txn-time">${ev.time}</td>
-      <td class="${ev.scanned ? 'txn-ok' : 'txn-alert'}">${ev.scanned ? '✓ Scanned' : '✗ Not Scanned'}</td>
-    </tr>`).join('');
-
+function buildShell(cam) {
   return `
     <section class="kpi-card">
       <div class="kpi-header">
@@ -105,15 +98,29 @@ function buildShell(cam, events) {
           </div>
           <div class="kpi-divider"></div>
           <div class="kpi-metric-label">Events</div>
-          <div class="txn-table-wrap">
+          <div class="txn-table-wrap" id="cam${cam.id}-wrap">
             <table class="txn-table">
               <thead><tr><th>#</th><th>Time</th><th>Status</th></tr></thead>
-              <tbody id="cam${cam.id}-tbody">${rows}</tbody>
+              <tbody id="cam${cam.id}-tbody"></tbody>
             </table>
           </div>
         </div>
       </div>
     </section>`;
+}
+
+function makeRow(ev, idx, videoEl) {
+  const tr = document.createElement('tr');
+  tr.dataset.secs = ev.time_seconds;
+  tr.innerHTML = `
+    <td>${idx + 1}</td>
+    <td class="txn-time">${ev.time}</td>
+    <td class="${ev.scanned ? 'txn-ok' : 'txn-alert'}">${ev.scanned ? '✓ Scanned' : '✗ Not Scanned'}</td>`;
+  tr.addEventListener('click', () => {
+    videoEl.currentTime = ev.time_seconds;
+    videoEl.play().catch(() => {});
+  });
+  return tr;
 }
 
 function wireCamera(camId, videoEl, events, appEl) {
@@ -123,16 +130,31 @@ function wireCamera(camId, videoEl, events, appEl) {
   const scannedEl   = appEl.querySelector(`#cam${camId}-scanned`);
   const unscannedEl = appEl.querySelector(`#cam${camId}-unscanned`);
   const tbody       = appEl.querySelector(`#cam${camId}-tbody`);
-  const rows        = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
+  const tableWrap   = appEl.querySelector(`#cam${camId}-wrap`);
+
+  // Fix scroll-trap: pass wheel through to page when table is at boundary or has no overflow
+  tableWrap.addEventListener('wheel', (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = tableWrap;
+    const noScroll = scrollHeight <= clientHeight;
+    const atTop    = scrollTop <= 0 && e.deltaY < 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1 && e.deltaY > 0;
+    if (noScroll || atTop || atBottom) {
+      e.preventDefault();
+      window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+    }
+  }, { passive: false });
+
+  let shownCount = 0;
 
   videoEl.addEventListener('timeupdate', () => {
     const t = videoEl.currentTime;
-    let sc = 0, un = 0, activeIdx = -1;
+    let sc = 0, un = 0;
+    let visibleCount = 0;
 
-    events.forEach((ev, i) => {
+    events.forEach(ev => {
       if (ev.time_seconds <= t) {
+        visibleCount++;
         if (ev.scanned) sc++; else un++;
-        activeIdx = i;
       }
     });
 
@@ -140,21 +162,28 @@ function wireCamera(camId, videoEl, events, appEl) {
     scannedEl.textContent   = sc;
     unscannedEl.textContent = un;
 
-    rows.forEach((row, i) => {
-      const secs = Number(row.dataset.secs);
-      row.classList.toggle('row-active', i === activeIdx);
-      row.classList.toggle('row-future', secs > t);
-    });
+    if (visibleCount === shownCount) return;
 
-    if (activeIdx >= 0 && rows[activeIdx]) {
-      rows[activeIdx].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (visibleCount < shownCount) {
+      // Seeking backward — rebuild from scratch
+      tbody.innerHTML = '';
+      for (let i = 0; i < visibleCount; i++) {
+        tbody.appendChild(makeRow(events[i], i, videoEl));
+      }
+    } else {
+      // New events — append only the new ones
+      for (let i = shownCount; i < visibleCount; i++) {
+        tbody.appendChild(makeRow(events[i], i, videoEl));
+      }
     }
-  });
 
-  rows.forEach(row => {
-    row.addEventListener('click', () => {
-      videoEl.currentTime = Number(row.dataset.secs);
-      videoEl.play().catch(() => {});
-    });
+    shownCount = visibleCount;
+
+    // Highlight the last row and scroll it into view
+    const allRows = tbody.querySelectorAll('tr');
+    allRows.forEach((r, i) => r.classList.toggle('row-active', i === allRows.length - 1));
+    if (allRows.length > 0) {
+      allRows[allRows.length - 1].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   });
 }
