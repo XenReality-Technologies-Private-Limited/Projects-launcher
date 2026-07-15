@@ -91,10 +91,18 @@ function buildShell(cam, events) {
           </video>
         </div>
         <div class="kpi-right">
-          <div class="kpi-metric-label">Scanned</div>
-          <div class="kpi-metric-value" id="cam${cam.id}-scanned" style="color:#10b981">0</div>
-          <div class="kpi-metric-label">Not Scanned</div>
-          <div class="kpi-metric-value" id="cam${cam.id}-unscanned" style="color:#ef4444">0</div>
+          <div class="kpi-metric-label">Total Items</div>
+          <div class="kpi-metric-value" id="cam${cam.id}-total">0</div>
+          <div class="kpi-metrics-row">
+            <div>
+              <div class="kpi-metric-label">Scanned</div>
+              <div class="kpi-metric-value" id="cam${cam.id}-scanned" style="color:#10b981">0</div>
+            </div>
+            <div>
+              <div class="kpi-metric-label">Not Scanned</div>
+              <div class="kpi-metric-value" id="cam${cam.id}-unscanned" style="color:#ef4444">0</div>
+            </div>
+          </div>
           <div class="kpi-divider"></div>
           <div class="kpi-metric-label">Events</div>
           <div class="txn-table-wrap">
@@ -111,6 +119,7 @@ function buildShell(cam, events) {
 function wireCamera(camId, videoEl, events, appEl) {
   if (!videoEl) return;
 
+  const totalEl     = appEl.querySelector(`#cam${camId}-total`);
   const scannedEl   = appEl.querySelector(`#cam${camId}-scanned`);
   const unscannedEl = appEl.querySelector(`#cam${camId}-unscanned`);
   const tbody       = appEl.querySelector(`#cam${camId}-tbody`);
@@ -127,6 +136,7 @@ function wireCamera(camId, videoEl, events, appEl) {
       }
     });
 
+    totalEl.textContent     = sc + un;
     scannedEl.textContent   = sc;
     unscannedEl.textContent = un;
 

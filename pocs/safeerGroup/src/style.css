@@ -148,6 +148,9 @@ body {
   font-size: 2.2rem; font-weight: 600;
   color: var(--text-primary); line-height: 1.1;
 }
+.kpi-metrics-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
 .kpi-divider { height: 1px; background: var(--card-border); margin: 2px 0; }
 
 /* ── Transaction log table ── */
