@@ -3,8 +3,8 @@ import { loadAllData } from './db.js';
 const CF = 'https://d2uimaqek2eby3.cloudfront.net/Safeer';
 
 const CAMERAS = [
-  { id: 1, label: 'CAM-01', title: 'Self-Checkout Monitor · Camera 1', video: `${CF}/merged_1%20(1).mp4` },
-  { id: 2, label: 'CAM-02', title: 'Self-Checkout Monitor · Camera 2', video: `${CF}/merged_2%20(1).mp4` },
+  { id: 1, label: 'CAM-01', title: 'Self-Checkout Monitor · Camera 1', video: `${CF}/merged_1%20%281%29.mp4` },
+  { id: 2, label: 'CAM-02', title: 'Self-Checkout Monitor · Camera 2', video: `${CF}/merged_2%20%281%29.mp4` },
 ];
 
 const SCAN_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5v4M3 5h4M21 5h-4M21 5v4M3 19v-4M3 19h4M21 19h-4M21 19v-4M8 12h8"/></svg>`;
