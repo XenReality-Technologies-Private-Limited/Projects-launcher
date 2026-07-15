@@ -117,7 +117,7 @@ function makeRow(ev, idx, videoEl) {
     <td class="txn-time">${ev.time}</td>
     <td class="${ev.scanned ? 'txn-ok' : 'txn-alert'}">${ev.scanned ? '✓ Scanned' : '✗ Not Scanned'}</td>`;
   tr.addEventListener('click', () => {
-    videoEl.currentTime = ev.time_seconds;
+    videoEl.currentTime = Math.max(0, ev.time_seconds - 3);
     videoEl.play().catch(() => {});
   });
   return tr;
