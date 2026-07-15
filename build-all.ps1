@@ -53,7 +53,8 @@ Build-PoC (Join-Path $pocs 'technoSport')  'technoSport'
 Build-PoC (Join-Path $pocs 'usPolo')       'usPolo'
 Build-PoC (Join-Path $pocs 'vBazaar')      'vBazaar'
 Build-PoC (Join-Path $pocs 'yamaha')       'yamaha'
-Build-PoC (Join-Path $pocs 'hiliteMall')  'hiliteMall'
+Build-PoC (Join-Path $pocs 'hiliteMall')    'hiliteMall'
+Build-PoC (Join-Path $pocs 'safeerGroup')  'safeerGroup'
 
 # instructions (static HTML, no build step)
 Write-Host "Copying instructions (static)..." -ForegroundColor Cyan

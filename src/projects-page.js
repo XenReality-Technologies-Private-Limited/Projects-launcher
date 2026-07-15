@@ -9,6 +9,7 @@ const PROJECTS = [
   { name: 'Us-Polo',       url: '/usPolo/' },
   { name: 'V Bazaar',      url: '/vBazaar/' },
   { name: 'Hilite Mall',   url: '/hiliteMall/' },
+  { name: 'Safeer Group',       url: '/safeerGroup/' },
   { name: 'Instruction Manual', url: '/instructions/' },
   { name: 'Gravity',       url: '/gravity/' },
 ];

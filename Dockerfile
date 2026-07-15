@@ -98,6 +98,12 @@ RUN cd pocs/hiliteMall && npm install --prefer-offline
 COPY pocs/hiliteMall/ ./pocs/hiliteMall/
 RUN cd pocs/hiliteMall && npm run build
 
+# ── safeerGroup ──
+COPY pocs/safeerGroup/package*.json ./pocs/safeerGroup/
+RUN cd pocs/safeerGroup && npm install --prefer-offline
+COPY pocs/safeerGroup/ ./pocs/safeerGroup/
+RUN cd pocs/safeerGroup && npm run build
+
 # ── instructions (static HTML, no build step) ──
 COPY pocs/instructions/ ./pocs/instructions/
 
@@ -117,6 +123,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/vBazaarLive/dist  _deploy/vBazaarLive && \
     cp -r pocs/yamaha/dist       _deploy/yamaha && \
     cp -r pocs/hiliteMall/dist   _deploy/hiliteMall && \
+    cp -r pocs/safeerGroup/dist  _deploy/safeerGroup && \
     cp -r pocs/instructions      _deploy/instructions
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
