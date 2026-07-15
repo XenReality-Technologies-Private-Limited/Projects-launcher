@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NVR &amp; Tech Requirements · XenReality</title>
+<link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<script>
+(function(){var a=localStorage.getItem('pocketbase_auth');if(!a){window.location.replace('/instructions/login.html');return;}try{if(!JSON.parse(a).token){window.location.replace('/instructions/login.html');}}catch(e){window.location.replace('/instructions/login.html');}})();
+</script>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<header class="nav-wrap">
+  <nav class="nav-pill">
+    <a class="brand" href="index.html">
+      <img src="images/xenreality-logo.png" alt="XenReality" class="brand-logo">
+      <span class="brand-name">XenReality</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html#about" class="nav-link">Product</a>
+      <a href="index.html#choose" class="nav-link">Setup</a>
+      <a href="requirements.html" class="nav-link active">Requirements</a>
+      <a href="index.html#support" class="nav-link">Support</a>
+    </div>
+    <a href="index.html#choose" class="btn btn-dark" style="text-decoration:none">Start Setup</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════ PAGE HERO ══════════════════ -->
+  <section class="hero hero-compact">
+    <span class="badge-chip"><span class="badge-new">CHECKLIST</span> Read this before the first visit</span>
+    <h1>NVR &amp; <span class="accent">Tech Requirements</span></h1>
+    <p class="hero-sub">Everything the store must have ready before we install the Pi:
+       the NVR, the cameras, the network and the room. Retail and F&amp;B share the same list.</p>
+  </section>
+
+  <!-- ══════════════════ WHAT IS AN NVR ══════════════════ -->
+  <section class="section" id="nvr">
+    <div class="card about-card">
+      <div class="about-art">
+        <svg viewBox="0 0 220 150" class="art">
+          <!-- NVR box with cameras -->
+          <rect x="30" y="88" width="160" height="44" rx="10" fill="#2b3648"/>
+          <rect x="30" y="88" width="160" height="12" rx="6" fill="#3d4a61"/>
+          <circle cx="52" cy="114" r="4" fill="#34d399"/>
+          <circle cx="66" cy="114" r="4" fill="#fbbf24"/>
+          <rect x="130" y="106" width="20" height="16" rx="3" fill="#111827"/>
+          <rect x="156" y="106" width="20" height="16" rx="3" fill="#111827"/>
+          <text x="52" y="102" font-size="8" fill="#9aa2ae" font-family="sans-serif" font-weight="700">NVR</text>
+          <!-- cameras -->
+          <g>
+            <circle cx="45" cy="30" r="16" fill="#dfe3e9" stroke="#c2c8d1"/>
+            <circle cx="45" cy="30" r="8" fill="#2b3648"/>
+            <circle cx="47" cy="28" r="2.5" fill="#7dd3fc"/>
+          </g>
+          <g>
+            <rect x="140" y="18" width="40" height="18" rx="9" fill="#dfe3e9" stroke="#c2c8d1"/>
+            <circle cx="176" cy="27" r="6" fill="#2b3648"/>
+          </g>
+          <path d="M50 48 C60 70 80 82 96 88" fill="none" stroke="#94a8c0" stroke-width="3" stroke-dasharray="5 5"/>
+          <path d="M162 38 C158 58 150 74 140 86" fill="none" stroke="#94a8c0" stroke-width="3" stroke-dasharray="5 5"/>
+        </svg>
+      </div>
+      <div class="about-text">
+        <h2>What is an NVR?</h2>
+        <p>An <strong>NVR (Network Video Recorder)</strong> is the <strong>brain of the camera system</strong>:
+           the one box that collects, stores and plays back the video from every camera in the store.
+           Our Pi connects to the NVR to read the video, so the NVR has to be set up right before we install.</p>
+        <p>Dome and bullet cameras plug into the network, the NVR records them all, and XenReality's Pi
+           reads from the NVR. One brain, many eyes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ TYPES OF NVR ══════════════════ -->
+  <section class="section" id="nvr-types">
+    <h2 class="section-title">Types of NVR</h2>
+    <p class="section-sub">Stores can have different recorder types. Here's how to recognise each one, and what it means for us.</p>
+    <div class="type-grid">
+      <div class="card type-card">
+        <h3>Standalone NVR</h3>
+        <p>A dedicated recorder box for <strong>IP cameras</strong>. The most common setup and the one we prefer.
+           Cameras and NVR talk over the network.</p>
+        <span class="type-tag good">Works great</span>
+      </div>
+      <div class="card type-card">
+        <h3>DVR</h3>
+        <p>An older recorder for <strong>analog cameras</strong> (coax cables instead of network cables).
+           No ONVIF, so we usually can't read from it directly.</p>
+        <span class="type-tag warn">Needs checking</span>
+      </div>
+      <div class="card type-card">
+        <h3>Hybrid (XVR)</h3>
+        <p>A recorder that accepts <strong>both analog and IP cameras</strong>. Fine for us as long as
+           the cameras we need are IP and ONVIF is enabled.</p>
+        <span class="type-tag warn">Needs checking</span>
+      </div>
+      <div class="card type-card">
+        <h3>PC-based VMS</h3>
+        <p>Recording software running on a <strong>computer or server</strong> instead of a dedicated box.
+           Works if it exposes ONVIF/RTSP streams on the local network.</p>
+        <span class="type-tag warn">Needs checking</span>
+      </div>
+    </div>
+    <div class="callout">
+      <strong>Whatever the type:</strong> it must be ONVIF compatible, sit on the same Local Area Network as our Pi,
+      and we need a username and password to access it.
+    </div>
+  </section>
+
+  <!-- ══════════════════ REQUIREMENTS ══════════════════ -->
+  <section class="section" id="requirements">
+    <h2 class="section-title">Tech Requirements: Retail &amp; F&amp;B</h2>
+    <p class="section-sub">The client must meet every item below before installation day.<br>
+       <strong>Tick each item as you verify it.</strong> The setup unlocks when the whole checklist is done.</p>
+    <div class="callout callout-warn">
+      <strong>If the client fails to meet any requirement:</strong> stop and inform the XenReality Point of Contact,
+      the Project Owner and the client's technical team immediately. Only proceed to setup when every item passes.
+    </div>
+
+    <!-- Cameras -->
+    <div class="card req-card">
+      <h3>Cameras</h3>
+      <ul class="req-check">
+        <li><label><input type="checkbox" class="req-box"><span>IP addresses for every camera</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>ONVIF compatible</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Minimum 2 megapixels; preferred 4 to 8 megapixels</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Dome or bullet type preferred</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>On the Local Area Network (IP)</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Username &amp; password for login, per camera</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>All the brand's AI features turned OFF: no bounding boxes, motion capture, person detection or face detection. All must be shut down</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>We are allowed to change camera positions when needed, for optimal coverage and no blind spots</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>A floor plan of the Local Area Network with camera positions is provided</span></label></li>
+      </ul>
+      <h4 class="brand-title">Supported camera brands</h4>
+      <div class="brand-grid">
+        <span class="brand-tile"><img src="images/brands/cpplus.png" alt="CP Plus"></span>
+        <span class="brand-tile"><img src="images/brands/hikvision.svg" alt="Hikvision"></span>
+        <span class="brand-tile"><img src="images/brands/dahua.svg" alt="Dahua"></span>
+        <span class="brand-tile brand-tile-text" style="color:#0072bc">UNIVISION</span>
+        <span class="brand-tile"><img src="images/brands/bosch.svg" alt="Bosch"></span>
+        <span class="brand-tile"><img src="images/brands/sony.svg" alt="Sony"></span>
+        <span class="brand-tile"><img src="images/brands/axis.svg" alt="Axis Communications"></span>
+        <span class="brand-tile"><img src="images/brands/hanwha-vision.svg" alt="Hanwha Vision"></span>
+        <span class="brand-tile"><img src="images/brands/intelbras.svg" alt="Intelbras"></span>
+        <span class="brand-tile"><img src="images/brands/uniview.png" alt="Uniview Technologies"></span>
+      </div>
+    </div>
+
+    <!-- NVR -->
+    <div class="card req-card">
+      <h3>NVR</h3>
+      <ul class="req-check">
+        <li><label><input type="checkbox" class="req-box"><span>ONVIF compatible: this is a MUST</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Preferred: same brand as the cameras</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>On the same Local Area Network</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Username and password to access it</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>All the brand's AI features turned OFF</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Backup and video storage configured beforehand</span></label></li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>No NVR access?</strong> If the client cannot give us access to the NVR,
+        they must instead provide <strong>15&ndash;20 hours of traffic footage</strong> from the store or café.
+      </div>
+    </div>
+
+    <!-- Pi -->
+    <div class="card req-card">
+      <h3>Computer / Pi &mdash; Raspberry Pi 5</h3>
+      <div class="table-wrap">
+        <table class="spec-table">
+          <thead>
+            <tr><th>Model</th><th>Cameras (devices)</th><th>KPIs</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pi 5 &middot; 2GB RAM</td><td>3 devices</td><td>Basic KPIs</td></tr>
+            <tr><td>Pi 5 &middot; 4GB RAM</td><td>5 devices</td><td>Basic KPIs</td></tr>
+            <tr><td>Pi 5 &middot; 8GB RAM + AI HAT+2 <span class="opt">optional</span></td><td>10 devices</td><td>Basic KPIs</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted" style="margin-top:14px"><strong>Every Pi ships with:</strong></p>
+      <ul class="check-list">
+        <li>Fan for cooling</li>
+        <li>Official case</li>
+        <li>27W USB-C power supply</li>
+        <li>64GB SD card</li>
+      </ul>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="card req-card">
+      <h3>Infrastructure</h3>
+      <ul class="req-check">
+        <li><label><input type="checkbox" class="req-box"><span>Internet connectivity of at least 50 Mbps</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Power backup</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Ethernet port on the Local Area Network</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Network cable channels to run the Ethernet cable</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Secure storage room for the Pi</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Router access (username &amp; password), with a static IP for the cameras and the DVR/NVR</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Firewall (FORTINET): allow Local Area Network access and whitelist the MAC ID of our Pi 5</span></label></li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Admin access, not guest.</strong> Clients sometimes hand us a guest user.
+        A guest account cannot enable <strong>remote view</strong>, so they must provide admin access only.
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">© XenReality · Pi 5 Setup Guide</footer>
+</main>
+
+<!-- sticky checklist progress bar -->
+<div class="req-bar" id="reqBar">
+  <div class="req-bar-inner">
+    <div class="req-bar-status">
+      <span id="reqCount">0 of 22 checked</span>
+      <div class="req-bar-track"><div class="req-bar-fill" id="reqFill"></div></div>
+    </div>
+    <a href="index.html#choose" class="btn btn-success btn-lg req-continue disabled" id="btnContinue" aria-disabled="true">Continue to Setup</a>
+  </div>
+</div>
+
+<script src="js/requirements.js"></script>
+</body>
+</html>

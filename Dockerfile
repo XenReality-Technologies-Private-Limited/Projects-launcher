@@ -98,6 +98,9 @@ RUN cd pocs/hiliteMall && npm install --prefer-offline
 COPY pocs/hiliteMall/ ./pocs/hiliteMall/
 RUN cd pocs/hiliteMall && npm run build
 
+# ── instructions (static HTML, no build step) ──
+COPY pocs/instructions/ ./pocs/instructions/
+
 # ── Assemble _deploy/ ──
 RUN mkdir -p _deploy && \
     cp -r dist/.           _deploy/           && \
@@ -113,7 +116,8 @@ RUN mkdir -p _deploy && \
     cp -r pocs/vBazaar/dist      _deploy/vBazaar && \
     cp -r pocs/vBazaarLive/dist  _deploy/vBazaarLive && \
     cp -r pocs/yamaha/dist       _deploy/yamaha && \
-    cp -r pocs/hiliteMall/dist   _deploy/hiliteMall
+    cp -r pocs/hiliteMall/dist   _deploy/hiliteMall && \
+    cp -r pocs/instructions      _deploy/instructions
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
 FROM nginx:1.29.4-alpine-slim

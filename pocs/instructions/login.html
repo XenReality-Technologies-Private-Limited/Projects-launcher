@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instruction Manual – Sign In</title>
+<link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Open Sans', system-ui, sans-serif;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.08);
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo { height: 44px; object-fit: contain; margin-bottom: 8px; }
+  h1 { font-size: 1.2rem; font-weight: 600; color: #0f172a; }
+  p.sub { font-size: .85rem; color: #64748b; margin-bottom: 16px; }
+  form { width: 100%; display: flex; flex-direction: column; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  label { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #64748b; }
+  input {
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    font-size: .9rem;
+    font-family: inherit;
+    color: #0f172a;
+    background: #f1f5f9;
+    outline: none;
+  }
+  .error { font-size: .82rem; color: #ef4444; text-align: center; display: none; }
+  button[type=submit] {
+    width: 100%;
+    padding: 11px;
+    background: #1e40af;
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: .95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  button[type=submit]:disabled { opacity: .65; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp" alt="XenReality" class="logo" />
+  <h1>Instruction Manual</h1>
+  <p class="sub">Sign in to view the setup guide</p>
+  <form id="form" novalidate>
+    <div class="field">
+      <label for="identity">Username or Email</label>
+      <input id="identity" type="text" autocomplete="username" />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" />
+    </div>
+    <p class="error" id="err"></p>
+    <button type="submit" id="btn">Sign in</button>
+  </form>
+</div>
+
+<script type="module">
+  import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
+
+  const pb  = new PocketBase('https://pb.xenreality.com');
+  const form = document.getElementById('form');
+  const err  = document.getElementById('err');
+  const btn  = document.getElementById('btn');
+
+  if (pb.authStore.isValid) {
+    window.location.replace('/instructions/');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const identity = document.getElementById('identity').value.trim();
+    const password = document.getElementById('password').value;
+    err.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    try {
+      await pb.collection('xr_employees').authWithPassword(identity, password);
+      history.replaceState(null, '', location.href);
+      window.location.replace('/instructions/');
+    } catch {
+      err.textContent = 'Invalid credentials. Please try again.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Sign in';
+    }
+  });
+</script>
+</body>
+</html>

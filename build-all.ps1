@@ -55,6 +55,11 @@ Build-PoC (Join-Path $pocs 'vBazaar')      'vBazaar'
 Build-PoC (Join-Path $pocs 'yamaha')       'yamaha'
 Build-PoC (Join-Path $pocs 'hiliteMall')  'hiliteMall'
 
+# instructions (static HTML, no build step)
+Write-Host "Copying instructions (static)..." -ForegroundColor Cyan
+Copy-Item (Join-Path $pocs 'instructions') (Join-Path $out 'instructions') -Recurse
+Write-Host "  Done -> _deploy/instructions" -ForegroundColor Green
+
 Write-Host ""
 Write-Host "All builds complete. Assets assembled in _deploy/" -ForegroundColor Yellow
 Write-Host "Next: docker build -t xentrack-dash . && docker-compose up -d" -ForegroundColor Yellow

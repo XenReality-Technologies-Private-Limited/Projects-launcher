@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XenReality Pi 5 Setup Guide</title>
+<link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<script>
+(function(){var a=localStorage.getItem('pocketbase_auth');if(!a){window.location.replace('/instructions/login.html');return;}try{if(!JSON.parse(a).token){window.location.replace('/instructions/login.html');}}catch(e){window.location.replace('/instructions/login.html');}})();
+</script>
+
+<!-- ══════════════════ Reusable SVG symbols ══════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- soft shadow -->
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0b2545" flood-opacity="0.12"/>
+    </filter>
+
+    <!-- ── Raspberry Pi 5 board (top view) ── -->
+    <symbol id="sym-pi" viewBox="0 0 220 150">
+      <rect x="6" y="6" width="208" height="138" rx="14" fill="#1e7d4f"/>
+      <rect x="6" y="6" width="208" height="138" rx="14" fill="url(#piSheen)"/>
+      <!-- GPIO header -->
+      <rect x="18" y="12" width="150" height="14" rx="3" fill="#111827"/>
+      <g fill="#fbbf24">
+        <circle cx="26" cy="19" r="1.8"/><circle cx="36" cy="19" r="1.8"/><circle cx="46" cy="19" r="1.8"/>
+        <circle cx="56" cy="19" r="1.8"/><circle cx="66" cy="19" r="1.8"/><circle cx="76" cy="19" r="1.8"/>
+        <circle cx="86" cy="19" r="1.8"/><circle cx="96" cy="19" r="1.8"/><circle cx="106" cy="19" r="1.8"/>
+        <circle cx="116" cy="19" r="1.8"/><circle cx="126" cy="19" r="1.8"/><circle cx="136" cy="19" r="1.8"/>
+        <circle cx="146" cy="19" r="1.8"/><circle cx="156" cy="19" r="1.8"/>
+      </g>
+      <!-- CPU -->
+      <rect x="78" y="58" width="40" height="40" rx="6" fill="#c7cdd6"/>
+      <rect x="84" y="64" width="28" height="28" rx="4" fill="#8b93a1"/>
+      <!-- RAM -->
+      <rect x="132" y="62" width="30" height="22" rx="4" fill="#111827"/>
+      <!-- USB-C power port (bottom-left edge) -->
+      <rect x="20" y="128" width="26" height="12" rx="5" fill="#d7dbe2" stroke="#8b93a1"/>
+      <!-- micro HDMI x2 -->
+      <rect x="58" y="130" width="20" height="10" rx="2" fill="#c7cdd6"/>
+      <rect x="88" y="130" width="20" height="10" rx="2" fill="#c7cdd6"/>
+      <!-- Ethernet port (right edge) -->
+      <rect x="186" y="20" width="28" height="30" rx="4" fill="#c7cdd6" stroke="#8b93a1"/>
+      <rect x="192" y="28" width="16" height="14" rx="2" fill="#4b5563"/>
+      <!-- USB stacks -->
+      <rect x="186" y="62" width="28" height="26" rx="4" fill="#c7cdd6"/>
+      <rect x="186" y="96" width="28" height="26" rx="4" fill="#c7cdd6"/>
+      <!-- raspberry logo dot -->
+      <circle cx="36" cy="52" r="9" fill="#cd2355"/>
+      <path d="M32 48c1.5-2 6.5-2 8 0-1 2-7 2-8 0z" fill="#1e7d4f"/>
+      <text x="36" y="76" font-size="9" fill="#eafff3" font-family="sans-serif" font-weight="700">Pi 5</text>
+    </symbol>
+    <linearGradient id="piSheen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- ── Case base (red) ── -->
+    <symbol id="sym-case-base" viewBox="0 0 220 90">
+      <path d="M14 18 h192 a10 10 0 0 1 10 10 v44 a10 10 0 0 1 -10 10 H14 A10 10 0 0 1 4 72 V28 a10 10 0 0 1 10-10z" fill="#cd2355"/>
+      <path d="M14 18 h192 a10 10 0 0 1 10 10 v10 H4 V28 a10 10 0 0 1 10-10z" fill="#e0447a" opacity="0.55"/>
+      <rect x="24" y="52" width="30" height="16" rx="3" fill="#8f1740"/>
+      <rect x="64" y="52" width="22" height="16" rx="3" fill="#8f1740"/>
+      <rect x="96" y="52" width="22" height="16" rx="3" fill="#8f1740"/>
+      <rect x="160" y="52" width="36" height="16" rx="3" fill="#8f1740"/>
+    </symbol>
+
+    <!-- ── Case white frame with fan ── -->
+    <symbol id="sym-case-frame" viewBox="0 0 220 70">
+      <path d="M14 10 h192 a10 10 0 0 1 10 10 v30 a10 10 0 0 1 -10 10 H14 A10 10 0 0 1 4 50 V20 a10 10 0 0 1 10-10z" fill="#f4f5f7" stroke="#d7dbe2"/>
+      <circle cx="110" cy="35" r="22" fill="#dfe3e9" stroke="#c2c8d1"/>
+      <g fill="#9aa2ae">
+        <path d="M110 35 L110 16 A19 19 0 0 1 122 22 z"/>
+        <path d="M110 35 L126 45 A19 19 0 0 1 110 54 z"/>
+        <path d="M110 35 L94 45 A19 19 0 0 1 91 24 z"/>
+      </g>
+      <circle cx="110" cy="35" r="5" fill="#6b7280"/>
+    </symbol>
+
+    <!-- ── Case lid (white) ── -->
+    <symbol id="sym-case-lid" viewBox="0 0 220 40">
+      <rect x="4" y="6" width="212" height="28" rx="12" fill="#ffffff" stroke="#d7dbe2"/>
+      <circle cx="182" cy="20" r="7" fill="#cd2355" opacity="0.9"/>
+    </symbol>
+
+    <!-- ── Assembled case ── -->
+    <symbol id="sym-case-full" viewBox="0 0 220 110">
+      <rect x="8" y="14" width="204" height="52" rx="14" fill="#ffffff" stroke="#d7dbe2"/>
+      <path d="M18 62 h184 a10 10 0 0 1 10 10 v14 a10 10 0 0 1 -10 10 H18 A10 10 0 0 1 8 86 V72 a10 10 0 0 1 10-10z" fill="#cd2355"/>
+      <circle cx="186" cy="40" r="8" fill="#cd2355" opacity="0.9"/>
+      <!-- power button -->
+      <rect x="26" y="30" width="22" height="12" rx="6" fill="#eceff3" stroke="#c2c8d1"/>
+      <circle cx="37" cy="36" r="3.4" fill="none" stroke="#6b7280" stroke-width="1.6"/>
+      <line x1="37" y1="31.6" x2="37" y2="36" stroke="#6b7280" stroke-width="1.6"/>
+      <!-- side ports on red base -->
+      <rect x="30" y="72" width="26" height="14" rx="3" fill="#8f1740"/>
+      <rect x="66" y="72" width="20" height="14" rx="3" fill="#8f1740"/>
+      <rect x="150" y="70" width="30" height="18" rx="3" fill="#4b5563"/>
+      <rect x="156" y="75" width="18" height="9" rx="2" fill="#9aa2ae"/>
+    </symbol>
+
+    <!-- ── USB-C power adapter ── -->
+    <symbol id="sym-adapter" viewBox="0 0 150 130">
+      <rect x="30" y="8" width="80" height="72" rx="16" fill="#ffffff" stroke="#d7dbe2"/>
+      <rect x="30" y="8" width="80" height="72" rx="16" fill="url(#piSheen)"/>
+      <!-- plug prongs -->
+      <rect x="8" y="26" width="22" height="7" rx="3.5" fill="#9aa2ae"/>
+      <rect x="8" y="48" width="22" height="7" rx="3.5" fill="#9aa2ae"/>
+      <circle cx="70" cy="34" r="8" fill="#cd2355" opacity="0.9"/>
+      <text x="70" y="62" font-size="10" text-anchor="middle" fill="#6b7280" font-family="sans-serif" font-weight="600">27W</text>
+      <!-- cable -->
+      <path d="M70 80 C70 100 40 96 40 112 C40 122 60 122 74 118" fill="none" stroke="#c2c8d1" stroke-width="6" stroke-linecap="round"/>
+      <!-- USB-C connector -->
+      <rect x="72" y="110" width="34" height="14" rx="7" fill="#6b7280"/>
+      <rect x="102" y="113" width="14" height="8" rx="4" fill="#9aa2ae"/>
+    </symbol>
+
+    <!-- ── LAN cable ── -->
+    <symbol id="sym-cable" viewBox="0 0 160 110">
+      <path d="M22 88 C-6 66 26 30 62 40 C 96 50 120 18 142 34" fill="none" stroke="#94a8c0" stroke-width="9" stroke-linecap="round"/>
+      <path d="M22 88 C-6 66 26 30 62 40 C 96 50 120 18 142 34" fill="none" stroke="#c9d6e6" stroke-width="5" stroke-linecap="round"/>
+      <!-- RJ45 plugs -->
+      <g>
+        <rect x="10" y="84" width="24" height="18" rx="4" fill="#dbe4f0" stroke="#94a8c0"/>
+        <rect x="14" y="98" width="16" height="6" rx="2" fill="#94a8c0"/>
+      </g>
+      <g>
+        <rect x="136" y="24" width="22" height="18" rx="4" fill="#dbe4f0" stroke="#94a8c0"/>
+        <rect x="140" y="20" width="14" height="6" rx="2" fill="#94a8c0"/>
+      </g>
+    </symbol>
+
+    <!-- ── SD card ── -->
+    <symbol id="sym-sd" viewBox="0 0 80 100">
+      <path d="M18 10 h34 l16 16 v60 a8 8 0 0 1 -8 8 H18 a8 8 0 0 1 -8-8 V18 a8 8 0 0 1 8-8z" fill="#2b3648"/>
+      <rect x="18" y="16" width="8" height="14" rx="2" fill="#fbbf24"/>
+      <rect x="30" y="16" width="8" height="14" rx="2" fill="#fbbf24"/>
+      <rect x="42" y="16" width="8" height="14" rx="2" fill="#fbbf24"/>
+      <rect x="18" y="48" width="42" height="24" rx="4" fill="#f4f5f7"/>
+      <text x="39" y="64" font-size="9" text-anchor="middle" fill="#2b3648" font-family="sans-serif" font-weight="700">XenR</text>
+    </symbol>
+
+    <!-- ── Router ── -->
+    <symbol id="sym-router" viewBox="0 0 180 110">
+      <rect x="12" y="52" width="156" height="42" rx="12" fill="#2b3648"/>
+      <rect x="12" y="52" width="156" height="12" rx="6" fill="#3d4a61"/>
+      <!-- antennas -->
+      <rect x="34" y="14" width="6" height="42" rx="3" fill="#2b3648"/>
+      <rect x="140" y="14" width="6" height="42" rx="3" fill="#2b3648"/>
+      <!-- status LEDs -->
+      <circle cx="44" cy="76" r="4" fill="#34d399"/>
+      <circle cx="60" cy="76" r="4" fill="#34d399"/>
+      <circle cx="76" cy="76" r="4" fill="#fbbf24"/>
+      <!-- ethernet jacks -->
+      <rect x="108" y="68" width="18" height="16" rx="3" fill="#111827"/>
+      <rect x="132" y="68" width="18" height="16" rx="3" fill="#111827"/>
+    </symbol>
+
+    <!-- ── Browser window ── -->
+    <symbol id="sym-browser" viewBox="0 0 200 130">
+      <rect x="6" y="6" width="188" height="118" rx="14" fill="#ffffff" stroke="#d7dbe2"/>
+      <rect x="6" y="6" width="188" height="28" rx="14" fill="#f4f5f7"/>
+      <rect x="6" y="22" width="188" height="12" fill="#f4f5f7"/>
+      <circle cx="22" cy="20" r="4" fill="#f87171"/>
+      <circle cx="36" cy="20" r="4" fill="#fbbf24"/>
+      <circle cx="50" cy="20" r="4" fill="#34d399"/>
+      <rect x="64" y="13" width="118" height="14" rx="7" fill="#ffffff" stroke="#d7dbe2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<header class="nav-wrap">
+  <nav class="nav-pill">
+    <a class="brand" href="#top">
+      <img src="images/xenreality-logo.png" alt="XenReality" class="brand-logo">
+      <span class="brand-name">XenReality</span>
+    </a>
+    <div class="nav-links">
+      <a href="#about" class="nav-link">Product</a>
+      <a href="#choose" class="nav-link">Setup</a>
+      <a href="requirements.html" class="nav-link">Requirements</a>
+      <a href="#support" class="nav-link">Support</a>
+    </div>
+    <button class="btn btn-dark" data-action="start">Start Setup</button>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ══════════════════ HERO ══════════════════ -->
+  <section class="hero" id="home">
+    <span class="badge-chip"><span class="badge-new">NEW</span> Pi 5 guided installation</span>
+    <h1>Set up your <span class="accent">XenReality&nbsp;Pi</span></h1>
+    <p class="hero-sub">A simple, step-by-step guide to connect your Raspberry&nbsp;Pi&nbsp;5 with
+      just the power adapter and one LAN cable. Click <strong>Next</strong> after each step until you're done.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary btn-lg" data-action="start">Start Setup</button>
+      <button class="btn btn-ghost btn-lg" data-action="learn">What's a Raspberry Pi?</button>
+    </div>
+    <div class="chip-row">
+      <button class="chip" data-vertical="fnb">F&amp;B Setup</button>
+      <button class="chip" data-vertical="retail">Retail Setup</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════ WHAT IS A PI ══════════════════ -->
+  <section class="section" id="about">
+    <div class="card about-card">
+      <div class="about-art">
+        <svg viewBox="0 0 220 150" class="art" filter="url(#soft)"><use href="#sym-pi"/></svg>
+      </div>
+      <div class="about-text">
+        <h2>What is a Raspberry&nbsp;Pi?</h2>
+        <p>A Raspberry Pi is a <strong>tiny computer</strong> about the size of a credit card.
+           Inside your store it works as the <strong>on-site brain</strong> for XenReality: it connects to your
+           camera system, understands what's happening in the store, and sends insights to your dashboard.</p>
+        <p>It only needs two connections to do its job:</p>
+        <ul class="mini-list">
+          <li><strong>Power:</strong> the USB-C adapter that comes in the box.</li>
+          <li><strong>Network:</strong> one LAN cable to your router or switch.</li>
+        </ul>
+        <p class="muted">No screens, no keyboards, no extra wiring. If you can plug in a phone charger, you can set this up.</p>
+        <div class="about-cta">
+          <a href="requirements.html" class="btn btn-primary" style="text-decoration:none">Next: Requirements checklist →</a>
+          <p class="muted" style="margin-top:10px">Step 1 of the journey: make sure the store meets every requirement before touching the hardware.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ CHOOSE VERTICAL ══════════════════ -->
+  <section class="section" id="choose">
+    <h2 class="section-title">Choose your business type</h2>
+    <p class="section-sub">The Pi setup is exactly the same for both. The difference is what XenReality measures for you.<br>
+       First visit? Make sure the store meets the <a href="requirements.html" class="inline-link">NVR &amp; Tech Requirements</a> first.</p>
+    <div class="choose-grid">
+      <button class="card choice-card" data-vertical="fnb">
+        <div class="choice-icon">
+          <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+            <circle cx="20" cy="20" r="19" fill="#fdeee9"/>
+            <path d="M14 10 v9 M11 10 v5 a3 3 0 0 0 6 0 v-5 M14 19 v11" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M26 10 c-3 0 -4 4 -4 8 h4 v12 M26 10 v20" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <h3>F&amp;B</h3>
+        <p>For restaurants, cafés and food courts. XenReality tracks <strong>table turnover, queue times and service speed</strong> so you can serve more guests, faster.</p>
+        <span class="choice-go">Start F&amp;B setup →</span>
+      </button>
+      <button class="card choice-card" data-vertical="retail">
+        <div class="choice-icon">
+          <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+            <circle cx="20" cy="20" r="19" fill="#fdeee9"/>
+            <path d="M12 15 h16 l-1.6 15 a2 2 0 0 1 -2 1.8 H15.6 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#E8552F" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M15.5 18 v-4 a4.5 4.5 0 0 1 9 0 v4" fill="none" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>Retail</h3>
+        <p>For stores and showrooms. XenReality tracks <strong>footfall, conversion and zone dwell time</strong> so you know what shoppers do and what makes them buy.</p>
+        <span class="choice-go">Start Retail setup →</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ══════════════════ WIZARD ══════════════════ -->
+  <section class="wizard hidden" id="wizard">
+    <div class="wizard-shell card">
+      <div class="wizard-head">
+        <span class="vertical-tag" id="verticalTag">F&amp;B</span>
+        <span class="step-count" id="stepCount">Step 1 of 10</span>
+        <button class="btn btn-ghost btn-sm" data-action="exit">Exit</button>
+      </div>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
+      <!-- STEP 1 — kit -->
+      <div class="step" data-step="1">
+        <div class="step-art">
+          <svg viewBox="0 0 560 170" class="art">
+            <g transform="translate(0,10)"><svg width="200" height="140" viewBox="0 0 220 150"><use href="#sym-pi"/></svg></g>
+            <g transform="translate(212,30)"><svg width="120" height="110" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
+            <g transform="translate(330,36)"><svg width="130" height="96" viewBox="0 0 160 110"><use href="#sym-cable"/></svg></g>
+            <g transform="translate(462,34)"><svg width="56" height="80" viewBox="0 0 80 100"><use href="#sym-sd"/></svg></g>
+          </svg>
+        </div>
+        <h3>Check your kit</h3>
+        <p>Lay everything out on a clean table. You should have:</p>
+        <ul class="check-list">
+          <li>Raspberry Pi 5 board</li>
+          <li>Official Pi 5 case (red base, white frame with fan, white lid, heatsink &amp; feet in a small envelope)</li>
+          <li>27W USB-C power adapter (comes with the Pi)</li>
+          <li>LAN cable</li>
+          <li>SD card provided by XenReality</li>
+        </ul>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Something missing?</strong> Don't start the setup with a partial kit. Contact your XenReality point of contact and we'll ship the missing part.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 2 — case part A -->
+      <div class="step hidden" data-step="2">
+        <div class="step-art">
+          <svg viewBox="0 0 560 190" class="art">
+            <g transform="translate(160,4)"><svg width="240" height="86" viewBox="0 0 220 150" preserveAspectRatio="xMidYMin slice"><use href="#sym-pi"/></svg></g>
+            <path d="M280 96 v22" stroke="#E8552F" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+            <g transform="translate(160,124)"><svg width="240" height="64" viewBox="0 0 220 90"><use href="#sym-case-base"/></svg></g>
+            <defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+          </svg>
+        </div>
+        <h3>Case, part 1: seat the Pi in the red base</h3>
+        <ol class="num-list">
+          <li>Open the accessories envelope in the case box.</li>
+          <li>Peel the backing off the small <strong>heatsink</strong> and stick it onto the raised CPU (the silver square in the middle of the board). Press down firmly.</li>
+          <li>Stick the four <strong>silicone feet</strong> into the marked spots under the red base.</li>
+          <li>Lower the Pi into the <strong>red base</strong>. The board slides <em>under the plastic tab at the SD-card end</em>. Check it sits flat and every port lines up with its hole.</li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Board won't sit flat?</strong> It's probably not tucked under the tab at the SD-card end. Lift it out, slide the SD-card end in first at an angle, then lower the port side down.</p>
+            <p><strong>Ports don't line up?</strong> The board is in backwards. The USB/Ethernet ports must face the large openings.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 3 — case part B -->
+      <div class="step hidden" data-step="3">
+        <div class="step-art">
+          <svg viewBox="0 0 560 190" class="art">
+            <g transform="translate(160,6)"><svg width="240" height="44" viewBox="0 0 220 40"><use href="#sym-case-lid"/></svg></g>
+            <g transform="translate(160,62)"><svg width="240" height="66" viewBox="0 0 220 70"><use href="#sym-case-frame"/></svg></g>
+            <g transform="translate(160,136)"><svg width="240" height="52" viewBox="0 0 220 90" preserveAspectRatio="xMidYMin slice"><use href="#sym-case-base"/></svg></g>
+            <path d="M120 30 c-30 40 -30 80 0 130" stroke="#E8552F" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+          </svg>
+        </div>
+        <h3>Case, part 2: fan cable, frame &amp; lid</h3>
+        <ol class="num-list">
+          <li>Lay the <strong>white frame</strong> (the part with the fan) upside-down next to the base.</li>
+          <li>Plug the <strong>fan cable</strong> into the small 4-pin connector labeled <strong>FAN</strong> on the Pi. The connector only fits one way, so don't force it.</li>
+          <li>Clip the white frame onto the red base until it clicks all around.</li>
+          <li>Press the <strong>lid</strong> on top. Done! The Pi is now safe inside its case.</li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Fan cable won't go in?</strong> Flip the connector around: it's keyed to fit only one way. Make sure it's pushed fully in.</p>
+            <p><strong>Frame won't clip shut?</strong> The fan cable may be pinched, or the board isn't flat in the base. Re-check step 2 before pressing harder.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 4 — SD card -->
+      <div class="step hidden" data-step="4">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(150,30)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+            <g transform="translate(72,58)" class="anim-slide"><svg width="52" height="66" viewBox="0 0 80 100" ><use href="#sym-sd"/></svg></g>
+            <path d="M132 92 h26" stroke="#E8552F" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead2)"/>
+            <defs><marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+          </svg>
+        </div>
+        <h3>Insert the XenReality SD card</h3>
+        <p>The SD card is the Pi's memory. All the XenReality software is already on it.</p>
+        <ol class="num-list">
+          <li>Find the thin <strong>SD slot on the underside</strong> of the case, at the end with the small opening.</li>
+          <li>Slide the card in with the <strong>gold contacts facing up towards the board</strong>, until it stops.</li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Card won't go in?</strong> Don't force it. Flip it over: the card only seats fully in one orientation.</p>
+            <p><strong>No SD card in the kit?</strong> Stop here and contact XenReality. The Pi cannot run without our card.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 5 — power adapter -->
+      <div class="step hidden" data-step="5">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(80,20)"><svg width="140" height="128" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
+            <path d="M232 128 h64" stroke="#E8552F" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7" marker-end="url(#arrowhead3)"/>
+            <g transform="translate(310,28)"><svg width="240" height="120" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+            <circle cx="345" cy="128" r="10" fill="none" stroke="#E8552F" stroke-width="3" class="anim-pulse"/>
+            <defs><marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+          </svg>
+        </div>
+        <h3>Connect the power adapter</h3>
+        <ol class="num-list">
+          <li>Plug the adapter into a wall socket, but <strong>keep the wall switch OFF</strong> for now.</li>
+          <li>Plug the <strong>USB-C end</strong> into the Pi's power port: the small oval port on the side of the case (circled in the picture).</li>
+        </ol>
+        <p class="muted">Use only the 27W adapter that came with the Pi. Phone chargers may look identical but can't power it reliably.</p>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Can't find the power port?</strong> It's the small oval (USB-C) port, the same shape as a modern phone charging port, on the side edge of the case next to the two HDMI ports.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 6 — LAN cable -->
+      <div class="step hidden" data-step="6">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(30,30)"><svg width="220" height="110" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+            <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#94a8c0" stroke-width="8" stroke-linecap="round"/>
+            <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#c9d6e6" stroke-width="4" stroke-linecap="round"/>
+            <g transform="translate(352,40)"><svg width="180" height="110" viewBox="0 0 180 110"><use href="#sym-router"/></svg></g>
+          </svg>
+        </div>
+        <h3>Connect the LAN cable</h3>
+        <ol class="num-list">
+          <li>Click one end of the LAN cable into the <strong>Ethernet port</strong> on the Pi's case (the wide square port).</li>
+          <li>Click the other end into a free port on the store's <strong>router or network switch</strong>.</li>
+        </ol>
+        <p class="muted">This one cable is the Pi's entire connection to the world, so it must go to the same network as the store's cameras.</p>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>No free port on the router?</strong> Ask the store's IT contact for a free port on a switch. Do not unplug existing cables yourself.</p>
+            <p><strong>Cable too short?</strong> Any standard Ethernet cable works, but the Pi should sit somewhere safe, dry and ventilated, so prefer moving the Pi closer over stretching cables across walkways.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 7 — power on -->
+      <div class="step hidden" data-step="7">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(160,26)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+            <circle cx="360" cy="112" r="5" fill="#34d399" class="anim-blink"/>
+            <circle cx="374" cy="112" r="5" fill="#fbbf24" class="anim-blink d2"/>
+            <path d="M196 62 l-24 -18" stroke="#E8552F" stroke-width="3" stroke-linecap="round"/>
+            <text x="96" y="38" font-size="14" fill="#E8552F" font-family="sans-serif" font-weight="700">Power button</text>
+          </svg>
+        </div>
+        <h3>Power on and check the lights</h3>
+        <ol class="num-list">
+          <li>Turn the <strong>wall switch on</strong>.</li>
+          <li>Press the <strong>power button on the case</strong>.</li>
+          <li>Look at the <strong>Ethernet port</strong>: within a minute its little LEDs should light up and blink. Blinking = the Pi is talking to the network. </li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>No lights at all on the Pi?</strong> It's a power problem: check the wall switch, that the USB-C plug is fully in, and that the socket itself works (test with a phone charger).</p>
+            <p><strong>Pi is on but LAN LEDs never blink?</strong> It's a network problem: re-seat both ends of the LAN cable until they click, try a different router/switch port, and check the router itself is powered.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 8 — find IP -->
+      <div class="step hidden" data-step="8">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(60,44)"><svg width="180" height="110" viewBox="0 0 180 110"><use href="#sym-router"/></svg></g>
+            <g transform="translate(330,44)"><svg width="200" height="100" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+            <path d="M232 96 h84" stroke="#94a8c0" stroke-width="6" stroke-linecap="round"/>
+            <g>
+              <rect x="330" y="8" width="164" height="30" rx="15" fill="#0b2545"/>
+              <text x="412" y="28" font-size="14" text-anchor="middle" fill="#ffffff" font-family="monospace">192.168.1.45</text>
+            </g>
+            <path d="M420 38 v6" stroke="#0b2545" stroke-width="3"/>
+          </svg>
+        </div>
+        <h3>Find the Pi's IP address</h3>
+        <p>Every device on a network gets its own <strong>IP address</strong>. Think of the router as an apartment building, and the IP as the Pi's <strong>apartment number</strong>. You need it to reach the Pi in the next step. It looks like <code>192.168.1.45</code>.</p>
+        <p><strong>Three ways to find it:</strong></p>
+        <ol class="num-list">
+          <li><strong>Router admin page:</strong> open <code>192.168.1.1</code> (or <code>192.168.0.1</code>) in a browser and look at "Connected devices". The Pi shows up as <code>raspberrypi</code>.</li>
+          <li><strong>Scanner app:</strong> the free "Fing" app on your phone lists every device on the WiFi; look for "Raspberry Pi".</li>
+          <li><strong>Ask the store's IT contact:</strong> they can look it up instantly.</li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Pi doesn't appear in the list?</strong> Make sure your phone/laptop is on the <em>same network</em> the Pi is cabled to (not a guest WiFi). Then re-check step 7: if the LAN LEDs aren't blinking, the Pi isn't on the network yet.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 9 — NVR login -->
+      <div class="step hidden" data-step="9">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(160,16)"><svg width="250" height="160" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
+            <rect x="222" y="86" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
+            <rect x="222" y="108" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
+            <rect x="252" y="130" width="66" height="16" rx="8" fill="#E8552F"/>
+            <text x="285" y="142" font-size="10" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="600">Log in</text>
+            <text x="285" y="78" font-size="11" text-anchor="middle" fill="#6b7280" font-family="sans-serif">NVR camera system</text>
+          </svg>
+        </div>
+        <h3>Open the NVR and log in</h3>
+        <p>The <strong>NVR</strong> (Network Video Recorder) is the <strong>brain of the camera system</strong>: the one place that collects and stores every camera's video. Our software on the Pi connects to it.</p>
+        <ol class="num-list">
+          <li>On a laptop on the same network, type the Pi's <strong>IP address</strong> into the browser.</li>
+          <li>A login page appears asking for a <strong>username and password</strong>. This is like a door key: it proves you're allowed in. <strong>XenReality will provide your credentials.</strong></li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Only have a "guest" login?</strong> A guest account can watch cameras but <em>doesn't have permission to enable remote view</em>. This is not a bug, it's a permissions problem. Ask the client (or their IT contact) for an <strong>admin</strong> account before continuing.</p>
+            <p><strong>Login page won't open?</strong> Double-check the IP address (step 8) and that your laptop is on the same network as the Pi.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- STEP 10 — remote view -->
+      <div class="step hidden" data-step="10">
+        <div class="step-art">
+          <svg viewBox="0 0 560 180" class="art">
+            <g transform="translate(60,24)"><svg width="200" height="130" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
+            <rect x="80" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
+            <rect x="158" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
+            <circle cx="115" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
+            <circle cx="193" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
+            <path d="M270 92 h60" stroke="#E8552F" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7"/>
+            <!-- globe -->
+            <circle cx="390" cy="92" r="42" fill="#eaf2fb" stroke="#94a8c0" stroke-width="3"/>
+            <ellipse cx="390" cy="92" rx="18" ry="42" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+            <line x1="348" y1="92" x2="432" y2="92" stroke="#94a8c0" stroke-width="2.4"/>
+            <path d="M354 70 q36 14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+            <path d="M354 114 q36 -14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+            <circle cx="390" cy="92" r="42" fill="none" stroke="#34d399" stroke-width="3" class="anim-pulse"/>
+          </svg>
+        </div>
+        <h3>Turn on Remote View</h3>
+        <p>Remote view lets XenReality (and you) securely see the system from outside the store. That's what makes remote monitoring and support possible.</p>
+        <ol class="num-list">
+          <li>Log in with the <strong>admin</strong> account.</li>
+          <li>Enable <strong>Remote View</strong> in the settings.</li>
+          <li>Confirm the camera view loads.</li>
+        </ol>
+        <details class="trouble">
+          <summary>Having a problem?</summary>
+          <div class="trouble-body">
+            <p><strong>Works in-store but Remote View won't load?</strong> The store's <strong>firewall</strong> is probably blocking the Pi. A firewall is like a security guard at the network's door, checking all traffic. Sometimes it's strict enough to block us, and <strong>Fortinet (FortiGate)</strong> is the one we see most.</p>
+            <p><strong>The fix: whitelist the Pi</strong> (needs the client's IT admin).</p>
+            <ol>
+              <li>Log into the FortiGate admin console.</li>
+              <li><strong>Policy &amp; Objects → Addresses</strong> → add an address object with the Pi's IP (and whitelist the Pi's MAC ID).</li>
+              <li><strong>Policy &amp; Objects → Firewall Policy</strong> → allow traffic to/from that address (XenReality can confirm the exact ports).</li>
+              <li>Save, apply, and try Remote View again.</li>
+            </ol>
+          </div>
+        </details>
+      </div>
+
+      <!-- wizard footer -->
+      <div class="step-confirm">
+        <label>
+          <input type="checkbox" id="stepConfirm">
+          <span>I've completed this step correctly</span>
+        </label>
+      </div>
+      <div class="wizard-foot">
+        <button class="btn btn-ghost" id="btnBack">← Back</button>
+        <button class="btn btn-ghost" id="btnHelp">Need help?</button>
+        <button class="btn btn-success btn-lg" id="btnNext" disabled>Done, next →</button>
+        <button class="btn btn-success btn-lg hidden" id="btnDone" disabled>Setup Done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ SUPPORT ══════════════════ -->
+  <section class="section" id="support">
+    <div class="card support-card">
+      <h2>Stuck? We've got you.</h2>
+      <p>Every step has a <strong>"Having a problem?"</strong> button with fixes for the most common issues:
+         no lights, guest-only logins, firewalls blocking the Pi. If none of them help, contact your
+         XenReality point of contact and we'll take it from there.</p>
+    </div>
+  </section>
+
+  <footer class="footer">© XenReality · Pi 5 Setup Guide</footer>
+</main>
+
+<!-- ══════════════════ DONE MODAL ══════════════════ -->
+<div class="modal-overlay hidden" id="doneModal">
+  <div class="modal card">
+    <div class="modal-check">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="30" fill="#e7f8f0" stroke="#34d399" stroke-width="3"/>
+        <path d="M20 33 l8 8 l16 -18" fill="none" stroke="#10b981" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Setup complete!</h3>
+    <p>Great work! Your XenReality Pi is connected.<br>
+       <strong>We will notify you about the configuration.</strong><br>
+       <span class="muted">Inform your XenReality Project Owner/Engineer that the install is done.
+       Our team finishes the rest remotely. Nothing more to do on-site.</span></p>
+    <button class="btn btn-primary btn-lg" id="btnFinish">Finish</button>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
