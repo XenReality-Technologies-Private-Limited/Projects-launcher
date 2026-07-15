@@ -34,7 +34,7 @@ export function requireAuth(onAuthed) {
         </div>
         <p id="poc-login-error" style="margin:0;font-size:.82rem;color:#ef4444;text-align:center;display:none;"></p>
         <button id="poc-login-btn" type="submit"
-          style="width:100%;padding:11px;background:#1e293b;color:#fff;border:none;border-radius:9px;
+          style="width:100%;padding:11px;background:#1e40af;color:#fff;border:none;border-radius:9px;
                  font-size:.95rem;font-weight:600;font-family:inherit;cursor:pointer;margin-top:4px;">
           Sign in
         </button>
