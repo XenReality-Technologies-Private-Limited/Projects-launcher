@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -8,7 +8,7 @@ import { AreaChart, Area, BarChart, Bar, ComposedChart, Line, PieChart, Pie, XAx
 import { api, dateToUnix, fmtCount, minsToMmSs, SummaryData, TrendPoint, HourlyPoint } from './api';
 
 
-const XENREALITY_LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp';
+const XENREALITY_LOGO = '/xenlogo.png';
 const SURECOUNT_LOGO  = 'https://d108xxen99ni2a.cloudfront.net/surecountai.png';
 const SULTAN_LOGO     = 'https://d108xxen99ni2a.cloudfront.net/sultan_logo.png';
 

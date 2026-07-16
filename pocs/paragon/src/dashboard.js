@@ -1,4 +1,4 @@
-import { TimeSeriesGraph, MultiSeriesGraph } from './graph.js';
+﻿import { TimeSeriesGraph, MultiSeriesGraph } from './graph.js';
 
 const IST_TIME_OPTIONS = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
 function formatISTTime() { return new Date().toLocaleTimeString('en-IN', IST_TIME_OPTIONS); }
@@ -347,7 +347,7 @@ export async function renderDashboard(appEl, cameras, allData) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right"></div>

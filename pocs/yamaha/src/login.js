@@ -1,6 +1,6 @@
-import pb from './pb.js';
+﻿import pb from './pb.js';
 
-const LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp';
+const LOGO = '/xenlogo.png';
 const POC_NAME = 'Thomsun - Yamaha';
 const COLLECTION = 'xr_employees';
 

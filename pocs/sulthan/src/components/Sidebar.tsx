@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import {
   LayoutDashboard,
   Users,
@@ -56,7 +56,7 @@ export default function Sidebar() {
             {isCollapsed ? (
               <motion.img
                 key="logo-small"
-                src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp"
+                src="/xenlogo.png"
                 alt="XenReality"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -67,7 +67,7 @@ export default function Sidebar() {
             ) : (
               <motion.img
                 key="logo-full"
-                src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp"
+                src="/xenlogo.png"
                 alt="XenReality"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

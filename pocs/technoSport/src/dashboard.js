@@ -1,4 +1,4 @@
-import { computeFrame } from './analytics.js';
+﻿import { computeFrame } from './analytics.js';
 import { renderFunnel, updateFunnel } from './funnel.js';
 
 const SYNC_THRESHOLD = 0.3;
@@ -150,7 +150,7 @@ export function renderDashboard(app, data, urls) {
     <!-- HEADER -->
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">

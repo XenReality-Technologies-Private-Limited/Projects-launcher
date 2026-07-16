@@ -1,4 +1,4 @@
-import { requireAuth } from './login.js';
+﻿import { requireAuth } from './login.js';
 import { loadDB } from './db.js';
 import { renderDashboard } from './dashboard.js';
 import './style.css';
@@ -23,7 +23,7 @@ const app = document.getElementById('app');
 app.innerHTML = `
   <div class="loading">
     <div class="loading-logo">
-      <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp"
+      <img src="/xenlogo.png"
            style="height:36px;filter:brightness(0) invert(1)" alt="XenReality" />
     </div>
     <div class="loading-spinner"></div>

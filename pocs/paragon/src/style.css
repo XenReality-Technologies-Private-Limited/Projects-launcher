@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --page-bg: #ffffff;
   --card-bg: #ffffff;
   --card-border: #e5e7eb;
@@ -33,11 +33,10 @@ body {
 }
 .header-xr-block {
   display: flex; align-items: center; justify-content: center;
-  background: #003087;
   height: 100%; padding: 0 20px;
   flex-shrink: 0;
 }
-.header-xr-block img { height: 28px; filter: brightness(0) invert(1); }
+.header-xr-block img { height: 28px; }
 .header-title {
   flex: 1; text-align: center;
   font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: .01em;

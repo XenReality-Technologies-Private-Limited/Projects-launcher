@@ -1,4 +1,4 @@
-import { findRow } from './db.js';
+﻿import { findRow } from './db.js';
 
 const SYNC_THRESHOLD = 0.15;
 
@@ -88,7 +88,7 @@ export function renderDashboard(app, data, videos) {
   app.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">

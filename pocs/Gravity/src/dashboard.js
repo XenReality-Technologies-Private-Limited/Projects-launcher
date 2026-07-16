@@ -1,4 +1,4 @@
-import { MultiSeriesGraph, TimeSeriesGraph } from './graph.js';
+﻿import { MultiSeriesGraph, TimeSeriesGraph } from './graph.js';
 
 const CF = 'https://d2uimaqek2eby3.cloudfront.net/Gravity';
 
@@ -175,7 +175,7 @@ export function renderDashboard(appEl, allData) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right"></div>

@@ -1,4 +1,4 @@
-import { TimeSeriesGraph, MultiSeriesGraph } from './graph.js';
+﻿import { TimeSeriesGraph, MultiSeriesGraph } from './graph.js';
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -353,7 +353,7 @@ export async function renderDashboard(appEl, cameras, allData) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right"></div>

@@ -1,8 +1,8 @@
-import { useState, FormEvent } from 'react';
+﻿import { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const XENREALITY_LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp';
+const XENREALITY_LOGO = '/xenlogo.png';
 const SURECOUNT_LOGO  = 'https://d108xxen99ni2a.cloudfront.net/surecountai.png';
 const SULTAN_LOGO     = 'https://d108xxen99ni2a.cloudfront.net/sultan_logo.png';
 

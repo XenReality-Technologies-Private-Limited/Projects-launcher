@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -14,7 +14,7 @@ import {
   GenderBreakdown, BillingSummaryData, BillingHourlyPoint, FootfallHourlyPoint, DwellData,
 } from './api';
 
-const XENREALITY_LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp';
+const XENREALITY_LOGO = '/xenlogo.png';
 const VBAZAAR_LOGO    = 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar/V-Bazaar-logo.png';
 
 type Tab = 'dashboard' | 'analysis';

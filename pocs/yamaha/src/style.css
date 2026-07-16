@@ -1,4 +1,4 @@
-/* ── Reset & Base ──────────────────────────────────────────────────────────── */
+﻿/* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -51,7 +51,7 @@ body {
   height: 100%; padding: 0 20px;
   flex-shrink: 0;
 }
-.header-xr-block img { height: 28px; filter: brightness(0) invert(1); }
+.header-xr-block img { height: 28px; }
 
 .header-title {
   flex: 1; text-align: center;

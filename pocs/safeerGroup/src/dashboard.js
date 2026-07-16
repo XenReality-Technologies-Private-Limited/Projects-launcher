@@ -1,4 +1,4 @@
-import { loadAllData } from './db.js';
+﻿import { loadAllData } from './db.js';
 
 const CF = 'https://d2uimaqek2eby3.cloudfront.net/Safeer';
 
@@ -13,7 +13,7 @@ export async function initDashboard(appEl) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" />
+        <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
