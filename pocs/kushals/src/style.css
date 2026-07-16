@@ -80,12 +80,11 @@ body {
 
 .header-xr-block {
   display: flex; align-items: center; justify-content: center;
-  background: var(--brand-primary);
   height: 100%; padding: 0 20px;
   flex-shrink: 0;
 }
 
-.header-xr-block img { height: 28px; }
+.header-xr-block img { height: 36px; }
 
 .header-surecount-block {
   display: flex; align-items: center; justify-content: center;
