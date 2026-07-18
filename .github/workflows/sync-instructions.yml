@@ -1,0 +1,81 @@
+name: Sync Instruction Manual
+
+# Triggers:
+#   1. Every hour (fallback poll)
+#   2. Manual run via GitHub UI
+#   3. Immediate — when Instruction-Manual repo pushes to main it sends a
+#      repository_dispatch event of type "instruction-manual-updated"
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [instruction-manual-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout POC Website
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # INSTRUCTIONS_REPO_PAT must be a fine-grained PAT with read access
+      # to the Instruction-Manual repo, stored as a repo/org secret.
+      - name: Checkout Instruction Manual
+        uses: actions/checkout@v4
+        with:
+          repository: XenReality-Technologies-Private-Limited/Instruction-Manual
+          token: ${{ secrets.INSTRUCTIONS_REPO_PAT }}
+          path: _instruction-manual-src
+
+      - name: Sync files and inject PocketBase auth
+        run: |
+          python3 - <<'PYEOF'
+          import re
+
+          SRC = "_instruction-manual-src"
+          DST = "pocs/instructions"
+
+          # PocketBase auth guard — keeps pages behind login on xentrack.xenreality.com
+          AUTH = (
+            "<script>\n"
+            "(function(){var a=localStorage.getItem('pocketbase_auth');"
+            "if(!a){window.location.replace('/instructions/login.html');return;}"
+            "try{if(!JSON.parse(a).token){window.location.replace('/instructions/login.html');}}"
+            "catch(e){window.location.replace('/instructions/login.html');}})();\n"
+            "</script>"
+          )
+
+          import shutil
+          shutil.copy(f"{SRC}/css/style.css",      f"{DST}/css/style.css")
+          shutil.copy(f"{SRC}/js/app.js",           f"{DST}/js/app.js")
+          shutil.copy(f"{SRC}/js/requirements.js",  f"{DST}/js/requirements.js")
+          print("Copied css/style.css, js/app.js, js/requirements.js")
+
+          for fname in ["index.html", "requirements.html"]:
+              with open(f"{SRC}/{fname}") as f:
+                  html = f.read()
+              # Inject auth right after opening <body> tag
+              html = re.sub(r'(<body[^>]*>)', r'\1\n' + AUTH, html, count=1)
+              with open(f"{DST}/{fname}", "w") as f:
+                  f.write(html)
+              print(f"Updated {fname} with PocketBase auth")
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pocs/instructions/
+          if git diff --staged --quiet; then
+            echo "No changes — already up to date."
+          else
+            git commit -m "chore(instructions): sync from Instruction-Manual repo"
+            git push
+          fi
