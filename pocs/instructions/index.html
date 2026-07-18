@@ -4,8 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XenReality Pi 5 Setup Guide</title>
-<link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp">
-<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="images/xenreality-logo.png">
+<link rel="stylesheet" href="css/style.css?v=3">
+<script>
+/* Gate: the setup page stays locked until the requirements checklist is complete */
+(function () {
+  try {
+    if (localStorage.getItem("xen-req-complete") !== "true") {
+      location.replace("requirements.html");
+    }
+  } catch (e) { /* if storage is unavailable, let the page load */ }
+})();
+</script>
 </head>
 <body>
 <script>
@@ -182,8 +192,8 @@
     </a>
     <div class="nav-links">
       <a href="#about" class="nav-link">Product</a>
-      <a href="#choose" class="nav-link">Setup</a>
       <a href="requirements.html" class="nav-link">Requirements</a>
+      <a href="#choose" class="nav-link">Setup</a>
       <a href="#support" class="nav-link">Support</a>
     </div>
     <button class="btn btn-dark" data-action="start">Start Setup</button>
@@ -191,6 +201,15 @@
 </header>
 
 <main id="top">
+
+  <!-- print-only header for the PDF export -->
+  <div class="print-only print-header">
+    <img src="images/xenreality-logo.png" alt="XenReality">
+    <div>
+      <strong>XenReality · Pi 5 Setup Guide</strong><br>
+      <span>All installation steps, troubleshooting, and the NVR &amp; tech requirements summary.</span>
+    </div>
+  </div>
 
   <!-- ══════════════════ HERO ══════════════════ -->
   <section class="hero" id="home">
@@ -242,9 +261,9 @@
       <button class="card choice-card" data-vertical="fnb">
         <div class="choice-icon">
           <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
-            <circle cx="20" cy="20" r="19" fill="#fdeee9"/>
-            <path d="M14 10 v9 M11 10 v5 a3 3 0 0 0 6 0 v-5 M14 19 v11" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <path d="M26 10 c-3 0 -4 4 -4 8 h4 v12 M26 10 v20" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
+            <path d="M14 10 v9 M11 10 v5 a3 3 0 0 0 6 0 v-5 M14 19 v11" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+            <path d="M26 10 c-3 0 -4 4 -4 8 h4 v12 M26 10 v20" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
           </svg>
         </div>
         <h3>F&amp;B</h3>
@@ -254,9 +273,9 @@
       <button class="card choice-card" data-vertical="retail">
         <div class="choice-icon">
           <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
-            <circle cx="20" cy="20" r="19" fill="#fdeee9"/>
-            <path d="M12 15 h16 l-1.6 15 a2 2 0 0 1 -2 1.8 H15.6 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#E8552F" stroke-width="2.4" stroke-linejoin="round"/>
-            <path d="M15.5 18 v-4 a4.5 4.5 0 0 1 9 0 v4" fill="none" stroke="#E8552F" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
+            <path d="M12 15 h16 l-1.6 15 a2 2 0 0 1 -2 1.8 H15.6 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linejoin="round"/>
+            <path d="M15.5 18 v-4 a4.5 4.5 0 0 1 9 0 v4" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round"/>
           </svg>
         </div>
         <h3>Retail</h3>
@@ -271,7 +290,8 @@
     <div class="wizard-shell card">
       <div class="wizard-head">
         <span class="vertical-tag" id="verticalTag">F&amp;B</span>
-        <span class="step-count" id="stepCount">Step 1 of 10</span>
+        <span class="step-count" id="stepCount">Step 1 of 9</span>
+        <button class="btn btn-ghost btn-sm" id="btnExportPdf" title="Save the full setup guide as a PDF">Export PDF</button>
         <button class="btn btn-ghost btn-sm" data-action="exit">Exit</button>
       </div>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
@@ -308,9 +328,9 @@
         <div class="step-art">
           <svg viewBox="0 0 560 190" class="art">
             <g transform="translate(160,4)"><svg width="240" height="86" viewBox="0 0 220 150" preserveAspectRatio="xMidYMin slice"><use href="#sym-pi"/></svg></g>
-            <path d="M280 96 v22" stroke="#E8552F" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+            <path d="M280 96 v22" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead)"/>
             <g transform="translate(160,124)"><svg width="240" height="64" viewBox="0 0 220 90"><use href="#sym-case-base"/></svg></g>
-            <defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+            <defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
           </svg>
         </div>
         <h3>Case, part 1: seat the Pi in the red base</h3>
@@ -336,7 +356,7 @@
             <g transform="translate(160,6)"><svg width="240" height="44" viewBox="0 0 220 40"><use href="#sym-case-lid"/></svg></g>
             <g transform="translate(160,62)"><svg width="240" height="66" viewBox="0 0 220 70"><use href="#sym-case-frame"/></svg></g>
             <g transform="translate(160,136)"><svg width="240" height="52" viewBox="0 0 220 90" preserveAspectRatio="xMidYMin slice"><use href="#sym-case-base"/></svg></g>
-            <path d="M120 30 c-30 40 -30 80 0 130" stroke="#E8552F" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+            <path d="M120 30 c-30 40 -30 80 0 130" stroke="#F7941D" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
           </svg>
         </div>
         <h3>Case, part 2: fan cable, frame &amp; lid</h3>
@@ -361,8 +381,8 @@
           <svg viewBox="0 0 560 180" class="art">
             <g transform="translate(150,30)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
             <g transform="translate(72,58)" class="anim-slide"><svg width="52" height="66" viewBox="0 0 80 100" ><use href="#sym-sd"/></svg></g>
-            <path d="M132 92 h26" stroke="#E8552F" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead2)"/>
-            <defs><marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+            <path d="M132 92 h26" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead2)"/>
+            <defs><marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
           </svg>
         </div>
         <h3>Insert the XenReality SD card</h3>
@@ -385,10 +405,10 @@
         <div class="step-art">
           <svg viewBox="0 0 560 180" class="art">
             <g transform="translate(80,20)"><svg width="140" height="128" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
-            <path d="M232 128 h64" stroke="#E8552F" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7" marker-end="url(#arrowhead3)"/>
+            <path d="M232 128 h64" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7" marker-end="url(#arrowhead3)"/>
             <g transform="translate(310,28)"><svg width="240" height="120" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <circle cx="345" cy="128" r="10" fill="none" stroke="#E8552F" stroke-width="3" class="anim-pulse"/>
-            <defs><marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#E8552F"/></marker></defs>
+            <circle cx="345" cy="128" r="10" fill="none" stroke="#F7941D" stroke-width="3" class="anim-pulse"/>
+            <defs><marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
           </svg>
         </div>
         <h3>Connect the power adapter</h3>
@@ -437,8 +457,8 @@
             <g transform="translate(160,26)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
             <circle cx="360" cy="112" r="5" fill="#34d399" class="anim-blink"/>
             <circle cx="374" cy="112" r="5" fill="#fbbf24" class="anim-blink d2"/>
-            <path d="M196 62 l-24 -18" stroke="#E8552F" stroke-width="3" stroke-linecap="round"/>
-            <text x="96" y="38" font-size="14" fill="#E8552F" font-family="sans-serif" font-weight="700">Power button</text>
+            <path d="M196 62 l-24 -18" stroke="#F7941D" stroke-width="3" stroke-linecap="round"/>
+            <text x="96" y="38" font-size="14" fill="#F7941D" font-family="sans-serif" font-weight="700">Power button</text>
           </svg>
         </div>
         <h3>Power on and check the lights</h3>
@@ -456,65 +476,37 @@
         </details>
       </div>
 
-      <!-- STEP 8 — find IP -->
+      <!-- STEP 8 — connect to the NVR -->
       <div class="step hidden" data-step="8">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(60,44)"><svg width="180" height="110" viewBox="0 0 180 110"><use href="#sym-router"/></svg></g>
-            <g transform="translate(330,44)"><svg width="200" height="100" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <path d="M232 96 h84" stroke="#94a8c0" stroke-width="6" stroke-linecap="round"/>
-            <g>
-              <rect x="330" y="8" width="164" height="30" rx="15" fill="#0b2545"/>
-              <text x="412" y="28" font-size="14" text-anchor="middle" fill="#ffffff" font-family="monospace">192.168.1.45</text>
-            </g>
-            <path d="M420 38 v6" stroke="#0b2545" stroke-width="3"/>
-          </svg>
-        </div>
-        <h3>Find the Pi's IP address</h3>
-        <p>Every device on a network gets its own <strong>IP address</strong>. Think of the router as an apartment building, and the IP as the Pi's <strong>apartment number</strong>. You need it to reach the Pi in the next step. It looks like <code>192.168.1.45</code>.</p>
-        <p><strong>Three ways to find it:</strong></p>
-        <ol class="num-list">
-          <li><strong>Router admin page:</strong> open <code>192.168.1.1</code> (or <code>192.168.0.1</code>) in a browser and look at "Connected devices". The Pi shows up as <code>raspberrypi</code>.</li>
-          <li><strong>Scanner app:</strong> the free "Fing" app on your phone lists every device on the WiFi; look for "Raspberry Pi".</li>
-          <li><strong>Ask the store's IT contact:</strong> they can look it up instantly.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Pi doesn't appear in the list?</strong> Make sure your phone/laptop is on the <em>same network</em> the Pi is cabled to (not a guest WiFi). Then re-check step 7: if the LAN LEDs aren't blinking, the Pi isn't on the network yet.</p>
-          </div>
-        </details>
-      </div>
-
-      <!-- STEP 9 — NVR login -->
-      <div class="step hidden" data-step="9">
         <div class="step-art">
           <svg viewBox="0 0 560 180" class="art">
             <g transform="translate(160,16)"><svg width="250" height="160" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
             <rect x="222" y="86" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
             <rect x="222" y="108" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
-            <rect x="252" y="130" width="66" height="16" rx="8" fill="#E8552F"/>
+            <rect x="252" y="130" width="66" height="16" rx="8" fill="#F7941D"/>
             <text x="285" y="142" font-size="10" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="600">Log in</text>
             <text x="285" y="78" font-size="11" text-anchor="middle" fill="#6b7280" font-family="sans-serif">NVR camera system</text>
           </svg>
         </div>
-        <h3>Open the NVR and log in</h3>
-        <p>The <strong>NVR</strong> (Network Video Recorder) is the <strong>brain of the camera system</strong>: the one place that collects and stores every camera's video. Our software on the Pi connects to it.</p>
+        <h3>Connect to the NVR</h3>
+        <p>The <strong>NVR</strong> is the box that records all the cameras. Our Pi reads from it. All you do now is open it and log in:</p>
         <ol class="num-list">
-          <li>On a laptop on the same network, type the Pi's <strong>IP address</strong> into the browser.</li>
-          <li>A login page appears asking for a <strong>username and password</strong>. This is like a door key: it proves you're allowed in. <strong>XenReality will provide your credentials.</strong></li>
+          <li>Ask the store's IT contact for the <strong>Pi's address</strong> (or find it yourself with the free <strong>Fing</strong> app: look for "Raspberry Pi" in the list).</li>
+          <li>On a laptop or phone on the store's network, <strong>type that address into the browser</strong>.</li>
+          <li><strong>Log in</strong> with the username and password from XenReality.</li>
         </ol>
         <details class="trouble">
           <summary>Having a problem?</summary>
           <div class="trouble-body">
-            <p><strong>Only have a "guest" login?</strong> A guest account can watch cameras but <em>doesn't have permission to enable remote view</em>. This is not a bug, it's a permissions problem. Ask the client (or their IT contact) for an <strong>admin</strong> account before continuing.</p>
-            <p><strong>Login page won't open?</strong> Double-check the IP address (step 8) and that your laptop is on the same network as the Pi.</p>
+            <p><strong>What is this "address"?</strong> Every device on a network gets its own number, called an IP address. It looks like <code>192.168.1.45</code>. Think of it as the Pi's apartment number inside the building.</p>
+            <p><strong>Page won't open?</strong> Make sure your laptop/phone is on the <em>same network</em> as the Pi (not a guest WiFi), and re-check the address. If the Pi's LAN LEDs aren't blinking, go back to step 7 first.</p>
+            <p><strong>Only have a "guest" login?</strong> A guest account can watch cameras but <em>can't enable remote view</em>. Ask the client (or their IT contact) for an <strong>admin</strong> account before continuing.</p>
           </div>
         </details>
       </div>
 
-      <!-- STEP 10 — remote view -->
-      <div class="step hidden" data-step="10">
+      <!-- STEP 9 — remote view -->
+      <div class="step hidden" data-step="9">
         <div class="step-art">
           <svg viewBox="0 0 560 180" class="art">
             <g transform="translate(60,24)"><svg width="200" height="130" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
@@ -522,7 +514,7 @@
             <rect x="158" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
             <circle cx="115" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
             <circle cx="193" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
-            <path d="M270 92 h60" stroke="#E8552F" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7"/>
+            <path d="M270 92 h60" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7"/>
             <!-- globe -->
             <circle cx="390" cy="92" r="42" fill="#eaf2fb" stroke="#94a8c0" stroke-width="3"/>
             <ellipse cx="390" cy="92" rx="18" ry="42" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
@@ -533,11 +525,10 @@
           </svg>
         </div>
         <h3>Turn on Remote View</h3>
-        <p>Remote view lets XenReality (and you) securely see the system from outside the store. That's what makes remote monitoring and support possible.</p>
+        <p>Remote view lets XenReality securely see the system from outside the store, so our team can monitor and support it without a site visit.</p>
         <ol class="num-list">
-          <li>Log in with the <strong>admin</strong> account.</li>
-          <li>Enable <strong>Remote View</strong> in the settings.</li>
-          <li>Confirm the camera view loads.</li>
+          <li>In the NVR you just logged into, switch on <strong>Remote View</strong> in the settings.</li>
+          <li>Check the camera view loads. That's it.</li>
         </ol>
         <details class="trouble">
           <summary>Having a problem?</summary>
@@ -570,6 +561,52 @@
     </div>
   </section>
 
+  <!-- print-only: NVR & tech requirements summary (appears in the exported PDF) -->
+  <section class="print-only print-req">
+    <h2>NVR &amp; Tech Requirements: Summary</h2>
+    <p>The client must have all of this ready before installation. Full interactive checklist: the Requirements page.</p>
+    <div class="print-req-grid">
+      <div class="print-req-block">
+        <h3>Cameras</h3>
+        <ul class="check-list">
+          <li>ONVIF compatible, on the Local Area Network, with an IP address each</li>
+          <li>Min 2 MP (4&ndash;8 MP preferred), dome or bullet</li>
+          <li>Username &amp; password per camera</li>
+          <li>All brand AI features OFF (no person/face detection, motion capture or bounding boxes)</li>
+          <li>Repositioning allowed; floor plan with camera positions provided</li>
+          <li>Supported brands: CP Plus, Hikvision, Dahua, Univision, Bosch, Sony, Axis, Hanwha Vision, Intelbras, Uniview</li>
+        </ul>
+      </div>
+      <div class="print-req-block">
+        <h3>NVR</h3>
+        <ul class="check-list">
+          <li>ONVIF compatible (a MUST); same brand as cameras preferred</li>
+          <li>Same Local Area Network as the Pi</li>
+          <li>Username &amp; password provided; all brand AI features OFF</li>
+          <li>Backup and video storage configured beforehand</li>
+          <li>No NVR access? Client must provide 15&ndash;20 hours of store traffic footage instead</li>
+        </ul>
+      </div>
+      <div class="print-req-block">
+        <h3>Infrastructure</h3>
+        <ul class="check-list">
+          <li>Internet at least 50 Mbps; power backup</li>
+          <li>Ethernet port on the LAN + cable channels to run the cable</li>
+          <li>Secure storage room for the Pi</li>
+          <li>Router access (username &amp; password); static IP for cameras and DVR/NVR</li>
+          <li>Firewall (Fortinet): allow LAN access and whitelist the Pi's MAC ID</li>
+        </ul>
+      </div>
+      <div class="print-req-block">
+        <h3>Access</h3>
+        <ul class="check-list">
+          <li>Admin access only: a guest account cannot enable remote view</li>
+          <li>If any requirement fails, inform the XenReality Point of Contact, the Project Owner and the client's technical team immediately</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- ══════════════════ SUPPORT ══════════════════ -->
   <section class="section" id="support">
     <div class="card support-card">
@@ -597,10 +634,27 @@
        <strong>We will notify you about the configuration.</strong><br>
        <span class="muted">Inform your XenReality Project Owner/Engineer that the install is done.
        Our team finishes the rest remotely. Nothing more to do on-site.</span></p>
-    <button class="btn btn-primary btn-lg" id="btnFinish">Finish</button>
+
+    <div class="feedback" id="feedbackBlock">
+      <h4>How was the setup? Help us improve it.</h4>
+      <div class="stars" id="fbStars" role="radiogroup" aria-label="Rate the setup experience">
+        <button type="button" class="star" data-rate="1" aria-label="1 star">★</button>
+        <button type="button" class="star" data-rate="2" aria-label="2 stars">★</button>
+        <button type="button" class="star" data-rate="3" aria-label="3 stars">★</button>
+        <button type="button" class="star" data-rate="4" aria-label="4 stars">★</button>
+        <button type="button" class="star" data-rate="5" aria-label="5 stars">★</button>
+      </div>
+      <textarea id="fbText" placeholder="Anything confusing? Any step that took too long? (optional)"></textarea>
+      <div class="feedback-actions">
+        <button class="btn btn-primary" id="btnSendFb">Send feedback</button>
+        <button class="btn btn-ghost" id="btnExportPdf2" title="Save the full setup guide as a PDF">Export PDF</button>
+        <button class="btn btn-ghost" id="btnFinish">Finish</button>
+      </div>
+      <p class="fb-thanks hidden" id="fbThanks">Thank you! Your feedback helps us make this guide better.</p>
+    </div>
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

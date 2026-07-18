@@ -1,6 +1,6 @@
 /* XenReality Pi Setup — wizard logic */
 (function () {
-  const TOTAL_STEPS = 10;
+  const TOTAL_STEPS = 9;
   let current = 1;
   let vertical = null;
   const confirmed = {}; // step number -> true once ticked
@@ -121,6 +121,43 @@
     document.getElementById("top").scrollIntoView({ behavior: "smooth" });
   });
 
+  // ── Feedback (sent to XenReality by email) ──
+  const FEEDBACK_EMAIL = "omair@xenreality.com";
+  let fbRating = 0;
+  const fbStars = Array.from(document.querySelectorAll("#fbStars .star"));
+  const fbText = document.getElementById("fbText");
+  const btnSendFb = document.getElementById("btnSendFb");
+  const fbThanks = document.getElementById("fbThanks");
+
+  fbStars.forEach((s) => {
+    s.addEventListener("click", () => {
+      fbRating = Number(s.dataset.rate);
+      fbStars.forEach((x) => x.classList.toggle("on", Number(x.dataset.rate) <= fbRating));
+    });
+  });
+
+  btnSendFb.addEventListener("click", () => {
+    const label = VERTICAL_LABELS[vertical] || "Unknown";
+    const subject = "Pi Setup Feedback (" + label + ") - " + (fbRating ? fbRating + "/5" : "no rating");
+    const body =
+      "Setup type: " + label + "\n" +
+      "Rating: " + (fbRating ? fbRating + "/5" : "not given") + "\n" +
+      "Date: " + new Date().toLocaleString() + "\n\n" +
+      "Comments:\n" + (fbText.value.trim() || "(none)");
+    // keep a local copy too, in case the mail app doesn't open
+    try {
+      const log = JSON.parse(localStorage.getItem("xen-feedback") || "[]");
+      log.push({ vertical: label, rating: fbRating, comments: fbText.value.trim(), at: Date.now() });
+      localStorage.setItem("xen-feedback", JSON.stringify(log));
+    } catch (e) {}
+    window.location.href =
+      "mailto:" + FEEDBACK_EMAIL +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(body);
+    fbThanks.classList.remove("hidden");
+    btnSendFb.disabled = true;
+  });
+
   // close modal on overlay click
   doneModal.addEventListener("click", (e) => {
     if (e.target === doneModal) doneModal.classList.add("hidden");
@@ -134,6 +171,19 @@
     if (e.key === "ArrowRight" || e.key === "Enter") goNext();
     else if (e.key === "ArrowLeft") goBack();
   });
+
+  // ── Export PDF: print the whole guide (all steps + requirements summary) ──
+  function exportPdf() {
+    document.querySelectorAll("details.trouble").forEach((d) => d.setAttribute("open", ""));
+    window.print();
+  }
+  window.addEventListener("afterprint", () => {
+    document.querySelectorAll("details.trouble[open]").forEach((d) => d.removeAttribute("open"));
+  });
+  const btnExportPdf = document.getElementById("btnExportPdf");
+  const btnExportPdf2 = document.getElementById("btnExportPdf2");
+  if (btnExportPdf) btnExportPdf.addEventListener("click", exportPdf);
+  if (btnExportPdf2) btnExportPdf2.addEventListener("click", exportPdf);
 
   // deep link: index.html#choose from the requirements page
   if (location.hash === "#choose") {

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NVR &amp; Tech Requirements · XenReality</title>
-<link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp">
-<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" href="images/xenreality-logo.png">
+<link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 <script>
@@ -21,8 +21,8 @@
     </a>
     <div class="nav-links">
       <a href="index.html#about" class="nav-link">Product</a>
-      <a href="index.html#choose" class="nav-link">Setup</a>
       <a href="requirements.html" class="nav-link active">Requirements</a>
+      <a href="index.html#choose" class="nav-link">Setup</a>
       <a href="index.html#support" class="nav-link">Support</a>
     </div>
     <a href="index.html#choose" class="btn btn-dark" style="text-decoration:none">Start Setup</a>
@@ -169,23 +169,12 @@
       </div>
     </div>
 
-    <!-- Pi -->
+    <!-- Pi kit -->
     <div class="card req-card">
-      <h3>Computer / Pi &mdash; Raspberry Pi 5</h3>
-      <div class="table-wrap">
-        <table class="spec-table">
-          <thead>
-            <tr><th>Model</th><th>Cameras (devices)</th><th>KPIs</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Pi 5 &middot; 2GB RAM</td><td>3 devices</td><td>Basic KPIs</td></tr>
-            <tr><td>Pi 5 &middot; 4GB RAM</td><td>5 devices</td><td>Basic KPIs</td></tr>
-            <tr><td>Pi 5 &middot; 8GB RAM + AI HAT+2 <span class="opt">optional</span></td><td>10 devices</td><td>Basic KPIs</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="muted" style="margin-top:14px"><strong>Every Pi ships with:</strong></p>
+      <h3>What XenReality brings</h3>
+      <p class="muted">Nothing for the client to arrange here. Every XenReality kit includes:</p>
       <ul class="check-list">
+        <li>Raspberry Pi 5</li>
         <li>Fan for cooling</li>
         <li>Official case</li>
         <li>27W USB-C power supply</li>
@@ -222,10 +211,32 @@
       <span id="reqCount">0 of 22 checked</span>
       <div class="req-bar-track"><div class="req-bar-fill" id="reqFill"></div></div>
     </div>
-    <a href="index.html#choose" class="btn btn-success btn-lg req-continue disabled" id="btnContinue" aria-disabled="true">Continue to Setup</a>
+    <div class="req-bar-actions">
+      <button class="btn btn-ghost btn-sm" id="btnReset" title="Untick everything and start fresh">Reset</button>
+      <a href="index.html#choose" class="btn btn-success btn-lg req-continue disabled" id="btnContinue" aria-disabled="true">Continue to Setup</a>
+    </div>
   </div>
 </div>
 
-<script src="js/requirements.js"></script>
+<!-- reset confirmation modal -->
+<div class="modal-overlay hidden" id="resetModal">
+  <div class="modal card">
+    <div class="modal-check">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="30" fill="#e6f4fb" stroke="#1E9BD7" stroke-width="3"/>
+        <path d="M42 24 a13 13 0 1 0 3 14" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M45 16 v9 h-9" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Reset the checklist?</h3>
+    <p>All ticks will be cleared so you can reuse the checklist for a new store visit.</p>
+    <div class="feedback-actions">
+      <button class="btn btn-primary" id="btnResetConfirm">Yes, reset</button>
+      <button class="btn btn-ghost" id="btnResetCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/requirements.js?v=3"></script>
 </body>
 </html>

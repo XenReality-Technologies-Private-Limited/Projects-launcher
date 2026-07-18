@@ -1,8 +1,11 @@
 /* ═══════════ XenReality Pi Setup — Stitch-like design system ═══════════ */
 
 :root {
-  --accent: #E8552F;
-  --accent-soft: #fdeee9;
+  --accent: #1E9BD7;        /* XenReality blue (logo X) */
+  --accent-deep: #2B3990;   /* logo navy */
+  --accent-soft: #e6f4fb;
+  --orange: #F7941D;        /* logo orange dot */
+  --green: #39B54A;         /* logo green dot */
   --dark: #16181d;
   --ink: #23262d;
   --ink-soft: #5c6270;
@@ -76,8 +79,8 @@ code {
 .btn:active { transform: scale(0.97); }
 .btn-dark { background: var(--dark); color: #fff; }
 .btn-dark:hover { box-shadow: 0 8px 20px rgba(22,24,29,0.3); }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { box-shadow: 0 10px 24px rgba(232,85,47,0.35); }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #fff; }
+.btn-primary:hover { box-shadow: 0 10px 24px rgba(30,155,215,0.4); }
 .btn-success { background: #10b981; color: #fff; }
 .btn-success:hover { box-shadow: 0 10px 24px rgba(16,185,129,0.35); }
 .btn-ghost { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line); }
@@ -109,7 +112,7 @@ code {
   margin-bottom: 28px;
 }
 .badge-new {
-  background: #d8f26e; color: #37430a;
+  background: #ddf3e1; color: #1c7a2e;
   font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
   padding: 3px 9px; border-radius: 999px;
 }
@@ -193,7 +196,7 @@ code {
 }
 .progress-fill {
   height: 100%; width: 10%;
-  background: linear-gradient(90deg, var(--accent), #f0885f);
+  background: linear-gradient(90deg, var(--accent-deep), var(--accent));
   border-radius: 999px;
   transition: width .35s ease;
 }
@@ -229,7 +232,7 @@ code {
 .trouble summary {
   cursor: pointer; list-style: none;
   padding: 13px 18px;
-  font-weight: 640; font-size: 14.5px; color: var(--accent);
+  font-weight: 640; font-size: 14.5px; color: var(--orange);
   display: flex; align-items: center; gap: 8px;
   user-select: none;
 }
@@ -368,7 +371,7 @@ code {
 /* ─────────── Requirements checklist ─────────── */
 .req-check { list-style: none; margin: 6px 0 14px; }
 .req-check li { margin-bottom: 4px; border-radius: 10px; transition: background .3s; }
-.req-check li.req-nudge { background: #fdeee9; }
+.req-check li.req-nudge { background: #fff0dc; }
 .req-check label {
   display: flex; align-items: flex-start; gap: 12px;
   padding: 8px 10px; cursor: pointer;
@@ -415,8 +418,129 @@ code {
   opacity: 0.45; cursor: not-allowed;
   box-shadow: none !important; transform: none !important;
 }
-main { padding-bottom: 90px; }
+main { padding-bottom: 110px; }
 .about-cta { margin-top: 20px; }
+
+.req-bar-actions { display: flex; gap: 8px; align-items: center; }
+.req-saved {
+  display: block; font-size: 11.5px !important; font-weight: 500 !important;
+  color: #9aa2ae !important; margin-top: 3px;
+}
+
+/* ─────────── Feedback (done modal) ─────────── */
+.feedback {
+  border-top: 1px solid var(--line);
+  margin-top: 6px; padding-top: 20px; text-align: left;
+}
+.feedback h4 { font-size: 15.5px; margin-bottom: 12px; text-align: center; }
+.stars { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; }
+.star {
+  font: inherit; font-size: 26px; line-height: 1;
+  background: none; border: none; cursor: pointer;
+  color: #d7dbe2; transition: color .12s, transform .12s;
+  padding: 2px;
+}
+.star:hover { transform: scale(1.15); }
+.star.on { color: var(--orange); }
+.feedback textarea {
+  width: 100%; min-height: 74px; resize: vertical;
+  font: inherit; font-size: 14px; color: var(--ink);
+  border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 10px 14px; margin-bottom: 12px;
+  background: #fafbfd;
+}
+.feedback textarea:focus { outline: none; border-color: var(--accent); }
+.feedback-actions { display: flex; gap: 10px; justify-content: center; align-items: center; }
+.fb-thanks { color: #10b981; font-weight: 650; font-size: 14px; text-align: center; margin: 8px 0 0 !important; }
+
+/* ─────────── Print / Save as PDF ─────────── */
+.print-only { display: none; }
+
+@media print {
+  @page { margin: 14mm; }
+  .nav-wrap, .req-bar, .btn, .hero-cta, .chip-row, .footer,
+  .modal-overlay, .badge-chip { display: none !important; }
+  body { background: #fff; }
+  main { padding-bottom: 0; }
+  a { text-decoration: none; color: inherit; }
+  .print-only { display: block !important; }
+
+  /* compact, left-aligned flow so the first page fills properly */
+  .hero, .hero-compact { padding: 0 0 8px; max-width: 100%; text-align: left; }
+  .hero h1 { font-size: 24px; }
+  .hero-sub { margin: 6px 0 0; max-width: 100%; font-size: 13px; }
+  .section { padding: 8px 0; max-width: 100%; }
+  .section-title { text-align: left; font-size: 19px; }
+  .section-sub { text-align: left; margin: 4px 0 10px; font-size: 12.5px; }
+  .card { box-shadow: none; border: 1px solid #cfd6df; border-radius: 10px; }
+
+  /* requirements page */
+  .about-card { grid-template-columns: 1fr; gap: 8px; padding: 14px 18px; }
+  .about-art { display: none; }
+  .about-text h2 { font-size: 17px; margin-bottom: 6px; }
+  .about-text p { font-size: 12.5px; margin-bottom: 6px; }
+  .type-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .type-card { padding: 12px 14px; break-inside: avoid; }
+  .type-card h3 { font-size: 14px; margin-bottom: 5px; }
+  .type-card p { font-size: 12px; }
+  .type-tag { margin-top: 8px; font-size: 10.5px; padding: 3px 9px; }
+  .callout { break-inside: avoid; margin-top: 10px; padding: 9px 13px; font-size: 12px; }
+  .req-card { padding: 14px 18px; margin-bottom: 10px; break-inside: auto; }
+  .req-card h3 { font-size: 15px; margin-bottom: 8px; }
+  .req-card h4 { font-size: 12.5px; margin: 12px 0 8px; }
+  .req-check li, .check-list li { break-inside: avoid; }
+  .req-check label { padding: 2px 4px; font-size: 12px; line-height: 1.45; }
+  .req-check input[type="checkbox"] { width: 13px; height: 13px; }
+  .brand-grid { gap: 8px; }
+  .brand-tile { padding: 8px 12px; }
+  .brand-tile img { max-height: 18px; }
+
+  /* setup guide export (index page): hide the app chrome, show every step */
+  #home, #about, #choose, #support { display: none !important; }
+  #wizard { display: block !important; max-width: 100%; padding: 0; counter-reset: printstep; }
+  .wizard-shell { border: none; box-shadow: none; padding: 0; background: none; }
+  .wizard-head, .progress, .step-confirm, .wizard-foot { display: none !important; }
+  #wizard .step {
+    display: block !important;
+    break-inside: auto; /* let long steps flow across pages: avoiding breaks caused blank pages */
+    border: 1px solid #cfd6df; border-radius: 10px;
+    padding: 10px 16px; margin-bottom: 10px;
+    animation: none;
+    counter-increment: printstep;
+  }
+  #wizard .step h3 { font-size: 15px; margin-bottom: 6px; break-after: avoid; }
+  #wizard .step h3::before { content: "Step " counter(printstep) " · "; color: #1E9BD7; }
+  #wizard .step p { font-size: 12.5px; margin-bottom: 6px; }
+  .num-list, .check-list { font-size: 12.5px; line-height: 1.6; margin: 4px 0 8px 20px; }
+  .num-list li, .check-list li { break-inside: avoid; }
+  .step-art { padding: 4px; margin-bottom: 8px; background: #fff; break-inside: avoid; }
+  .step-art .art { max-width: 280px; }
+  .trouble { border-radius: 10px; break-inside: avoid; }
+  .trouble summary { padding: 6px 12px; font-size: 12px; }
+  .trouble-body { padding: 0 12px 8px; }
+  .trouble-body p, .trouble-body ol { font-size: 11.5px; margin-bottom: 5px; }
+  .anim-blink, .anim-pulse, .anim-slide { animation: none; }
+
+  /* print header + requirements summary */
+  .print-header {
+    display: flex !important; align-items: center; gap: 14px;
+    border-bottom: 2px solid #1E9BD7;
+    padding-bottom: 10px; margin-bottom: 14px;
+  }
+  .print-header img { width: 44px; height: auto; }
+  .print-header strong { font-size: 17px; }
+  .print-header span { font-size: 12px; color: #5c6270; }
+  .print-req { break-before: page; }
+  .print-req h2 { font-size: 19px; margin-bottom: 4px; }
+  .print-req > p { font-size: 12.5px; color: #5c6270; margin-bottom: 12px; }
+  .print-req-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .print-req-block {
+    border: 1px solid #cfd6df; border-radius: 10px;
+    padding: 12px 16px; break-inside: avoid;
+  }
+  .print-req-block h3 { font-size: 14px; margin-bottom: 6px; color: #1E9BD7; }
+  .print-req-block .check-list { margin: 0 0 0 18px; font-size: 11.5px; line-height: 1.55; }
+}
 
 /* ─────────── Responsive ─────────── */
 @media (max-width: 760px) {
