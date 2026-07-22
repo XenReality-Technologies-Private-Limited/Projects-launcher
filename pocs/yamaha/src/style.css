@@ -491,3 +491,14 @@ body {
 .dash-header { z-index: 300 !important; }
 
 .header-customer-logo { object-fit: contain !important; height: 36px !important; max-width: none !important; width: auto !important; background: none !important; }
+
+/* thomsun logo final — 500x500 square, crop center strip */
+.header-customer-logo {
+  height: 44px !important;
+  width: 160px !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  background: none !important;
+  border-radius: 4px !important;
+  max-width: none !important;
+}
