@@ -17,8 +17,12 @@ export async function initDashboard(appEl) {
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
-        <span class="header-status">Live</span>
-        <span class="header-clock" id="hdr-clock"></span>
+        <div class="header-datetime">
+          <span class="header-date" id="hdr-date"></span>
+          <span class="header-time" id="hdr-time"></span>
+        </div>
+        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+        <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
       </div>
     </header>
     <div class="dashboard-main" id="dash-main">
@@ -26,11 +30,13 @@ export async function initDashboard(appEl) {
     </div>
   `;
 
-  const clockEl = appEl.querySelector('#hdr-clock');
+  const hdrDate = appEl.querySelector('#hdr-date');
+  const hdrTime = appEl.querySelector('#hdr-time');
   function tickClock() {
-    clockEl.textContent = new Date().toLocaleTimeString('en-GB', {
-      timeZone: 'Asia/Dubai', hour: '2-digit', minute: '2-digit', second: '2-digit',
-    });
+    const now = new Date();
+    const tz = { timeZone: 'Asia/Dubai' };
+    if (hdrDate) hdrDate.textContent = now.toLocaleDateString('en-GB', { ...tz, day: '2-digit', month: 'short', year: 'numeric' });
+    if (hdrTime) hdrTime.textContent = now.toLocaleTimeString('en-GB', { ...tz, hour: '2-digit', minute: '2-digit' });
   }
   tickClock();
   setInterval(tickClock, 1000);

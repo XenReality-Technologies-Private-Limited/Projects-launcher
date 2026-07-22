@@ -92,14 +92,20 @@ export function renderDashboard(app, data, videos) {
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
-        <div class="view-toggle" id="view-toggle">
-          <button class="view-toggle-btn active" id="btn-poc">PoC</button>
-          <button class="view-toggle-btn" id="btn-live">Yamaha</button>
-          <button class="view-toggle-btn" id="btn-fb">Fresh-Bakes</button>
+        <div class="header-datetime">
+          <span class="header-date" id="hdr-date"></span>
+          <span class="header-time" id="hdr-time"></span>
         </div>
-        <img class="header-customer-logo" src="/yamaha/thomsun-logo.png" alt="Thomsun" />
+        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+        <img class="header-customer-logo" src="/yamaha/thomsun-logo.png" alt="Thomsun" onerror="this.style.display='none'" />
+        <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
       </div>
     </header>
+    <nav class="dash-tabs" id="view-toggle">
+      <button class="dash-tab active" id="btn-poc">PoC</button>
+      <button class="dash-tab" id="btn-live">Yamaha</button>
+      <button class="dash-tab" id="btn-fb">Fresh-Bakes</button>
+    </nav>
 
     <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
     <iframe id="fb-frame"   src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:200;"></iframe>
@@ -554,4 +560,15 @@ export function renderDashboard(app, data, videos) {
     if (customerLogo) customerLogo.style.visibility = '';
     clearToggle(); btnPoc.classList.add('active');
   });
+
+  const hdrDate = app.querySelector('#hdr-date');
+  const hdrTime = app.querySelector('#hdr-time');
+  function tickClock() {
+    const now = new Date();
+    const tz = { timeZone: 'Asia/Dubai' };
+    if (hdrDate) hdrDate.textContent = now.toLocaleDateString('en-GB', { ...tz, day: '2-digit', month: 'short', year: 'numeric' });
+    if (hdrTime) hdrTime.textContent = now.toLocaleTimeString('en-GB', { ...tz, hour: '2-digit', minute: '2-digit' });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
 }

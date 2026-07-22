@@ -2,8 +2,6 @@
 
 const CF = 'https://d2uimaqek2eby3.cloudfront.net/Gravity';
 
-const IST_OPTS = { timeZone: 'Asia/Kolkata', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
-function formatIST() { return new Date().toLocaleTimeString('en-IN', IST_OPTS); }
 function formatSecs(s) {
   const t = Math.round(s || 0);
   return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
@@ -178,7 +176,14 @@ export function renderDashboard(appEl, allData) {
         <img src="/xenlogo.png" alt="XenReality" />
       </div>
       <div class="header-title">PoC Dashboard</div>
-      <div class="header-right"></div>
+      <div class="header-right">
+        <div class="header-datetime">
+          <span class="header-date" id="hdr-date"></span>
+          <span class="header-time" id="hdr-time"></span>
+        </div>
+        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+        <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+      </div>
     </header>
     <main class="dashboard-main" id="dashboard-main"></main>
   `;
@@ -189,8 +194,14 @@ export function renderDashboard(appEl, allData) {
   main.appendChild(buildVestCompliance(allData.vestCompliance));
   main.appendChild(buildFloorHeatmap());
 
-  setInterval(() => {
-    const el = document.getElementById('ist-clock');
-    if (el) el.textContent = formatIST();
-  }, 1000);
+  const hdrDate = appEl.querySelector('#hdr-date');
+  const hdrTime = appEl.querySelector('#hdr-time');
+  function tickClock() {
+    const now = new Date();
+    const tz = { timeZone: 'Asia/Dubai' };
+    if (hdrDate) hdrDate.textContent = now.toLocaleDateString('en-GB', { ...tz, day: '2-digit', month: 'short', year: 'numeric' });
+    if (hdrTime) hdrTime.textContent = now.toLocaleTimeString('en-GB', { ...tz, hour: '2-digit', minute: '2-digit' });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
 }

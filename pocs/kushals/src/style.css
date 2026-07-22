@@ -543,3 +543,18 @@ body {
   .two-col    { grid-template-columns: 1fr; }
   .kpi-grid, .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ─── Header v2: datetime · live pill · signout ─────────────── */
+.header-right { gap: 12px; }
+.header-datetime { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.25; }
+.header-date { font-size: 0.68rem; color: #6b7280; font-weight: 500; white-space: nowrap; }
+.header-time { font-variant-numeric: tabular-nums; font-size: 0.88rem; font-weight: 700; color: #111827; white-space: nowrap; }
+.header-live-pill { display: flex; align-items: center; gap: 6px; background: #eef2ff; border-radius: 999px; padding: 5px 12px; font-size: 0.72rem; font-weight: 700; color: #4f46e5; letter-spacing: 0.03em; flex-shrink: 0; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; flex-shrink: 0; }
+.header-signout { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: transparent; border: 1px solid #e5e7eb; color: #9ca3af; cursor: pointer; transition: background .15s, color .15s; flex-shrink: 0; padding: 0; }
+.header-signout:hover { background: #f3f4f6; color: #374151; }
+.header-customer-logo { height: 28px; max-width: 120px; width: auto; object-fit: contain; }
+.dash-tabs { display: flex; align-items: center; gap: 4px; padding: 0 24px; height: 40px; background: #fff; border-bottom: 1px solid #e5e7eb; flex-shrink: 0; }
+.dash-tab { padding: 6px 16px; border: none; background: transparent; font-size: 0.82rem; font-weight: 500; color: #6b7280; cursor: pointer; border-radius: 6px; transition: background .15s, color .15s; }
+.dash-tab.active { background: #eef2ff; color: #4f46e5; font-weight: 700; }
+.dash-tab:hover:not(.active) { background: #f9fafb; color: #374151; }

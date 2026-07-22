@@ -1,17 +1,5 @@
 import { TimeSeriesGraph, MultiSeriesGraph } from './graph.js';
 
-const IST_TIME_OPTIONS = {
-  timeZone: 'Asia/Kolkata',
-  hour12: false,
-  hour: '2-digit',
-  minute: '2-digit',
-  second: '2-digit',
-};
-
-function formatISTTime() {
-  return new Date().toLocaleTimeString('en-IN', IST_TIME_OPTIONS);
-}
-
 const FOOTFALL_COLORS = {
   male: '#2563eb',
   female: '#ec4899',
@@ -29,13 +17,16 @@ const GREETINGS_COLORS = {
 };
 
 export function initDashboard(dbData) {
-  const clockEl = document.getElementById('ist-clock');
-  if (clockEl) {
-    clockEl.textContent = formatISTTime();
-    setInterval(() => {
-      clockEl.textContent = formatISTTime();
-    }, 1000);
+  const hdrDate = document.getElementById('hdr-date');
+  const hdrTime = document.getElementById('hdr-time');
+  function tickClock() {
+    const now = new Date();
+    const tz = { timeZone: 'Asia/Dubai' };
+    if (hdrDate) hdrDate.textContent = now.toLocaleDateString('en-GB', { ...tz, day: '2-digit', month: 'short', year: 'numeric' });
+    if (hdrTime) hdrTime.textContent = now.toLocaleTimeString('en-GB', { ...tz, hour: '2-digit', minute: '2-digit' });
   }
+  tickClock();
+  setInterval(tickClock, 1000);
 
   const hasFootfall = !!(dbData && dbData.footfall && dbData.footfall.rows && dbData.footfall.rows.length);
   const hasTrials = !!(dbData && dbData.trials && dbData.trials.rows && dbData.trials.rows.length);

@@ -154,7 +154,13 @@ export function renderDashboard(app, data, urls) {
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
-        <img class="header-customer-logo" src="${urls.logo}" alt="TechnoSport" />
+        <div class="header-datetime">
+          <span class="header-date" id="hdr-date"></span>
+          <span class="header-time" id="hdr-time"></span>
+        </div>
+        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+        <img class="header-customer-logo" src="${urls.logo}" alt="TechnoSport" onerror="this.style.display='none'" />
+        <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
       </div>
     </header>
 
@@ -374,6 +380,17 @@ export function renderDashboard(app, data, urls) {
 
     </div><!-- /dash-body -->
   `;
+
+  const hdrDate = app.querySelector('#hdr-date');
+  const hdrTime = app.querySelector('#hdr-time');
+  function tickClock() {
+    const now = new Date();
+    const tz = { timeZone: 'Asia/Dubai' };
+    if (hdrDate) hdrDate.textContent = now.toLocaleDateString('en-GB', { ...tz, day: '2-digit', month: 'short', year: 'numeric' });
+    if (hdrTime) hdrTime.textContent = now.toLocaleTimeString('en-GB', { ...tz, hour: '2-digit', minute: '2-digit' });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
 
   // ── Wire up videos ────────────────────────────────────────────────────────
   const videos = {
