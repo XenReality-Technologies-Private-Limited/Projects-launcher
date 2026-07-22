@@ -353,3 +353,27 @@ body {
   cursor: pointer; user-select: none; border: none;
 }
 .header-avatar:hover { background: #252880; }
+
+.header-title { font-size: 14px; }
+
+/* ─── Header scale-up ─────────────────────────────────────────── */
+.dash-header { height: 70px !important; }
+.header-logo-pill { padding: 8px 12px; }
+.header-logo-pill img { height: 26px; }
+.header-vdivider { height: 30px; }
+.header-title { font-size: 14px; }
+.header-date { font-size: 12px; }
+.header-time { font-size: 14px; }
+.header-live-pill { font-size: 13px; padding: 7px 14px; }
+.live-dot { width: 7px; height: 7px; }
+.header-customer-logo { height: 32px; }
+.header-signout { width: 36px; height: 36px; }
+
+.dash-header { height: 64px !important; }
+
+.header-title { font-size: 12.5px; }
+
+.dash-header { height: 56px !important; }
+
+.dash-header { height: 64px !important; }
+.header-logo-pill img { height: 20px; }
