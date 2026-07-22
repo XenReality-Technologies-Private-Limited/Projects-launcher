@@ -502,3 +502,6 @@ body {
   border-radius: 4px !important;
   max-width: none !important;
 }
+
+/* thomsun logo — slightly smaller */
+.header-customer-logo { height: 32px !important; width: 120px !important; }
