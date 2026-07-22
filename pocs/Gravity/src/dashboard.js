@@ -173,7 +173,7 @@ export function renderDashboard(appEl, allData) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <img src="/xenlogo.png" alt="XenReality" />
+        <div class="header-logo-pill"><img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" /></div><div class="header-vdivider"></div>
       </div>
       <div class="header-title">PoC Dashboard</div>
       <div class="header-right">
