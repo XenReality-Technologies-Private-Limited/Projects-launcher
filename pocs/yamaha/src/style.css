@@ -505,3 +505,5 @@ body {
 
 /* thomsun logo — slightly smaller */
 .header-customer-logo { height: 32px !important; width: 120px !important; }
+
+.header-title { text-align: left !important; }

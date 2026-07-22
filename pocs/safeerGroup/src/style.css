@@ -285,3 +285,5 @@ body {
 
 .dash-header { height: 64px !important; }
 .header-logo-pill img { height: 20px; }
+
+.header-title { text-align: left !important; }
