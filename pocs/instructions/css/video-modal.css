@@ -1,0 +1,117 @@
+/* ── Video watch CTA (hero) ── */
+.video-cta-row {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.btn-watch-video {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 999px;
+  transition: color .2s, background .2s;
+}
+.btn-watch-video:hover { color: var(--accent); background: var(--accent-soft); }
+.video-play-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* ── Video modal ── */
+.xr-video-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.xr-video-modal.open { display: flex; }
+.xr-video-wrap {
+  background: #111;
+  border-radius: 14px;
+  overflow: hidden;
+  width: min(860px, 94vw);
+  box-shadow: 0 28px 72px rgba(0,0,0,0.65);
+}
+.xr-video-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #1c1c1c;
+  color: #e5e7eb;
+  font-size: 13px;
+  font-weight: 600;
+}
+.xr-video-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+  display: flex;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+}
+.xr-video-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.xr-video-body video {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  background: #000;
+}
+.xr-video-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #1c1c1c;
+}
+.xr-ctrl-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  flex-shrink: 0;
+}
+.xr-ctrl-btn:hover { color: #fff; }
+.xr-icon-pause { display: none; }
+.xr-progress {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  cursor: pointer;
+}
+.xr-progress-fill {
+  height: 100%;
+  background: #1E9BD7;
+  border-radius: 2px;
+  width: 0;
+}
+.xr-video-time {
+  color: #9ca3af;
+  font-size: 12px;
+  min-width: 38px;
+  text-align: right;
+}
