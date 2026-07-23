@@ -7,25 +7,30 @@
 .btn-watch-video {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: none;
+  gap: 12px;
+  background: var(--accent-soft);
+  border: 1.5px solid rgba(30,155,215,0.35);
   cursor: pointer;
-  color: var(--ink-soft);
+  color: var(--accent-deep);
   font: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 18px;
+  font-size: 16px;
+  font-weight: 650;
+  padding: 12px 24px;
   border-radius: 999px;
-  transition: color .2s, background .2s;
+  transition: background .2s, border-color .2s, box-shadow .2s;
+  box-shadow: 0 2px 10px rgba(30,155,215,0.15);
 }
-.btn-watch-video:hover { color: var(--accent); background: var(--accent-soft); }
+.btn-watch-video:hover {
+  background: #d0edf9;
+  border-color: var(--accent);
+  box-shadow: 0 4px 18px rgba(30,155,215,0.25);
+}
 .video-play-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: var(--accent);
   color: #fff;
