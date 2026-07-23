@@ -80,7 +80,7 @@ jobs:
             "      </button>\n"
             "    </div>\n"
             "    <div class=\"xr-video-body\">\n"
-            "      <video id=\"xrSetupVideo\" src=\"https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Subheading%20(1).mp4\" preload=\"none\" playsinline></video>\n"
+            "      <video id=\"xrSetupVideo\" src=\"https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Subheading%20(1).mp4\" preload=\"metadata\" playsinline></video>\n"
             "    </div>\n"
             "    <div class=\"xr-video-ctrl\">\n"
             "      <button class=\"xr-ctrl-btn\" id=\"xrVideoPlayBtn\">\n"

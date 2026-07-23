@@ -23,6 +23,7 @@
   function openModal() {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    video.play().then(function () { setPlaying(true); }).catch(function () {});
   }
 
   function closeModal() {

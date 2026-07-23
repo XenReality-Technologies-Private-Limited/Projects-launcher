@@ -79,8 +79,9 @@
 .xr-video-body video {
   display: block;
   width: 100%;
-  max-height: 70vh;
+  aspect-ratio: 16 / 9;
   background: #000;
+  max-height: 72vh;
 }
 .xr-video-ctrl {
   display: flex;
