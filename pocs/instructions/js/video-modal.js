@@ -16,8 +16,8 @@
   }
 
   function setPlaying(p) {
-    btnPlay.querySelector('.xr-icon-play').style.display  = p ? 'none' : '';
-    btnPlay.querySelector('.xr-icon-pause').style.display = p ? ''     : 'none';
+    btnPlay.querySelector('.xr-icon-play').style.display  = p ? 'none'   : 'inline';
+    btnPlay.querySelector('.xr-icon-pause').style.display = p ? 'inline' : 'none';
   }
 
   function openModal() {
