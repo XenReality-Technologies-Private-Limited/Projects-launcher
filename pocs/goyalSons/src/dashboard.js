@@ -57,23 +57,16 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       </div>
       <div class="right-column">
         <div class="kpi-stack">
-          <div class="kpi-tile" style="--kpi-color:#2E3192">
-            <div class="kpi-tile-icon">${ICON_TOTAL}</div>
-            <div class="kpi-tile-body">
-              <div class="kpi-tile-value" id="kpi-total">0</div>
-              <div class="kpi-tile-label">Total Customers</div>
-            </div>
+          <div class="kpi-tile kpi-tile--full" style="--kpi-color:#2E3192">
+            <div class="kpi-tile-value" id="kpi-total">0</div>
+            <div class="kpi-tile-label">Total Customers</div>
           </div>
-          <div class="kpi-tile" style="--kpi-color:#10b981">
-            <div class="kpi-tile-icon">${ICON_NEW}</div>
-            <div class="kpi-tile-body">
+          <div class="kpi-row-pair">
+            <div class="kpi-tile" style="--kpi-color:#10b981">
               <div class="kpi-tile-value" id="kpi-new">0</div>
               <div class="kpi-tile-label">New Customers</div>
             </div>
-          </div>
-          <div class="kpi-tile" style="--kpi-color:#f59e0b">
-            <div class="kpi-tile-icon">${ICON_RETURNING}</div>
-            <div class="kpi-tile-body">
+            <div class="kpi-tile" style="--kpi-color:#f59e0b">
               <div class="kpi-tile-value" id="kpi-returning">0</div>
               <div class="kpi-tile-label">Returning Customers</div>
             </div>
