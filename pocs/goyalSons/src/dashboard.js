@@ -143,24 +143,33 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       const e = events[i];
       if (e.is_returning === 0) {
         html += `
-          <div class="feed-row feed-row--new">
-            <span class="feed-time">${fmtTime(e.time)}</span>
-            <div class="feed-info">
-              <span class="feed-customer">Customer #${e.person_id}</span>
-              <span class="feed-badge feed-badge--new">First Visit</span>
+          <div class="feed-group">
+            <div class="feed-row feed-row--new">
+              <button class="feed-time" data-seek="${e.time}">${fmtTime(e.time)}</button>
+              <div class="feed-info">
+                <span class="feed-customer">Customer #${e.person_id}</span>
+                <span class="feed-badge feed-badge--new">First Visit</span>
+              </div>
             </div>
           </div>`;
       } else {
         const fs = firstSeenMap.get(e.person_id);
-        const firstSeenStr = fs !== undefined ? ` · first seen ${fmtTime(fs)}` : '';
+        const subRow = fs !== undefined ? `
+            <div class="feed-row feed-row--sub">
+              <button class="feed-time" data-seek="${fs}">${fmtTime(fs)}</button>
+              <div class="feed-info">
+                <span class="feed-sub-text">First seen at ${fmtTime(fs)}</span>
+              </div>
+            </div>` : '';
         html += `
-          <div class="feed-row feed-row--returning">
-            <span class="feed-time">${fmtTime(e.time)}</span>
-            <div class="feed-info">
-              <span class="feed-customer">Customer #${e.person_id}</span>
-              <span class="feed-badge feed-badge--returning">Returning</span>
-              <span class="feed-sub">${firstSeenStr}</span>
-            </div>
+          <div class="feed-group feed-group--returning">
+            <div class="feed-row">
+              <button class="feed-time" data-seek="${e.time}">${fmtTime(e.time)}</button>
+              <div class="feed-info">
+                <span class="feed-customer">Customer #${e.person_id}</span>
+                <span class="feed-badge feed-badge--returning">Returning</span>
+              </div>
+            </div>${subRow}
           </div>`;
       }
     }
@@ -170,4 +179,9 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
   video.addEventListener('timeupdate', update);
   video.addEventListener('loadedmetadata', update);
   video.addEventListener('seeked', update);
+
+  feedList.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-seek]');
+    if (btn) video.currentTime = parseFloat(btn.dataset.seek);
+  });
 }
