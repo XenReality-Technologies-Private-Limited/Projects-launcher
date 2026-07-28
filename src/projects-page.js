@@ -12,6 +12,7 @@ const PROJECTS = [
   { name: 'Safeer Group',       url: '/safeerGroup/' },
   { name: 'Instruction Manual', url: '/instructions/' },
   { name: 'Gravity',       url: '/gravity/' },
+  { name: 'Goyal Sons',    url: '/goyalSons/' },
 ];
 
 const PALETTE = [
