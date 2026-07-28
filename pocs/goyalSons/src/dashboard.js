@@ -34,7 +34,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
           <span class="header-date" id="hdr-date"></span>
           <span class="header-time" id="hdr-time"></span>
         </div>
-        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+        <div class="header-live-pill"><span class="live-dot live-dot--green"></span>Live</div>
         <img class="header-customer-logo" src="${logoUrl}" alt="Goyal Sons" onerror="this.style.display='none'" />
         <button class="header-signout" title="Sign out"
           onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()">
@@ -48,40 +48,45 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       </div>
     </header>
 
-    <div class="kpi-summary-row">
-      <div class="kpi-tile" style="--kpi-color:#2E3192">
-        <div class="kpi-tile-icon">${ICON_TOTAL}</div>
-        <div class="kpi-tile-value" id="kpi-total">0</div>
-        <div class="kpi-tile-label">Total Customers</div>
-      </div>
-      <div class="kpi-tile" style="--kpi-color:#10b981">
-        <div class="kpi-tile-icon">${ICON_NEW}</div>
-        <div class="kpi-tile-value" id="kpi-new">0</div>
-        <div class="kpi-tile-label">New Customers</div>
-      </div>
-      <div class="kpi-tile" style="--kpi-color:#f59e0b">
-        <div class="kpi-tile-icon">${ICON_RETURNING}</div>
-        <div class="kpi-tile-value" id="kpi-returning">0</div>
-        <div class="kpi-tile-label">Returning Customers</div>
-      </div>
-    </div>
-
     <div class="content-grid">
       <div class="video-section">
-        <div class="video-wrap">
-          <video id="main-video" src="${videoUrl}" controls muted playsinline></video>
-        </div>
+        <video id="main-video" src="${videoUrl}" controls muted playsinline autoplay></video>
         <div class="video-footer">
           <span class="video-label">Annotated Face Recognition Feed</span>
         </div>
       </div>
-      <div class="feed-section">
-        <div class="feed-header">
-          <span class="feed-title">Customer Events</span>
-          <span class="feed-count" id="feed-count">0 events</span>
+      <div class="right-column">
+        <div class="kpi-stack">
+          <div class="kpi-tile" style="--kpi-color:#2E3192">
+            <div class="kpi-tile-icon">${ICON_TOTAL}</div>
+            <div class="kpi-tile-body">
+              <div class="kpi-tile-value" id="kpi-total">0</div>
+              <div class="kpi-tile-label">Total Customers</div>
+            </div>
+          </div>
+          <div class="kpi-tile" style="--kpi-color:#10b981">
+            <div class="kpi-tile-icon">${ICON_NEW}</div>
+            <div class="kpi-tile-body">
+              <div class="kpi-tile-value" id="kpi-new">0</div>
+              <div class="kpi-tile-label">New Customers</div>
+            </div>
+          </div>
+          <div class="kpi-tile" style="--kpi-color:#f59e0b">
+            <div class="kpi-tile-icon">${ICON_RETURNING}</div>
+            <div class="kpi-tile-body">
+              <div class="kpi-tile-value" id="kpi-returning">0</div>
+              <div class="kpi-tile-label">Returning Customers</div>
+            </div>
+          </div>
         </div>
-        <div class="feed-list" id="feed-list">
-          <div class="feed-empty">Play the video to see customer events</div>
+        <div class="feed-section">
+          <div class="feed-header">
+            <span class="feed-title">Customer Events</span>
+            <span class="feed-count" id="feed-count">0 events</span>
+          </div>
+          <div class="feed-list" id="feed-list">
+            <div class="feed-empty">Play the video to see customer events</div>
+          </div>
         </div>
       </div>
     </div>`;
