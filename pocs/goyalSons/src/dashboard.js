@@ -16,7 +16,11 @@ const ICON_RETURNING = `<svg width="22" height="22" viewBox="0 0 24 24" fill="no
 
 function fmtTime(s) {
   const t = Math.round(s || 0);
-  return `${Math.floor(t / 60).toString().padStart(2, '0')}:${(t % 60).toString().padStart(2, '0')}`;
+  const h = Math.floor(t / 3600);
+  const m = Math.floor((t % 3600) / 60);
+  const sec = t % 60;
+  if (h > 0) return `${h}:${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+  return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
 }
 
 export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSeenMap }) {
@@ -57,19 +61,17 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       </div>
       <div class="right-column">
         <div class="kpi-stack">
-          <div class="kpi-tile kpi-tile--full" style="--kpi-color:#2E3192">
+          <div class="kpi-tile" style="--kpi-color:#2E3192">
             <div class="kpi-tile-value" id="kpi-total">0</div>
             <div class="kpi-tile-label">Total Customers</div>
           </div>
-          <div class="kpi-row-pair">
-            <div class="kpi-tile" style="--kpi-color:#10b981">
-              <div class="kpi-tile-value" id="kpi-new">0</div>
-              <div class="kpi-tile-label">New Customers</div>
-            </div>
-            <div class="kpi-tile" style="--kpi-color:#f59e0b">
-              <div class="kpi-tile-value" id="kpi-returning">0</div>
-              <div class="kpi-tile-label">Returning Customers</div>
-            </div>
+          <div class="kpi-tile" style="--kpi-color:#10b981">
+            <div class="kpi-tile-value" id="kpi-new">0</div>
+            <div class="kpi-tile-label">New Customers</div>
+          </div>
+          <div class="kpi-tile" style="--kpi-color:#f59e0b">
+            <div class="kpi-tile-value" id="kpi-returning">0</div>
+            <div class="kpi-tile-label">Returning Customers</div>
           </div>
         </div>
         <div class="feed-section">
@@ -143,9 +145,9 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       const e = events[i];
       if (e.is_returning === 0) {
         html += `
-          <div class="feed-group">
+          <div class="feed-group" data-seek="${e.time}">
             <div class="feed-row feed-row--new">
-              <button class="feed-time" data-seek="${e.time}">${fmtTime(e.time)}</button>
+              <button class="feed-time">${fmtTime(e.time)}</button>
               <div class="feed-info">
                 <span class="feed-customer">Customer #${e.person_id}</span>
                 <span class="feed-badge feed-badge--new">First Visit</span>
@@ -155,16 +157,16 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
       } else {
         const fs = firstSeenMap.get(e.person_id);
         const subRow = fs !== undefined ? `
-            <div class="feed-row feed-row--sub">
-              <button class="feed-time" data-seek="${fs}">${fmtTime(fs)}</button>
+            <div class="feed-row feed-row--sub" data-seek="${fs}">
+              <button class="feed-time">${fmtTime(fs)}</button>
               <div class="feed-info">
                 <span class="feed-sub-text">First seen at ${fmtTime(fs)}</span>
               </div>
             </div>` : '';
         html += `
-          <div class="feed-group feed-group--returning">
+          <div class="feed-group feed-group--returning" data-seek="${e.time}">
             <div class="feed-row">
-              <button class="feed-time" data-seek="${e.time}">${fmtTime(e.time)}</button>
+              <button class="feed-time">${fmtTime(e.time)}</button>
               <div class="feed-info">
                 <span class="feed-customer">Customer #${e.person_id}</span>
                 <span class="feed-badge feed-badge--returning">Returning</span>

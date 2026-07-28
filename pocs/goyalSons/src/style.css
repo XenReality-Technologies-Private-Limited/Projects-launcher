@@ -127,8 +127,8 @@ body {
 }
 
 .header-customer-logo {
-  height: 52px;
-  max-width: 160px;
+  height: 60px;
+  max-width: 180px;
   object-fit: contain;
 }
 
@@ -152,7 +152,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  padding: 16px 24px 32px;
+  padding: 24px 24px 32px;
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
@@ -197,14 +197,8 @@ body {
 
 /* ── KPI Stack ── */
 .kpi-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.kpi-row-pair {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
 }
 
@@ -213,26 +207,22 @@ body {
   border: 1px solid var(--card-border);
   border-left: 4px solid var(--kpi-color, var(--xr-navy));
   border-radius: 14px;
-  padding: 14px 18px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   box-shadow: var(--shadow);
 }
 
-.kpi-tile--full {
-  /* spans full width — default block behavior handles this */
-}
-
 .kpi-tile-value {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: var(--kpi-color, var(--xr-navy));
   line-height: 1;
 }
 
 .kpi-tile-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -291,8 +281,10 @@ body {
 
 .feed-group {
   border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
 }
 .feed-group:last-child { border-bottom: none; }
+.feed-group:hover { background: #f9fafb; }
 .feed-group--returning { background: #fffbeb; }
 .feed-group--returning:hover { background: #fef3c7; }
 
@@ -302,11 +294,7 @@ body {
   gap: 10px;
   padding: 7px 14px;
 }
-.feed-row--new {
-  border-bottom: 1px solid #f3f4f6;
-}
-.feed-row--new:last-child { border-bottom: none; }
-.feed-row--new:hover { background: #f9fafb; }
+.feed-row--new { }
 
 .feed-row--sub {
   padding: 5px 14px 8px 28px;
