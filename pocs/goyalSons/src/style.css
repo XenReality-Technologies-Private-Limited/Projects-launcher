@@ -174,9 +174,10 @@ body {
   display: block;
 }
 
-.video-footer {
+.video-header {
   padding: 10px 16px;
   background: var(--card-bg);
+  border-bottom: 1px solid var(--card-border);
 }
 
 .video-label {

@@ -50,10 +50,10 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
 
     <div class="content-grid">
       <div class="video-section">
-        <video id="main-video" src="${videoUrl}" controls muted playsinline autoplay></video>
-        <div class="video-footer">
+        <div class="video-header">
           <span class="video-label">Annotated Face Recognition Feed</span>
         </div>
+        <video id="main-video" src="${videoUrl}" controls muted playsinline autoplay></video>
       </div>
       <div class="right-column">
         <div class="kpi-stack">
