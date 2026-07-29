@@ -4,7 +4,7 @@ import { loadData } from './db.js';
 import { renderDashboard } from './dashboard.js';
 
 const CF        = 'https://d2uimaqek2eby3.cloudfront.net/Goyal-Sons';
-const DB_URL    = `${CF}/recognition.db`;
+const DB_URL    = `${CF}/recognition.db?v=${Date.now()}`;
 const VIDEO_URL = `${CF}/annotated_faces.mp4`;
 const LOGO_URL  = `${CF}/Goyal_Sons_Logo.png`;
 
