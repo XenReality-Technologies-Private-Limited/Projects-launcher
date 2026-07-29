@@ -134,7 +134,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
             <div class="feed-row feed-row--new">
               <button class="feed-time">${fmtTime(e.time)}</button>
               <div class="feed-info">
-                <span class="feed-customer">Customer #${e.person_id}</span>
+                <span class="feed-customer">Person #${e.person_id}</span>
                 <span class="feed-badge feed-badge--new">First Visit</span>
               </div>
             </div>
@@ -153,7 +153,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
             <div class="feed-row">
               <button class="feed-time">${fmtTime(e.time)}</button>
               <div class="feed-info">
-                <span class="feed-customer">Customer #${e.person_id}</span>
+                <span class="feed-customer">Person #${e.person_id}</span>
                 <span class="feed-badge feed-badge--returning">Returning</span>
               </div>
             </div>${subRow}
