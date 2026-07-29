@@ -1,6 +1,6 @@
 import pb from './pb.js';
 
-const LOGO = 'https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp';
+const LOGO = '/xenlogo.png';
 const POC_NAME = 'Goyal &amp; Sons';
 const COLLECTION = 'xr_employees';
 
