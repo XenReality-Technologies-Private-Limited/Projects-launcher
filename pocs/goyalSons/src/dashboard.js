@@ -1,4 +1,7 @@
 
+// Person IDs whose "returning" events should be suppressed (show first-visit only)
+const SUPPRESS_RETURNING = new Set([276, 243, 77, 92]);
+
 const EYE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
   <circle cx="12" cy="12" r="3"/>
@@ -149,7 +152,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
     for (let i = 0; i < upTo; i++) {
       const e = events[i];
       if (e.returning === 0) seenNew.add(e.person_id);
-      else                   seenRet.add(e.person_id);
+      else if (!SUPPRESS_RETURNING.has(e.person_id)) seenRet.add(e.person_id);
     }
     kpiTotal.textContent  = seenNew.size + seenRet.size;
     kpiNew.textContent    = seenNew.size;
@@ -164,6 +167,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
     let html = '';
     for (let i = upTo - 1; i >= 0; i--) {
       const e = events[i];
+      if (e.returning === 1 && SUPPRESS_RETURNING.has(e.person_id)) continue;
       const hasImg    = imageMap.has(`${e.person_id}_${e.returning}`);
       const eyeBtn    = hasImg ? `<button class="feed-eye" data-key="${e.person_id}_${e.returning}" title="View face">${EYE_ICON}</button>` : '';
 
