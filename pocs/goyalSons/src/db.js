@@ -18,23 +18,23 @@ export async function loadData(url) {
   const buffer = await response.arrayBuffer();
   const db = new SQL.Database(new Uint8Array(buffer));
 
-  // One event per (person_id, is_returning) pair — first occurrence by time.
-  // This gives us: when each person was first seen, and when first seen as returning.
   const events = [];
 
+  // SQLite guarantees that for MIN(), other bare columns come from the same row
   const stmt = db.prepare(
-    'SELECT person_id, is_returning, MIN(time_seconds) AS time_seconds ' +
-    'FROM face_detections ' +
-    'GROUP BY person_id, is_returning ' +
-    'ORDER BY time_seconds ASC'
+    'SELECT person_id, returning, MIN(time) AS time, frontal_image_base64 ' +
+    'FROM person_visits ' +
+    'GROUP BY person_id, returning ' +
+    'ORDER BY time ASC'
   );
 
   while (stmt.step()) {
     const r = stmt.getAsObject();
     events.push({
-      time:         Number(r.time_seconds),
-      person_id:    Number(r.person_id),
-      is_returning: Number(r.is_returning),
+      time:      Number(r.time),
+      person_id: Number(r.person_id),
+      returning: Number(r.returning),
+      image:     r.frontal_image_base64 ? `data:image/jpeg;base64,${r.frontal_image_base64}` : null,
     });
   }
   stmt.free();
@@ -42,10 +42,9 @@ export async function loadData(url) {
 
   events.sort((a, b) => a.time - b.time);
 
-  // Pre-build a lookup: person_id → first-seen time (is_returning=0 row)
   const firstSeenMap = new Map();
   for (const e of events) {
-    if (e.is_returning === 0 && !firstSeenMap.has(e.person_id)) {
+    if (e.returning === 0 && !firstSeenMap.has(e.person_id)) {
       firstSeenMap.set(e.person_id, e.time);
     }
   }

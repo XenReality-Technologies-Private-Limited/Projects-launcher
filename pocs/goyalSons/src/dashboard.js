@@ -1,4 +1,9 @@
 
+const EYE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+  <circle cx="12" cy="12" r="3"/>
+</svg>`;
+
 function fmtTime(s) {
   const t = Math.round(s || 0);
   const h = Math.floor(t / 3600);
@@ -69,6 +74,18 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="face-modal" id="face-modal">
+      <div class="face-modal-backdrop" id="face-modal-backdrop"></div>
+      <div class="face-modal-box">
+        <button class="face-modal-close" id="face-modal-close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+        <img class="face-modal-img" id="face-modal-img" src="" alt="Face screenshot" />
+      </div>
     </div>`;
 
   // Clock
@@ -83,19 +100,39 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
   tickClock();
   setInterval(tickClock, 1000);
 
-  const video      = appEl.querySelector('#main-video');
-  const kpiTotal   = appEl.querySelector('#kpi-total');
-  const kpiNew     = appEl.querySelector('#kpi-new');
-  const kpiRet     = appEl.querySelector('#kpi-returning');
-  const feedList   = appEl.querySelector('#feed-list');
-  const feedCount  = appEl.querySelector('#feed-count');
+  const video     = appEl.querySelector('#main-video');
+  const kpiTotal  = appEl.querySelector('#kpi-total');
+  const kpiNew    = appEl.querySelector('#kpi-new');
+  const kpiRet    = appEl.querySelector('#kpi-returning');
+  const feedList  = appEl.querySelector('#feed-list');
+  const feedCount = appEl.querySelector('#feed-count');
+  const faceModal = appEl.querySelector('#face-modal');
+  const faceImg   = appEl.querySelector('#face-modal-img');
+
+  // Build image lookup: "person_id_returning" → data URL
+  const imageMap = new Map();
+  for (const e of events) {
+    if (e.image) imageMap.set(`${e.person_id}_${e.returning}`, e.image);
+  }
+
+  function openFace(src) {
+    faceImg.src = src;
+    faceModal.classList.add('open');
+  }
+  function closeFace() {
+    faceModal.classList.remove('open');
+    faceImg.src = '';
+  }
+
+  appEl.querySelector('#face-modal-backdrop').addEventListener('click', closeFace);
+  appEl.querySelector('#face-modal-close').addEventListener('click', closeFace);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeFace(); });
 
   let lastIdx = -1;
 
   function update() {
     const t = video.currentTime;
 
-    // Binary search for events up to t
     let lo = 0, hi = events.length;
     while (lo < hi) {
       const mid = (lo + hi) >> 1;
@@ -111,15 +148,14 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
     const seenRet = new Set();
     for (let i = 0; i < upTo; i++) {
       const e = events[i];
-      if (e.is_returning === 0) seenNew.add(e.person_id);
-      else                      seenRet.add(e.person_id);
+      if (e.returning === 0) seenNew.add(e.person_id);
+      else                   seenRet.add(e.person_id);
     }
-    kpiTotal.textContent = seenNew.size + seenRet.size;
-    kpiNew.textContent   = seenNew.size;
-    kpiRet.textContent   = seenRet.size;
+    kpiTotal.textContent  = seenNew.size + seenRet.size;
+    kpiNew.textContent    = seenNew.size;
+    kpiRet.textContent    = seenRet.size;
     feedCount.textContent = `${upTo} event${upTo !== 1 ? 's' : ''}`;
 
-    // Render feed (newest at top)
     if (upTo === 0) {
       feedList.innerHTML = '<div class="feed-empty">Play the video to see customer events</div>';
       return;
@@ -128,25 +164,32 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
     let html = '';
     for (let i = upTo - 1; i >= 0; i--) {
       const e = events[i];
-      if (e.is_returning === 0) {
+      const hasImg    = imageMap.has(`${e.person_id}_${e.returning}`);
+      const eyeBtn    = hasImg ? `<button class="feed-eye" data-key="${e.person_id}_${e.returning}" title="View face">${EYE_ICON}</button>` : '';
+
+      if (e.returning === 0) {
         html += `
           <div class="feed-group" data-seek="${e.time}">
-            <div class="feed-row feed-row--new">
+            <div class="feed-row">
               <button class="feed-time">${fmtTime(e.time)}</button>
               <div class="feed-info">
                 <span class="feed-customer">Person #${e.person_id}</span>
                 <span class="feed-badge feed-badge--new">First Visit</span>
               </div>
+              ${eyeBtn}
             </div>
           </div>`;
       } else {
-        const fs = firstSeenMap.get(e.person_id);
+        const fs          = firstSeenMap.get(e.person_id);
+        const hasSubImg   = imageMap.has(`${e.person_id}_0`);
+        const subEyeBtn   = hasSubImg ? `<button class="feed-eye" data-key="${e.person_id}_0" title="View face">${EYE_ICON}</button>` : '';
         const subRow = fs !== undefined ? `
             <div class="feed-row feed-row--sub" data-seek="${fs}">
               <button class="feed-time">${fmtTime(fs)}</button>
               <div class="feed-info">
                 <span class="feed-sub-text">First seen at ${fmtTime(fs)}</span>
               </div>
+              ${subEyeBtn}
             </div>` : '';
         html += `
           <div class="feed-group feed-group--returning" data-seek="${e.time}">
@@ -156,6 +199,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
                 <span class="feed-customer">Person #${e.person_id}</span>
                 <span class="feed-badge feed-badge--returning">Returning</span>
               </div>
+              ${eyeBtn}
             </div>${subRow}
           </div>`;
       }
@@ -167,8 +211,16 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
   video.addEventListener('loadedmetadata', update);
   video.addEventListener('seeked', update);
 
-  feedList.addEventListener('click', function (e) {
-    const btn = e.target.closest('[data-seek]');
-    if (btn) video.currentTime = parseFloat(btn.dataset.seek);
+  feedList.addEventListener('click', function (ev) {
+    // Eye icon — show face image, don't seek
+    const eyeBtn = ev.target.closest('.feed-eye');
+    if (eyeBtn) {
+      const img = imageMap.get(eyeBtn.dataset.key);
+      if (img) openFace(img);
+      return;
+    }
+    // Row click — seek video
+    const group = ev.target.closest('[data-seek]');
+    if (group) video.currentTime = parseFloat(group.dataset.seek);
   });
 }
