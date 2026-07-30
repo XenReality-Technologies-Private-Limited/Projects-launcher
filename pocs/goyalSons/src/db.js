@@ -22,9 +22,9 @@ export async function loadData(url) {
 
   // SQLite guarantees that for MIN(), other bare columns come from the same row
   const stmt = db.prepare(
-    'SELECT person_id, returning, MIN(time) AS time, frontal_image_base64 ' +
+    'SELECT person_id, "returning", MIN(time) AS time, frontal_image_base64 ' +
     'FROM person_visits ' +
-    'GROUP BY person_id, returning ' +
+    'GROUP BY person_id, "returning" ' +
     'ORDER BY time ASC'
   );
 

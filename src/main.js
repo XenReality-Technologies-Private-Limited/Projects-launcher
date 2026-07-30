@@ -6,8 +6,10 @@ import { renderProjectsPage } from './projects-page.js';
 function boot() {
   const app = document.getElementById('app');
   if (pb.authStore.isValid) {
-    const poc = pb.authStore.record?.poc;
-    if (poc) { window.location.replace('/' + poc + '/'); return; }
+    const poc   = pb.authStore.record?.poc;
+    const email = pb.authStore.record?.email || '';
+    const isXR  = email.endsWith('@xenreality.com');
+    if (poc && !isXR) { window.location.replace('/' + poc + '/'); return; }
     renderProjectsPage(app, () => { pb.authStore.clear(); boot(); });
   } else {
     renderEmployeeLogin(() => boot());
