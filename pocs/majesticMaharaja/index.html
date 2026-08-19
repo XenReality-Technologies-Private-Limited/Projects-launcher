@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Majestic Maharaja Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/webp" href="https://d108xxen99ni2a.cloudfront.net/XenRealitymark.webp" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/report.css" />
+    <!-- Report download libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="dash-header">
+        <div class="header-xr-block"><div class="header-logo-pill"><img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" /></div><div class="header-vdivider"></div></div>
+        <div class="header-title">PoC Dashboard</div>
+        <div class="header-right">
+
+          <div class="header-datetime">
+            <span class="header-date" id="hdr-date"></span>
+            <span class="header-time" id="hdr-time"></span>
+          </div>
+          <div class="header-live-pill"><span class="live-dot" style="background-color:#22c55e;"></span>Live</div>
+          <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
+        </div>
+      </header>
+
+      <main class="dashboard-main">
+        <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <h2 class="kpi-title">FOOTFALL</h2>
+            </div>
+            <span class="kpi-badge">ACTIVE</span>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-01</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/annotated_counted.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
+              <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
+              <canvas class="kpi-graph-in" width="600" height="120"></canvas>
+              <div class="kpi-legend" style="margin-bottom: 1rem;">
+                <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+              </div>
+
+              <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
+              <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
+              <canvas class="kpi-graph-out" width="600" height="120"></canvas>
+              <div class="kpi-legend">
+                <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="kpi-card" id="kpi-zone" data-kpi="zone">
+          <div class="kpi-header">
+            <div class="kpi-title-wrap">
+              <span class="kpi-title-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              </span>
+              <h2 class="kpi-title">LADIES CLOTHING ZONE</h2>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <span class="kpi-employee-badge" style="width: 175px; white-space: nowrap; text-align: center; padding: 6px 8px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Employee: --</span>
+              <span class="kpi-customer-badge" style="width: 175px; white-space: nowrap; text-align: center; padding: 6px 8px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Customer: --</span>
+            </div>
+          </div>
+          <div class="kpi-body">
+            <div class="kpi-video-container">
+              <span class="kpi-video-label">CAM-02</span>
+              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/ladies_dwell_reviewed_912.mp4" controls muted playsinline autoplay loop></video>
+            </div>
+            <div class="kpi-right">
+              <div class="kpi-metric-label">INTERACTION TIME</div>
+              <div class="kpi-metric-value kpi-interaction-time-value">--</div>
+              <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
+              <canvas class="kpi-graph" style="margin-top:20px;" width="600" height="160"></canvas>
+              <div class="kpi-legend">
+                <div>Interaction Time (s)</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- ======= Report Modal ======= -->
+    <div id="report-modal-overlay" class="report-modal-overlay" aria-modal="true" role="dialog">
+      <div class="report-container">
+
+        <!-- Bata-style Sticky Header -->
+        <div class="report-sticky-header">
+
+          <!-- Row 1: Header bar (matches Bata XenTrack header exactly) -->
+          <div class="rpt-top-bar">
+            <div class="rpt-xr-block">
+              <img src="/xenlogo.png" alt="XenReality" class="rpt-xr-logo" />
+            </div>
+            <span class="rpt-center-title">Store Analytics Report</span>
+            <div class="rpt-header-actions">
+              <div class="report-download-wrap">
+                <button class="btn-download" id="btn-report-download">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Download
+                </button>
+                <div class="report-format-picker" id="report-format-picker">
+                  <button class="format-option" id="dl-pdf">
+                    <div class="format-icon pdf">PDF</div>
+                    <div>
+                      <div style="font-weight:600">PDF Report</div>
+                      <div style="font-size:0.72rem;color:#9ca3af">Multi-page, print-ready</div>
+                    </div>
+                  </button>
+                  <button class="format-option" id="dl-excel">
+                    <div class="format-icon excel">XLS</div>
+                    <div>
+                      <div style="font-weight:600">Excel Spreadsheet</div>
+                      <div style="font-size:0.72rem;color:#9ca3af">All data tables, .xlsx</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+              <button class="btn-close-report" id="btn-close-report">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Close
+              </button>
+            </div>
+          </div>
+
+          <!-- Row 2: Always-visible Bata-style filter bar -->
+          <div class="rpt-filter-row" id="report-filter-bar">
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">From</span>
+              <input type="date" id="rpt-from-date" class="rpt-filter-input" />
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">To</span>
+              <input type="date" id="rpt-to-date" class="rpt-filter-input" />
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">Store</span>
+              <div class="filter-ms-wrap" id="store-ms-wrap">
+                <button class="filter-ms-trigger" id="store-ms-trigger" type="button">
+                  <span id="store-ms-label">All Stores</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="filter-ms-dropdown" id="store-ms-dropdown">
+                  <div class="filter-ms-search-wrap">
+                    <input type="text" id="store-ms-search" class="filter-ms-search" placeholder="Search stores…" autocomplete="off" />
+                  </div>
+                  <div class="filter-ms-list" id="store-ms-list"></div>
+                  <div class="filter-ms-footer">
+                    <button class="filter-ms-clear" id="store-ms-clear" type="button">Clear all</button>
+                    <button class="filter-ms-apply" id="store-ms-apply" type="button">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">Region</span>
+              <select class="filter-select" id="filter-region">
+                <option value="">All Regions</option>
+                <option>North</option>
+                <option>South</option>
+                <option>East</option>
+                <option>West</option>
+              </select>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">State</span>
+              <select class="filter-select" id="filter-state">
+                <option value="">All States</option>
+              </select>
+            </div>
+            <div class="rpt-filter-group">
+              <span class="rpt-filter-label">City</span>
+              <select class="filter-select" id="filter-city">
+                <option value="">All Cities</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="report-content-area" id="report-content-area">
+          <!-- Built by report.js -->
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Loading overlay for PDF generation -->
+    <div class="report-loading-overlay" id="report-loading-overlay">
+      <div class="report-loading-spinner"></div>
+      <div class="report-loading-text">Generating PDF…</div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

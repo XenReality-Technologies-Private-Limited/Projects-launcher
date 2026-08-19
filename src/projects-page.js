@@ -4,6 +4,7 @@ const PROJECTS = [
   { name: 'Kushals',       url: '/kushals/' },
   { name: 'Paragon',       url: '/paragon/' },
   { name: 'Reliance',       url: '/reliance/' },
+  { name: 'Majestic Maharaja', url: '/majesticMaharaja/' },
   { name: 'TechnoSport',   url: '/technoSport/' },
   { name: 'Thomsun - Yamaha', url: '/yamaha/' },
   { name: 'Us-Polo',       url: '/usPolo/' },

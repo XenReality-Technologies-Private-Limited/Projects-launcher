@@ -110,6 +110,13 @@ RUN cd pocs/goyalSons && npm install --prefer-offline
 COPY pocs/goyalSons/ ./pocs/goyalSons/
 RUN cd pocs/goyalSons && npm run build
 
+# ── majesticMaharaja ──
+COPY pocs/majesticMaharaja/package*.json ./pocs/majesticMaharaja/
+RUN cd pocs/majesticMaharaja && npm install --prefer-offline
+COPY pocs/majesticMaharaja/ ./pocs/majesticMaharaja/
+RUN cd pocs/majesticMaharaja && npm run build
+
+
 # ── instructions (static HTML, no build step) ──
 COPY pocs/instructions/ ./pocs/instructions/
 
@@ -131,6 +138,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/hiliteMall/dist   _deploy/hiliteMall && \
     cp -r pocs/safeerGroup/dist  _deploy/safeerGroup && \
     cp -r pocs/goyalSons/dist    _deploy/goyalSons && \
+    cp -r pocs/majesticMaharaja/dist _deploy/majesticMaharaja && \
     cp -r pocs/instructions      _deploy/instructions
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
