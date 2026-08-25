@@ -2,13 +2,14 @@
   var modal   = document.getElementById('xrVideoModal');
   var video   = document.getElementById('xrSetupVideo');
   var btnOpen = document.getElementById('btnWatchVideo');
+  var btnOpenConfig = document.getElementById('btnWatchConfiguratorVideo');
   var btnClose= document.getElementById('xrVideoClose');
   var btnPlay = document.getElementById('xrVideoPlayBtn');
   var fill    = document.getElementById('xrProgressFill');
   var prog    = document.getElementById('xrProgress');
   var timeEl  = document.getElementById('xrVideoTime');
 
-  if (!modal || !video || !btnOpen) return;
+  if (!modal || !video) return;
 
   function fmt(s) {
     var m = Math.floor(s / 60);
@@ -20,7 +21,11 @@
     btnPlay.querySelector('.xr-icon-pause').style.display = p ? 'inline' : 'none';
   }
 
-  function openModal() {
+  function openModal(src) {
+    if (src && video.src !== src) {
+      video.src = src;
+      video.load();
+    }
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     video.play().then(function () { setPlaying(true); }).catch(function () {});
@@ -33,7 +38,17 @@
     document.body.style.overflow = '';
   }
 
-  btnOpen.addEventListener('click', openModal);
+  if (btnOpen) {
+    btnOpen.addEventListener('click', function() {
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Subheading%20(1).mp4");
+    });
+  }
+
+  if (btnOpenConfig) {
+    btnOpenConfig.addEventListener('click', function() {
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Configurator.mp4");
+    });
+  }
   btnClose.addEventListener('click', closeModal);
   modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
 
