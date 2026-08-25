@@ -75,23 +75,9 @@ export function initDashboard(dbData) {
       const rows = zone ? zone.rows : [];
       const interactionSeries = zone ? zone.interactionSeries : [];
 
-      const canvas = section.querySelector('.kpi-graph');
-      if (!canvas) return;
-
       const employeeBadge = section.querySelector('.kpi-employee-badge');
       const customerBadge = section.querySelector('.kpi-customer-badge');
       const interactionTimeEl = section.querySelector('.kpi-interaction-time-value');
-
-      const maxInteraction = interactionSeries.length ? Math.max(...interactionSeries) : 10;
-
-      const graph = new TimeSeriesGraph(canvas, {
-        yMax: Math.ceil(maxInteraction * 1.2) || 10,
-        lineColor: '#8b5cf6',
-        playheadColor: '#6b7280',
-        showLiveCount: true,
-      });
-
-      graph.setValues(interactionSeries);
 
       function formatInteractionTime(seconds) {
         const mm = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -112,7 +98,6 @@ export function initDashboard(dbData) {
             customerBadge.style.background = '#e5e7eb';
           }
           if (interactionTimeEl) interactionTimeEl.textContent = '00:00';
-          graph.render();
           return;
         }
         const cTime = video.currentTime || 0;
@@ -147,19 +132,7 @@ export function initDashboard(dbData) {
         if (interactionTimeEl) {
           interactionTimeEl.textContent = formatInteractionTime(row.cumulativeInteraction ?? 0);
         }
-
-        graph.setCurrentIndex(idx);
-        graph.setValueAt(idx, row.cumulativeInteraction ?? 0);
-        graph.render();
       };
-
-      const resizeObserver = new ResizeObserver(() => {
-        const rect = canvas.getBoundingClientRect();
-        canvas.width = rect.width * window.devicePixelRatio;
-        canvas.height = rect.height * window.devicePixelRatio;
-        graph.render();
-      });
-      resizeObserver.observe(canvas);
 
       video.addEventListener('loadedmetadata', updateForTime);
       video.addEventListener('timeupdate', updateForTime);
