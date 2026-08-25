@@ -128,14 +128,14 @@ export function initDashboard(dbData) {
       const updateForTime = () => {
         if (!rows.length) {
           if (employeeBadge) {
-            employeeBadge.textContent = 'Employee: --';
-            employeeBadge.style.color = '#374151';
-            employeeBadge.style.background = '#e5e7eb';
+            employeeBadge.textContent = '--';
+            employeeBadge.style.color = '#9ca3af';
+            employeeBadge.style.background = 'transparent';
           }
           if (customerBadge) {
-            customerBadge.textContent = 'Customer: --';
-            customerBadge.style.color = '#374151';
-            customerBadge.style.background = '#e5e7eb';
+            customerBadge.textContent = '--';
+            customerBadge.style.color = '#9ca3af';
+            customerBadge.style.background = 'transparent';
           }
           if (interactionTimeEl) interactionTimeEl.textContent = '00:00';
           return;
@@ -157,16 +157,16 @@ export function initDashboard(dbData) {
 
         if (employeeBadge) {
           const present = row.employee > 0;
-          employeeBadge.textContent = present ? 'Employee: Present' : 'Employee: Absent';
-          employeeBadge.style.color = present ? '#065f46' : '#991b1b';
-          employeeBadge.style.background = present ? '#d1fae5' : '#fee2e2';
+          employeeBadge.textContent = present ? 'Present' : 'Absent';
+          employeeBadge.style.color = present ? '#10b981' : '#ef4444';
+          employeeBadge.style.background = 'transparent';
         }
         
         if (customerBadge) {
           const present = row.customer > 0;
-          customerBadge.textContent = present ? 'Customer: Present' : 'Customer: Absent';
-          customerBadge.style.color = present ? '#065f46' : '#991b1b';
-          customerBadge.style.background = present ? '#d1fae5' : '#fee2e2';
+          customerBadge.textContent = present ? 'Present' : 'Absent';
+          customerBadge.style.color = present ? '#10b981' : '#ef4444';
+          customerBadge.style.background = 'transparent';
         }
 
         if (interactionTimeEl) {

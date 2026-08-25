@@ -105,25 +105,30 @@
           </div>
         </section>
 
-        <section class="kpi-card" id="kpi-zone" data-kpi="zone">
-          <div class="kpi-header">
+        <section class="kpi-card" id="kpi-zone" data-kpi="zone" style="display: flex; flex-direction: column;">
+          <div class="kpi-header" style="margin-bottom: 4px;">
             <div class="kpi-title-wrap">
-              <span class="kpi-title-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              </span>
-              <h2 class="kpi-title">LADIES CLOTHING ZONE</h2>
+              <h2 class="kpi-title" style="font-size: 1rem;">LADIES CLOTHING ZONE</h2>
             </div>
             <span class="kpi-badge">ACTIVE</span>
           </div>
-          <div class="kpi-body">
-            <div class="kpi-full">
-              <div style="display:flex; gap:10px; margin-bottom: 20px;">
-                <span class="kpi-employee-badge" style="padding: 6px 12px; border-radius: 999px; font-weight: bold; font-size: 0.8rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Employee: --</span>
-                <span class="kpi-customer-badge" style="padding: 6px 12px; border-radius: 999px; font-weight: bold; font-size: 0.8rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Customer: --</span>
+          <div style="font-size: 0.65rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px;">CUMULATIVE TIME BOTH EMPLOYEE & CUSTOMER WERE PRESENT TOGETHER</div>
+          
+          <div class="kpi-body" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+            <div class="kpi-full" style="text-align: center;">
+              <div class="kpi-metric-value kpi-interaction-time-value" style="color: #a855f7; font-size: 3rem; line-height: 1;">00:00</div>
+              <div style="font-size: 0.65rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 8px;">TOTAL CO-PRESENCE TIME</div>
+              
+              <div style="display: flex; gap: 12px; margin-top: 32px;">
+                <div style="flex: 1; border: 1px solid #f3f4f6; border-radius: 8px; padding: 12px; text-align: center; background: #fafafa; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                  <div class="kpi-employee-badge" style="color: #10b981; font-weight: 800; font-size: 1.1rem; margin-bottom: 4px;">--</div>
+                  <div style="font-size: 0.65rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em;">EMPLOYEE AT DESK</div>
+                </div>
+                <div style="flex: 1; border: 1px solid #f3f4f6; border-radius: 8px; padding: 12px; text-align: center; background: #fafafa; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                  <div class="kpi-customer-badge" style="color: #10b981; font-weight: 800; font-size: 1.1rem; margin-bottom: 4px;">--</div>
+                  <div style="font-size: 0.65rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em;">CUSTOMER AT DESK</div>
+                </div>
               </div>
-              <div class="kpi-metric-label">INTERACTION TIME</div>
-              <div class="kpi-metric-value kpi-interaction-time-value">--</div>
-              <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
             </div>
           </div>
         </section>
