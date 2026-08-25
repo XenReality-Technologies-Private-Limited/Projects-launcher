@@ -59,7 +59,6 @@
 
       <div style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; width: 100%; flex: 1; min-height: 500px;">
         <div class="dashboard-main" style="padding-top: 32px; padding-bottom: 60px;">
-          <h3 style="font-size: 0.85rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 20px 0;">Key Performance Indicators</h3>
           <div class="kpi-grid">
         <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
           <div class="kpi-header">
@@ -73,25 +72,33 @@
           </div>
           <div class="kpi-body">
             <div class="kpi-full">
-              <div style="display: flex; gap: 40px; justify-content: center; padding: 20px 0;">
-                <div style="text-align: center;">
-                  <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
-                  <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
-                  <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
-                    <span style="color: #2563eb;">Male: <span class="footfall-in-male">--</span></span> &middot;
-                    <span style="color: #ec4899;">Female: <span class="footfall-in-female">--</span></span> &middot;
-                    <span style="color: #eab308;">Child: <span class="footfall-in-child">--</span></span>
+              <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; gap: 40px; justify-content: center; padding-top: 10px;">
+                  <div style="text-align: center;">
+                    <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
+                    <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
+                    <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
+                      <span style="color: #2563eb;">Male: <span class="footfall-in-male">--</span></span> &middot;
+                      <span style="color: #ec4899;">Female: <span class="footfall-in-female">--</span></span> &middot;
+                      <span style="color: #eab308;">Child: <span class="footfall-in-child">--</span></span>
+                    </div>
+                  </div>
+                  <div style="width: 1px; background: #e5e7eb;"></div>
+                  <div style="text-align: center;">
+                    <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
+                    <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
+                    <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
+                      <span style="color: #2563eb;">Male: <span class="footfall-out-male">--</span></span> &middot;
+                      <span style="color: #ec4899;">Female: <span class="footfall-out-female">--</span></span> &middot;
+                      <span style="color: #eab308;">Child: <span class="footfall-out-child">--</span></span>
+                    </div>
                   </div>
                 </div>
-                <div style="width: 1px; background: #e5e7eb;"></div>
-                <div style="text-align: center;">
-                  <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
-                  <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
-                  <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
-                    <span style="color: #2563eb;">Male: <span class="footfall-out-male">--</span></span> &middot;
-                    <span style="color: #ec4899;">Female: <span class="footfall-out-female">--</span></span> &middot;
-                    <span style="color: #eab308;">Child: <span class="footfall-out-child">--</span></span>
-                  </div>
+                <div style="border-top: 1px solid #e5e7eb; margin: 0 20px;"></div>
+                <div style="text-align: center; padding-bottom: 10px;">
+                  <div class="kpi-metric-label" style="color: black;">DWELL TIME</div>
+                  <div class="kpi-metric-value footfall-dwell-time" style="color: black;">--</div>
+                  <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
                 </div>
               </div>
             </div>

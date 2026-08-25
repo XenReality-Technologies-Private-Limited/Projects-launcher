@@ -30,6 +30,7 @@ export function initDashboard(dbData) {
 
       const inCountEl = section.querySelector('.footfall-in-count');
       const outCountEl = section.querySelector('.footfall-out-count');
+      const dwellTimeEl = section.querySelector('.footfall-dwell-time');
       
       const inMaleEl = section.querySelector('.footfall-in-male');
       const inFemaleEl = section.querySelector('.footfall-in-female');
@@ -39,10 +40,46 @@ export function initDashboard(dbData) {
       const outFemaleEl = section.querySelector('.footfall-out-female');
       const outChildEl = section.querySelector('.footfall-out-child');
 
+      function formatTime(seconds) {
+        const mm = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const ss = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${mm}:${ss}`;
+      }
+
+      const dwellTimesAtSecond = [];
+      let entryTimes = [];
+      let currentTotalIn = 0;
+      let currentTotalOut = 0;
+      let totalDwellTime = 0;
+      let totalCompleted = 0;
+
+      for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        while (currentTotalIn < row.total_in) {
+          entryTimes.push(row.video_time);
+          currentTotalIn++;
+        }
+        while (currentTotalOut < row.total_out) {
+          if (entryTimes.length > 0) {
+            let enterTime = entryTimes.shift(); // FIFO
+            let dwell = row.video_time - enterTime;
+            totalDwellTime += dwell;
+            totalCompleted++;
+          }
+          currentTotalOut++;
+        }
+        if (totalCompleted > 0) {
+          dwellTimesAtSecond[i] = formatTime(totalDwellTime / totalCompleted);
+        } else {
+          dwellTimesAtSecond[i] = "00:00";
+        }
+      }
+
       const updateForTime = () => {
         if (!rows.length) {
           if (inCountEl) inCountEl.textContent = '0';
           if (outCountEl) outCountEl.textContent = '0';
+          if (dwellTimeEl) dwellTimeEl.textContent = '00:00';
           return;
         }
         const currentSecond = Math.floor(video.currentTime || 0);
@@ -51,6 +88,7 @@ export function initDashboard(dbData) {
         
         if (inCountEl) inCountEl.textContent = String(row.total_in || 0);
         if (outCountEl) outCountEl.textContent = String(row.total_out || 0);
+        if (dwellTimeEl) dwellTimeEl.textContent = dwellTimesAtSecond[idx] || "00:00";
         
         if (row.in_count) {
           if (inMaleEl) inMaleEl.textContent = String(row.in_count[0] || 0);
