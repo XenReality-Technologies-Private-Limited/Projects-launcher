@@ -224,7 +224,7 @@ export function initDashboard(dbData) {
       if (!masterVid.paused) seekBar.value = masterVid.currentTime;
       
       const pct = (masterVid.currentTime / (masterVid.duration || 1)) * 100;
-      seekBar.style.background = `linear-gradient(to right, #4338ca ${pct}%, #e2e8f0 ${pct}%)`;
+      seekBar.style.background = `linear-gradient(to right, #2E3192 ${pct}%, #cbd5e1 ${pct}%)`;
 
       const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
       if (timeDisplay) timeDisplay.textContent = `${fmt(masterVid.currentTime)} / ${fmt(masterVid.duration || 0)}`;
@@ -239,7 +239,7 @@ export function initDashboard(dbData) {
       const val = parseFloat(e.target.value);
       vids.forEach(v => v.currentTime = val);
       const pct = (val / (masterVid.duration || 1)) * 100;
-      seekBar.style.background = `linear-gradient(to right, #4338ca ${pct}%, #e2e8f0 ${pct}%)`;
+      seekBar.style.background = `linear-gradient(to right, #2E3192 ${pct}%, #cbd5e1 ${pct}%)`;
     });
     seekBar.addEventListener('change', () => {
       if (wasPlaying) {
