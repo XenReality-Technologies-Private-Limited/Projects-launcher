@@ -56,13 +56,13 @@ export function initDashboard(dbData) {
       for (let i = 0; i < rows.length; i++) {
         let row = rows[i];
         while (currentTotalIn < row.total_in) {
-          entryTimes.push(row.video_time);
+          entryTimes.push(i);
           currentTotalIn++;
         }
         while (currentTotalOut < row.total_out) {
           if (entryTimes.length > 0) {
             let enterTime = entryTimes.shift(); // FIFO
-            let dwell = row.video_time - enterTime;
+            let dwell = i - enterTime;
             totalDwellTime += dwell;
             totalCompleted++;
           }
