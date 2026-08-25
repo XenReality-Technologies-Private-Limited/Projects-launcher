@@ -79,10 +79,11 @@ body {
 .dashboard-main {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px 16px 40px;
-  max-width: 1200px;
+  gap: 24px;
+  padding: 24px 32px 40px;
+  max-width: 1600px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .kpi-card {
@@ -387,11 +388,7 @@ body {
 
 /* ── Video Section ──────────────────────────────────────────────────────────── */
 .video-section {
-  background: #f8fafc;
-  padding: 20px 24px 16px;
-  border-radius: 22px;
-  border: 1px solid var(--card-border);
-  box-shadow: var(--shadow-soft);
+  margin-bottom: 8px;
 }
 
 .video-grid {
