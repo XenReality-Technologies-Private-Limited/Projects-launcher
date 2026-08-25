@@ -24,49 +24,25 @@ export function initDashboard(dbData) {
     if (kpiId === 'footfall') video = document.getElementById('vid-footfall');
     if (kpiId === 'zone') video = document.getElementById('vid-zone');
 
-    const canvasIn = section.querySelector('.kpi-graph-in');
-    const canvasOut = section.querySelector('.kpi-graph-out');
-    // We only check video existence here; canvas checks are inside specific blocks because 'zone' only has one canvas
-
     if (kpiId === 'footfall') {
       const footfall = hasFootfall ? dbData.footfall : null;
-      const inS = footfall ? footfall.inSeries : { male: [], female: [], child: [] };
-      const outS = footfall ? footfall.outSeries : { male: [], female: [], child: [] };
       const rows = footfall ? footfall.rows : [];
-
-      if (!canvasIn || !canvasOut) return;
-
-      const graphIn = new MultiSeriesGraph(canvasIn, {
-        series: [
-          { values: inS.male, color: '#2563eb', label: 'Male' },
-          { values: inS.female, color: '#ec4899', label: 'Female' },
-          { values: inS.child, color: '#eab308', label: 'Child' },
-        ],
-        yMax: 20,
-        playheadColor: '#6b7280',
-        showLiveCount: true,
-      });
-
-      const graphOut = new MultiSeriesGraph(canvasOut, {
-        series: [
-          { values: outS.male, color: '#2563eb', label: 'Male' },
-          { values: outS.female, color: '#ec4899', label: 'Female' },
-          { values: outS.child, color: '#eab308', label: 'Child' },
-        ],
-        yMax: 20,
-        playheadColor: '#6b7280',
-        showLiveCount: true,
-      });
 
       const inCountEl = section.querySelector('.footfall-in-count');
       const outCountEl = section.querySelector('.footfall-out-count');
+      
+      const inMaleEl = section.querySelector('.footfall-in-male');
+      const inFemaleEl = section.querySelector('.footfall-in-female');
+      const inChildEl = section.querySelector('.footfall-in-child');
+      
+      const outMaleEl = section.querySelector('.footfall-out-male');
+      const outFemaleEl = section.querySelector('.footfall-out-female');
+      const outChildEl = section.querySelector('.footfall-out-child');
 
       const updateForTime = () => {
         if (!rows.length) {
           if (inCountEl) inCountEl.textContent = '0';
           if (outCountEl) outCountEl.textContent = '0';
-          graphIn.render();
-          graphOut.render();
           return;
         }
         const currentSecond = Math.floor(video.currentTime || 0);
@@ -75,27 +51,19 @@ export function initDashboard(dbData) {
         
         if (inCountEl) inCountEl.textContent = String(row.total_in || 0);
         if (outCountEl) outCountEl.textContent = String(row.total_out || 0);
-
-        graphIn.setCurrentIndex(idx);
-        graphIn.render();
-
-        graphOut.setCurrentIndex(idx);
-        graphOut.render();
+        
+        if (row.in_count) {
+          if (inMaleEl) inMaleEl.textContent = String(row.in_count[0] || 0);
+          if (inFemaleEl) inFemaleEl.textContent = String(row.in_count[1] || 0);
+          if (inChildEl) inChildEl.textContent = String(row.in_count[2] || 0);
+        }
+        
+        if (row.out_count) {
+          if (outMaleEl) outMaleEl.textContent = String(row.out_count[0] || 0);
+          if (outFemaleEl) outFemaleEl.textContent = String(row.out_count[1] || 0);
+          if (outChildEl) outChildEl.textContent = String(row.out_count[2] || 0);
+        }
       };
-
-      const resizeObserver = new ResizeObserver(() => {
-        const rectIn = canvasIn.getBoundingClientRect();
-        canvasIn.width = rectIn.width * window.devicePixelRatio;
-        canvasIn.height = rectIn.height * window.devicePixelRatio;
-        graphIn.render();
-
-        const rectOut = canvasOut.getBoundingClientRect();
-        canvasOut.width = rectOut.width * window.devicePixelRatio;
-        canvasOut.height = rectOut.height * window.devicePixelRatio;
-        graphOut.render();
-      });
-      resizeObserver.observe(canvasIn);
-      resizeObserver.observe(canvasOut);
 
       video.addEventListener('loadedmetadata', updateForTime);
       video.addEventListener('timeupdate', updateForTime);

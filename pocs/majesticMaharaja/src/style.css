@@ -232,7 +232,14 @@ body {
   color: var(--text-primary);
 }
 
-.kpi-graph, .kpi-graph-in, .kpi-graph-out {
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.kpi-graph {
   width: 100% !important;
   max-width: 100%;
   border-radius: 16px;
@@ -265,6 +272,10 @@ body {
   }
 
   .kpi-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .kpi-grid {
     grid-template-columns: 1fr;
   }
 }

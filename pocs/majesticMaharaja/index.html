@@ -54,7 +54,9 @@
               <span class="time-display" id="time-display">0:00 / 0:00</span>
             </div>
           </div>
+          </div>
         </div>
+        <div class="kpi-grid">
         <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
           <div class="kpi-header">
             <div class="kpi-title-wrap">
@@ -67,27 +69,25 @@
           </div>
           <div class="kpi-body">
             <div class="kpi-full">
-              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 0;">
+              <div style="display: flex; gap: 40px; justify-content: center; padding: 20px 0;">
+                <div style="text-align: center;">
                   <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
                   <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
-                  <canvas class="kpi-graph-in" width="600" height="120"></canvas>
-                  <div class="kpi-legend" style="margin-bottom: 1rem;">
-                    <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+                  <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
+                    <span style="color: #2563eb;">Male: <span class="footfall-in-male">--</span></span> &middot;
+                    <span style="color: #ec4899;">Female: <span class="footfall-in-female">--</span></span> &middot;
+                    <span style="color: #eab308;">Child: <span class="footfall-in-child">--</span></span>
                   </div>
                 </div>
-                <div style="flex: 1; min-width: 0;">
+                <div style="width: 1px; background: #e5e7eb;"></div>
+                <div style="text-align: center;">
                   <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
                   <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
-                  <canvas class="kpi-graph-out" width="600" height="120"></canvas>
-                  <div class="kpi-legend">
-                    <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+                  <div class="kpi-demographics" style="font-size: 0.9rem; color: #4b5563; margin-top: 10px; font-weight: 600;">
+                    <span style="color: #2563eb;">Male: <span class="footfall-out-male">--</span></span> &middot;
+                    <span style="color: #ec4899;">Female: <span class="footfall-out-female">--</span></span> &middot;
+                    <span style="color: #eab308;">Child: <span class="footfall-out-child">--</span></span>
                   </div>
-                </div>
-                <div style="flex: 0 0 auto;">
-                  <div class="kpi-metric-label" style="color: black;">DWELL TIME</div>
-                  <div class="kpi-metric-value footfall-dwell-time" style="color: black;">--</div>
-                  <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
                 </div>
               </div>
             </div>
@@ -120,6 +120,7 @@
             </div>
           </div>
         </section>
+        </div>
       </main>
     </div>
     <!-- ======= Report Modal ======= -->
