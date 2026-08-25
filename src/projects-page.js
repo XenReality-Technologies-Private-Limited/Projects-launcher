@@ -14,6 +14,7 @@ const PROJECTS = [
   { name: 'Instruction Manual', url: '/instructions/' },
   { name: 'Gravity',       url: '/gravity/' },
   { name: 'Goyal Sons',    url: '/goyalSons/' },
+  { name: 'Label Studio Projects', url: '/label-studio-projects/' },
 ];
 
 const PALETTE = [
