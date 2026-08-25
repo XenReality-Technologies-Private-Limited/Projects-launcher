@@ -120,6 +120,9 @@ RUN cd pocs/majesticMaharaja && npm run build
 # ── instructions (static HTML, no build step) ──
 COPY pocs/instructions/ ./pocs/instructions/
 
+# ── label-studio-projects (static HTML, no build step) ──
+COPY pocs/label-studio-projects/ ./pocs/label-studio-projects/
+
 # ── Assemble _deploy/ ──
 RUN mkdir -p _deploy && \
     cp -r dist/.           _deploy/           && \
@@ -139,7 +142,8 @@ RUN mkdir -p _deploy && \
     cp -r pocs/safeerGroup/dist  _deploy/safeerGroup && \
     cp -r pocs/goyalSons/dist    _deploy/goyalSons && \
     cp -r pocs/majesticMaharaja/dist _deploy/majesticMaharaja && \
-    cp -r pocs/instructions      _deploy/instructions
+    cp -r pocs/instructions      _deploy/instructions && \
+    cp -r pocs/label-studio-projects _deploy/label-studio-projects
 
 # ── Stage 2: Serve ────────────────────────────────────────────────────────────
 FROM nginx:1.29.4-alpine-slim
