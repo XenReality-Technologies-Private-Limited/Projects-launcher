@@ -196,8 +196,20 @@ export function initDashboard(dbData) {
     btnSpeed.onclick = () => {
       speed = speed === 1 ? 2 : speed === 2 ? 4 : speed === 4 ? 0.5 : 1;
       btnSpeed.textContent = speed + 'x Speed';
-      vids.forEach(v => v.playbackRate = speed);
+      vids.forEach(v => {
+        v.playbackRate = speed;
+        v.preservesPitch = false;
+      });
     };
+
+    masterVid.addEventListener('waiting', () => vids.forEach(v => v.pause()));
+    masterVid.addEventListener('playing', () => {
+      vids.forEach(v => {
+        v.playbackRate = speed;
+        v.preservesPitch = false;
+        if (v !== masterVid) v.play().catch(e => console.warn(e));
+      });
+    });
     masterVid.addEventListener('loadedmetadata', () => {
       seekBar.max = masterVid.duration;
     });
