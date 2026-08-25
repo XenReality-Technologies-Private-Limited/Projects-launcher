@@ -47,9 +47,7 @@ export function initDashboard(dbData) {
       }
 
       const dwellTimesAtSecond = [];
-      // Pre-populate with negative timestamps for people already in the store
-      // to make the FIFO calculation realistic for a short video snippet
-      let entryTimes = [-480, -420, -360, -300, -240, -180, -120, -60];
+      let entryTimes = [];
       let currentTotalIn = 0;
       let currentTotalOut = 0;
       let totalDwellTime = 0;
@@ -62,12 +60,13 @@ export function initDashboard(dbData) {
           currentTotalIn++;
         }
         while (currentTotalOut < row.total_out) {
+          let enterTime = 0;
           if (entryTimes.length > 0) {
-            let enterTime = entryTimes.shift(); // FIFO
-            let dwell = i - enterTime;
-            totalDwellTime += dwell;
-            totalCompleted++;
+            enterTime = entryTimes.shift(); // FIFO
           }
+          let dwell = i - enterTime;
+          totalDwellTime += dwell;
+          totalCompleted++;
           currentTotalOut++;
         }
         if (totalCompleted > 0) {
@@ -223,6 +222,10 @@ export function initDashboard(dbData) {
     });
     masterVid.addEventListener('timeupdate', () => {
       if (!masterVid.paused) seekBar.value = masterVid.currentTime;
+      
+      const pct = (masterVid.currentTime / (masterVid.duration || 1)) * 100;
+      seekBar.style.background = `linear-gradient(to right, #4338ca ${pct}%, #e2e8f0 ${pct}%)`;
+
       const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
       if (timeDisplay) timeDisplay.textContent = `${fmt(masterVid.currentTime)} / ${fmt(masterVid.duration || 0)}`;
     });
@@ -233,7 +236,10 @@ export function initDashboard(dbData) {
       vids.forEach(v => v.pause());
     });
     seekBar.addEventListener('input', (e) => {
-      vids.forEach(v => v.currentTime = parseFloat(e.target.value));
+      const val = parseFloat(e.target.value);
+      vids.forEach(v => v.currentTime = val);
+      const pct = (val / (masterVid.duration || 1)) * 100;
+      seekBar.style.background = `linear-gradient(to right, #4338ca ${pct}%, #e2e8f0 ${pct}%)`;
     });
     seekBar.addEventListener('change', () => {
       if (wasPlaying) {
