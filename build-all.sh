@@ -44,6 +44,10 @@ build_poc "$POCS/technoSport"  technoSport
 build_poc "$POCS/usPolo"       usPolo
 build_poc "$POCS/vBazaar"      vBazaar
 
+echo "Copying static projects..."
+cp -r "$POCS/instructions" "$OUT/instructions"
+cp -r "$POCS/label-studio-projects" "$OUT/label-studio-projects"
+
 echo ""
 echo "All builds complete. Assets assembled in _deploy/"
 echo "Next: docker-compose up -d --build"

@@ -63,6 +63,11 @@ Write-Host "Copying instructions (static)..." -ForegroundColor Cyan
 Copy-Item (Join-Path $pocs 'instructions') (Join-Path $out 'instructions') -Recurse
 Write-Host "  Done -> _deploy/instructions" -ForegroundColor Green
 
+# label-studio-projects (static HTML, no build step)
+Write-Host "Copying label-studio-projects (static)..." -ForegroundColor Cyan
+Copy-Item (Join-Path $pocs 'label-studio-projects') (Join-Path $out 'label-studio-projects') -Recurse
+Write-Host "  Done -> _deploy/label-studio-projects" -ForegroundColor Green
+
 Write-Host ""
 Write-Host "All builds complete. Assets assembled in _deploy/" -ForegroundColor Yellow
 Write-Host "Next: docker build -t xentrack-dash . && docker-compose up -d" -ForegroundColor Yellow
