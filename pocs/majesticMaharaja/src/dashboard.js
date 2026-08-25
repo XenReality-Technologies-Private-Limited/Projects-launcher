@@ -60,13 +60,12 @@ export function initDashboard(dbData) {
           currentTotalIn++;
         }
         while (currentTotalOut < row.total_out) {
-          let enterTime = 0;
           if (entryTimes.length > 0) {
-            enterTime = entryTimes.shift(); // FIFO
+            let enterTime = entryTimes.shift(); // FIFO
+            let dwell = i - enterTime;
+            totalDwellTime += dwell;
+            totalCompleted++;
           }
-          let dwell = i - enterTime;
-          totalDwellTime += dwell;
-          totalCompleted++;
           currentTotalOut++;
         }
         if (totalCompleted > 0) {
@@ -217,6 +216,9 @@ export function initDashboard(dbData) {
       });
     });
 
+    if (masterVid.readyState >= 1) {
+      seekBar.max = masterVid.duration;
+    }
     masterVid.addEventListener('loadedmetadata', () => {
       seekBar.max = masterVid.duration;
     });
