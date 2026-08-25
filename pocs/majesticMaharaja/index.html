@@ -32,6 +32,29 @@
       </header>
 
       <main class="dashboard-main">
+        <!-- VIDEOS -->
+        <div class="video-section">
+          <div class="video-grid video-grid-2">
+            <div class="video-tile">
+              <video id="vid-footfall" preload="metadata" playsinline src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/annotated_counted.mp4"></video>
+              <div class="video-tile-label">Footfall (CAM-01)</div>
+            </div>
+            <div class="video-tile">
+              <video id="vid-zone" preload="metadata" playsinline src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/ladies_dwell_reviewed_912.mp4"></video>
+              <div class="video-tile-label">Ladies Clothing Zone (CAM-02)</div>
+            </div>
+          </div>
+          <div class="video-controls">
+            <button class="ctrl-btn ctrl-btn-play" id="btn-play">&#9654; Play All</button>
+            <button class="ctrl-btn ctrl-btn-pause" id="btn-pause">&#9646;&#9646; Pause</button>
+            <button class="ctrl-btn ctrl-btn-reset" id="btn-reset">&#8635; Reset</button>
+            <button class="ctrl-btn ctrl-btn-speed" id="btn-speed">1x Speed</button>
+            <div class="video-seek-wrap">
+              <input type="range" class="seek-bar" id="seek-bar" min="0" max="100" value="0" step="0.1" />
+              <span class="time-display" id="time-display">0:00 / 0:00</span>
+            </div>
+          </div>
+        </div>
         <section class="kpi-card" id="kpi-footfall" data-kpi="footfall">
           <div class="kpi-header">
             <div class="kpi-title-wrap">
@@ -43,11 +66,7 @@
             <span class="kpi-badge">ACTIVE</span>
           </div>
           <div class="kpi-body">
-            <div class="kpi-video-container">
-              <span class="kpi-video-label">CAM-01</span>
-              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/annotated_counted.mp4" controls muted playsinline autoplay loop></video>
-            </div>
-            <div class="kpi-right">
+            <div class="kpi-full">
               <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
               <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
               <canvas class="kpi-graph-in" width="600" height="120"></canvas>
@@ -79,11 +98,7 @@
             </div>
           </div>
           <div class="kpi-body">
-            <div class="kpi-video-container">
-              <span class="kpi-video-label">CAM-02</span>
-              <video class="kpi-video" src="https://d2uimaqek2eby3.cloudfront.net/Majestic-Maharaja/ladies_dwell_reviewed_912.mp4" controls muted playsinline autoplay loop></video>
-            </div>
-            <div class="kpi-right">
+            <div class="kpi-full">
               <div class="kpi-metric-label">INTERACTION TIME</div>
               <div class="kpi-metric-value kpi-interaction-time-value">--</div>
               <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>

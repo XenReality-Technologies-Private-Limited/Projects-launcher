@@ -20,7 +20,10 @@ export function initDashboard(dbData) {
     const kpiId = section.getAttribute('data-kpi');
     if (!kpiId) return;
 
-    const video = section.querySelector('.kpi-video');
+    let video;
+    if (kpiId === 'footfall') video = document.getElementById('vid-footfall');
+    if (kpiId === 'zone') video = document.getElementById('vid-zone');
+
     const canvasIn = section.querySelector('.kpi-graph-in');
     const canvasOut = section.querySelector('.kpi-graph-out');
     // We only check video existence here; canvas checks are inside specific blocks because 'zone' only has one canvas
@@ -195,4 +198,37 @@ export function initDashboard(dbData) {
       return;
     }
   });
+
+  // ── Global Video Controls ──
+  const vids = [document.getElementById('vid-footfall'), document.getElementById('vid-zone')].filter(Boolean);
+  const btnPlay = document.getElementById('btn-play');
+  const btnPause = document.getElementById('btn-pause');
+  const btnReset = document.getElementById('btn-reset');
+  const btnSpeed = document.getElementById('btn-speed');
+  const seekBar = document.getElementById('seek-bar');
+  const timeDisplay = document.getElementById('time-display');
+  const masterVid = vids[0];
+
+  if (masterVid && btnPlay) {
+    let speed = 1;
+    btnPlay.onclick = () => vids.forEach(v => v.play().catch(e=>console.warn(e)));
+    btnPause.onclick = () => vids.forEach(v => v.pause());
+    btnReset.onclick = () => vids.forEach(v => { v.currentTime = 0; v.pause(); });
+    btnSpeed.onclick = () => {
+      speed = speed === 1 ? 2 : speed === 2 ? 4 : speed === 4 ? 0.5 : 1;
+      btnSpeed.textContent = speed + 'x Speed';
+      vids.forEach(v => v.playbackRate = speed);
+    };
+    masterVid.addEventListener('loadedmetadata', () => {
+      seekBar.max = masterVid.duration;
+    });
+    masterVid.addEventListener('timeupdate', () => {
+      if (!masterVid.paused) seekBar.value = masterVid.currentTime;
+      const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+      if (timeDisplay) timeDisplay.textContent = `${fmt(masterVid.currentTime)} / ${fmt(masterVid.duration || 0)}`;
+    });
+    seekBar.addEventListener('input', (e) => {
+      vids.forEach(v => v.currentTime = parseFloat(e.target.value));
+    });
+  }
 }
