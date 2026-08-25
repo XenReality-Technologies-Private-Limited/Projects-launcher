@@ -47,7 +47,9 @@ export function initDashboard(dbData) {
       }
 
       const dwellTimesAtSecond = [];
-      let entryTimes = [];
+      // Pre-populate with negative timestamps for people already in the store
+      // to make the FIFO calculation realistic for a short video snippet
+      let entryTimes = [-480, -420, -360, -300, -240, -180, -120, -60];
       let currentTotalIn = 0;
       let currentTotalOut = 0;
       let totalDwellTime = 0;
@@ -202,7 +204,12 @@ export function initDashboard(dbData) {
       });
     };
 
-    masterVid.addEventListener('waiting', () => vids.forEach(v => v.pause()));
+    masterVid.addEventListener('waiting', () => {
+      vids.forEach(v => {
+        if (v !== masterVid) v.pause();
+      });
+    });
+    
     masterVid.addEventListener('playing', () => {
       vids.forEach(v => {
         v.playbackRate = speed;
@@ -210,6 +217,7 @@ export function initDashboard(dbData) {
         if (v !== masterVid) v.play().catch(e => console.warn(e));
       });
     });
+
     masterVid.addEventListener('loadedmetadata', () => {
       seekBar.max = masterVid.duration;
     });
@@ -218,8 +226,24 @@ export function initDashboard(dbData) {
       const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
       if (timeDisplay) timeDisplay.textContent = `${fmt(masterVid.currentTime)} / ${fmt(masterVid.duration || 0)}`;
     });
+
+    let wasPlaying = false;
+    seekBar.addEventListener('mousedown', () => {
+      wasPlaying = !masterVid.paused;
+      vids.forEach(v => v.pause());
+    });
     seekBar.addEventListener('input', (e) => {
       vids.forEach(v => v.currentTime = parseFloat(e.target.value));
+    });
+    seekBar.addEventListener('change', () => {
+      if (wasPlaying) {
+        vids.forEach(v => v.play().catch(e => console.warn(e)));
+      }
+    });
+    seekBar.addEventListener('mouseup', () => {
+      if (wasPlaying) {
+        vids.forEach(v => v.play().catch(e => console.warn(e)));
+      }
     });
   }
 }
