@@ -67,18 +67,28 @@
           </div>
           <div class="kpi-body">
             <div class="kpi-full">
-              <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
-              <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
-              <canvas class="kpi-graph-in" width="600" height="120"></canvas>
-              <div class="kpi-legend" style="margin-bottom: 1rem;">
-                <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
-              </div>
-
-              <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
-              <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
-              <canvas class="kpi-graph-out" width="600" height="120"></canvas>
-              <div class="kpi-legend">
-                <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+              <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 0;">
+                  <div class="kpi-metric-label" style="color: black;">IN COUNT</div>
+                  <div class="kpi-metric-value footfall-in-count" style="color: black;">--</div>
+                  <canvas class="kpi-graph-in" width="600" height="120"></canvas>
+                  <div class="kpi-legend" style="margin-bottom: 1rem;">
+                    <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+                  </div>
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                  <div class="kpi-metric-label" style="color: black;">OUT COUNT</div>
+                  <div class="kpi-metric-value footfall-out-count" style="color: black;">--</div>
+                  <canvas class="kpi-graph-out" width="600" height="120"></canvas>
+                  <div class="kpi-legend">
+                    <div>Blue: Male &middot; Pink: Female &middot; Yellow: Child</div>
+                  </div>
+                </div>
+                <div style="flex: 0 0 auto;">
+                  <div class="kpi-metric-label" style="color: black;">DWELL TIME</div>
+                  <div class="kpi-metric-value footfall-dwell-time" style="color: black;">--</div>
+                  <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
+                </div>
               </div>
             </div>
           </div>
@@ -92,13 +102,14 @@
               </span>
               <h2 class="kpi-title">LADIES CLOTHING ZONE</h2>
             </div>
-            <div style="display:flex; gap:10px;">
-              <span class="kpi-employee-badge" style="width: 175px; white-space: nowrap; text-align: center; padding: 6px 8px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Employee: --</span>
-              <span class="kpi-customer-badge" style="width: 175px; white-space: nowrap; text-align: center; padding: 6px 8px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Customer: --</span>
-            </div>
+            <span class="kpi-badge">ACTIVE</span>
           </div>
           <div class="kpi-body">
             <div class="kpi-full">
+              <div style="display:flex; gap:10px; margin-bottom: 20px;">
+                <span class="kpi-employee-badge" style="padding: 6px 12px; border-radius: 999px; font-weight: bold; font-size: 0.8rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Employee: --</span>
+                <span class="kpi-customer-badge" style="padding: 6px 12px; border-radius: 999px; font-weight: bold; font-size: 0.8rem; background: #e5e7eb; color: #374151; box-sizing: border-box;">Customer: --</span>
+              </div>
               <div class="kpi-metric-label">INTERACTION TIME</div>
               <div class="kpi-metric-value kpi-interaction-time-value">--</div>
               <div style="font-size: 0.65em; color: #9ca3af; letter-spacing: 0.05em; margin-top: -4px;">Minutes : Seconds</div>
