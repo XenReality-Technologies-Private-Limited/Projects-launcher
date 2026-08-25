@@ -1,0 +1,80 @@
+{
+  "_readme": "Rules for sorting Label Studio projects into groups. Each vertical is checked top-to-bottom, first match wins. To add a brand-new group: for Retail, add a customer under verticals[0].customers. For any other vertical, either add a bucket to an existing vertical's 'buckets' list, or append a whole new vertical object (kind 'bucketed') anywhere before the final catch-all. Patterns are regexes matched against the lowercased project title unless 'label_config_contains' is given, which matches lowercased label_config XML instead. A project that matches nothing in any vertical falls into 'Uncategorized / needs manual review' automatically -- that bucket is not listed here, it's the fallback.",
+
+  "retail_type_rules": {
+    "_readme": "How CE vs MFC vs OTHER is decided, once a title has already matched a Retail customer below.",
+    "mfc_patterns": ["mfc", "^bata_testing$"],
+    "ce_patterns": ["_ce(_|$)", "_ec(_|$)", "^cam\\d+_", "^whitefield_cam"]
+  },
+
+  "verticals": [
+    {
+      "name": "Retail",
+      "kind": "retail_customer",
+      "customers": {
+        "Bata": [
+          "^bata", "^cam\\d+_malleshwaram", "^whitefield_cam",
+          "^malleshwaram_(mfc|ec)", "^whitefield_mfc", "^hsrlayot_(mfc|ec)", "^noida_(mfc|ec)"
+        ],
+        "Kushals": ["^kushals_"],
+        "EasyBuy": ["^easybuy"],
+        "Reliance": ["^reliance"],
+        "Nikshan": ["^nikshan_"],
+        "Sagara": ["^sagara$"],
+        "Chumbak": ["^chumbak$"],
+        "TechnoSports": ["^technosports"]
+      }
+    },
+    {
+      "name": "Cafe (Halli Mane)",
+      "kind": "bucketed",
+      "match_patterns": [
+        "^hallimane", "^ppe_", "^food_ppe", "^cash_bill", "^currencyreceipt",
+        "^phone_dataset", "^tabletop", "^table_\\d+$"
+      ],
+      "buckets": [
+        { "name": "PPE compliance", "patterns": ["ppe", "hairnet", "apron", "gloves"] },
+        { "name": "Phone usage", "patterns": ["phone"] },
+        { "name": "Cash / bill verification", "patterns": ["^cash_bill", "^currencyreceipt"] },
+        { "name": "Table detection", "patterns": ["tabletop", "^table_\\d+$"], "label_config_contains": ["table top"] },
+        { "name": "Customer/Employee + Cash-Bill (combined)", "patterns": [], "label_config_contains_all": ["\"employee\"", "\"customer\""], "label_config_contains_any": ["cash_note", "receipt"] },
+        { "name": "Other (Halli Mane)", "patterns": [], "is_default": true }
+      ]
+    },
+    {
+      "name": "Manufacturing (Genus / Meter Reading + QC)",
+      "kind": "bucketed",
+      "buckets": [
+        { "name": "Paint / surface QC", "patterns": ["^paint-detection", "^trial$"] },
+        { "name": "Ceramic gasket QC", "patterns": ["^ceramic$"] },
+        {
+          "name": "Meter reading pipeline",
+          "patterns": [
+            "^genus", "meter", "^kwh", "^kvah", "^kva", "^kw\\b", "^kw\\(", "^1_3_ph", "^mm_capital",
+            "^lcd", "^mrn$", "^seal-detection", "^l&t$", "^polaris", "^big_box$", "^rectangle_bbox$",
+            "^f_box$", "^bounding_box_\\d", "^bb_for_cnn$", "^bb for meter detection$", "^aew$", "^avon$",
+            "^eppeltone$", "^yolo_box_eliminator$", "^dataset_polaris_inc$", "^cspdcl", "^hpl_meter$",
+            "^meter_units$", "^old_meter_number$", "^old meter images", "^kwh images", "^kw \\(md\\) images",
+            "^kvah images", "^kva \\(md\\)", "^old_meter_v2$", "^lcd_mr_v2$", "^kwmd_v2$"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Automotive (emo_main — vehicle & plate detection)",
+      "kind": "bucketed",
+      "match_patterns": ["^emo_main"],
+      "buckets": [
+        { "name": "Bikes / plates / SAM3-bbox", "patterns": [], "is_default": true }
+      ]
+    },
+    {
+      "name": "Industrial Counting (Dhuni — bale counting)",
+      "kind": "bucketed",
+      "match_patterns": ["^dhuni"],
+      "buckets": [
+        { "name": "Bale counting", "patterns": [], "is_default": true }
+      ]
+    }
+  ]
+}

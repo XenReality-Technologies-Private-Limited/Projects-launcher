@@ -1,0 +1,505 @@
+<title>Label Studio Project Registry</title>
+<style>
+  :root{
+    --bg:#f5f4f0;
+    --surface:#ffffff;
+    --surface-2:#eeece5;
+    --border:#e0ddd4;
+    --text:#211f1c;
+    --text-muted:#726d63;
+    --text-faint:#a39d8f;
+    --accent:#2f5fb3;
+    --accent-soft:#e7edf9;
+    --employee:#a8402f;
+    --employee-soft:#f6e8e5;
+    --mfc:#93690a;
+    --mfc-soft:#f5eddb;
+    --gender:#6b5b95;
+    --gender-soft:#ece8f4;
+    --other:#4a5560;
+    --other-soft:#e7eaec;
+    --v-retail:#2f5fb3;
+    --v-cafe:#8a5a2b;
+    --v-mfg:#3f7d5c;
+    --v-auto:#6b5b95;
+    --v-ind:#a8402f;
+    --v-unc:#726d63;
+    --focus:#2f5fb3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#15161a; --surface:#1c1e23; --surface-2:#22252b; --border:#31343b;
+      --text:#eceae4; --text-muted:#a5a196; --text-faint:#6f6d68;
+      --accent:#7ea1e6; --accent-soft:#212c3e;
+      --employee:#e18a7a; --employee-soft:#3a2521;
+      --mfc:#dcb24f; --mfc-soft:#3a3120;
+      --gender:#b6a4e0; --gender-soft:#2c273a;
+      --other:#b7bec6; --other-soft:#282b30;
+      --v-retail:#7ea1e6; --v-cafe:#d9a35f; --v-mfg:#7fc9a0;
+      --v-auto:#b6a4e0; --v-ind:#e18a7a; --v-unc:#b7bec6;
+      --focus:#7ea1e6;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#15161a; --surface:#1c1e23; --surface-2:#22252b; --border:#31343b;
+    --text:#eceae4; --text-muted:#a5a196; --text-faint:#6f6d68;
+    --accent:#7ea1e6; --accent-soft:#212c3e;
+    --employee:#e18a7a; --employee-soft:#3a2521;
+    --mfc:#dcb24f; --mfc-soft:#3a3120;
+    --gender:#b6a4e0; --gender-soft:#2c273a;
+    --other:#b7bec6; --other-soft:#282b30;
+    --v-retail:#7ea1e6; --v-cafe:#d9a35f; --v-mfg:#7fc9a0;
+    --v-auto:#b6a4e0; --v-ind:#e18a7a; --v-unc:#b7bec6;
+    --focus:#7ea1e6;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sans{ font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; }
+  .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace; }
+  a{ color:inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; }
+  [hidden]{ display:none !important; }
+
+  /* ---- top tab bar ---- */
+  .top-bar{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    padding:16px 44px; border-bottom:1px solid var(--border);
+  }
+  .brand{ font-size:0.92rem; font-weight:600; }
+  .tabs{ display:flex; gap:4px; background:var(--surface-2); padding:4px; border-radius:9px; }
+  .tabs button{
+    font-family:inherit; font-size:0.84rem; font-weight:600; color:var(--text-muted);
+    background:transparent; border:none; padding:7px 14px; border-radius:6px; cursor:pointer;
+  }
+  .tabs button.active{ background:var(--surface); color:var(--text); box-shadow:0 1px 2px rgba(0,0,0,0.06); }
+  .tabs button:hover:not(.active){ color:var(--text); }
+  @media (max-width:860px){ .top-bar{ padding:14px 20px; } }
+
+  .shell{ display:flex; min-height:calc(100vh - 57px); max-width:1400px; margin:0 auto; }
+
+  nav.toc{
+    width:248px; flex:0 0 248px; border-right:1px solid var(--border);
+    padding:28px 18px; position:sticky; top:0; align-self:flex-start;
+    height:calc(100vh - 57px); overflow-y:auto;
+  }
+  nav.toc h2{
+    font-family:inherit; font-size:0.7rem; letter-spacing:0.09em; text-transform:uppercase;
+    color:var(--text-faint); margin:0 0 14px; font-weight:600;
+  }
+  nav.toc ul{ list-style:none; margin:0 0 26px; padding:0; display:flex; flex-direction:column; gap:2px;}
+  nav.toc a.toc-link{
+    display:flex; justify-content:space-between; gap:8px; padding:7px 9px;
+    border-radius:6px; text-decoration:none; font-size:0.86rem; color:var(--text);
+  }
+  nav.toc a.toc-link:hover{ background:var(--surface-2); }
+  nav.toc a.toc-link .count{ font-variant-numeric:tabular-nums; color:var(--text-muted); font-size:0.8rem;}
+  nav.toc .vswatch{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:7px; }
+
+  main{ flex:1; min-width:0; padding:40px 44px 90px; }
+
+  header.page-head{ margin-bottom:34px; max-width:660px; }
+  header.page-head .eyebrow{
+    font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--accent); font-weight:600; margin-bottom:10px;
+  }
+  header.page-head h1{ font-size:2.15rem; line-height:1.15; margin:0 0 12px; text-wrap:balance; font-weight:600; }
+  header.page-head p{ color:var(--text-muted); font-size:1rem; line-height:1.55; margin:0 0 8px; }
+  header.page-head p.source{ font-size:0.85rem; }
+
+  .legend{ display:flex; flex-wrap:wrap; gap:10px 18px; margin-top:18px; }
+  .legend .item{ display:flex; align-items:center; gap:7px; font-size:0.82rem; color:var(--text-muted);}
+  .swatch{ width:10px; height:10px; border-radius:3px; flex:0 0 auto; }
+
+  section.customer, section.vertical{ margin-bottom:52px; scroll-margin-top:24px; }
+  section.customer h2{ font-size:1.5rem; margin:0 0 4px; font-weight:600; }
+  section.customer .meta{ color:var(--text-muted); font-size:0.85rem; margin-bottom:18px; }
+  section.vertical > .v-head{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  section.vertical .v-dot{ width:11px; height:11px; border-radius:50%; flex:0 0 auto; }
+  section.vertical h2{ font-size:1.55rem; margin:0; font-weight:600; }
+  section.vertical .meta{ color:var(--text-muted); font-size:0.85rem; margin:0 0 20px 21px; }
+
+  .customer-group{ margin-bottom:28px; padding-left:21px; border-left:2px solid var(--border); }
+  .customer-group h3{ font-size:1.1rem; margin:0 0 4px; font-weight:600; }
+  .customer-group .cmeta{ color:var(--text-muted); font-size:0.8rem; margin-bottom:10px; }
+
+  .bucket{ margin-bottom:22px; padding-left:21px; border-left:2px solid var(--border); }
+  .bucket .b-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+  .bucket .b-name{ font-weight:600; font-size:0.95rem; }
+  .bucket .b-count{ color:var(--text-faint); font-size:0.82rem; font-variant-numeric:tabular-nums; }
+
+  .type-block{ margin-bottom:22px; }
+  .type-block .type-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+  .type-head .badge{
+    font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; font-weight:700;
+    padding:3px 8px; border-radius:5px;
+  }
+  .badge.ce{ background:var(--accent-soft); color:var(--accent); }
+  .badge.mfc{ background:var(--mfc-soft); color:var(--mfc); }
+  .badge.other{ background:var(--other-soft); color:var(--other); }
+  .type-head .type-name{ font-weight:600; font-size:0.95rem; }
+  .type-head .type-count{ color:var(--text-faint); font-size:0.82rem; font-variant-numeric:tabular-nums;}
+
+  .scheme-note{ font-size:0.78rem; color:var(--text-muted); margin:-4px 0 10px; }
+  .scheme-note .tag{ display:inline-block; padding:1px 7px; border-radius:4px; font-size:0.72rem; margin-right:4px; }
+  .scheme-note .tag.customer-employee{ background:var(--accent-soft); color:var(--accent); }
+  .scheme-note .tag.person-redshirt{ background:var(--employee-soft); color:var(--employee); }
+  .scheme-note .tag.man-woman-child{ background:var(--mfc-soft); color:var(--mfc); }
+  .scheme-note .tag.gender-split{ background:var(--gender-soft); color:var(--gender); }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:8px;
+    border:1px solid var(--border); border-radius:10px; padding:8px; background:var(--surface);
+  }
+  .proj{
+    display:flex; flex-direction:column; gap:3px; padding:9px 11px; border-radius:7px;
+    text-decoration:none; border:1px solid transparent;
+  }
+  .proj:hover{ background:var(--surface-2); border-color:var(--border); }
+  .proj .title{ font-size:0.88rem; color:var(--text); word-break:break-word; }
+  .proj .row2{ display:flex; justify-content:space-between; align-items:center; gap:6px;}
+  .proj .id{ font-size:0.72rem; color:var(--text-faint); }
+  .proj .scheme-dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto; }
+  .proj .open{ font-size:0.72rem; color:var(--accent); opacity:0; transition:opacity .12s;}
+  .proj:hover .open{ opacity:1; }
+
+  .filter-bar{ display:flex; gap:10px; align-items:center; margin-bottom:30px; flex-wrap:wrap; }
+  .filter-bar input[type="search"]{
+    flex:1; min-width:200px; max-width:340px; padding:9px 12px; border-radius:8px;
+    border:1px solid var(--border); background:var(--surface); color:var(--text);
+    font-size:0.88rem; font-family:inherit;
+  }
+  .filter-bar .hint{ font-size:0.78rem; color:var(--text-faint); }
+
+  .footnote{ margin-top:56px; padding-top:20px; border-top:1px solid var(--border); max-width:700px; }
+  .footnote h3{ font-size:0.95rem; margin:0 0 8px; }
+  .footnote p{ color:var(--text-muted); font-size:0.86rem; line-height:1.6; margin:0 0 10px;}
+  .footnote ul{ margin:0 0 14px; padding-left:20px; color:var(--text-muted); font-size:0.85rem; line-height:1.7;}
+  .footnote a{ color:var(--accent); text-decoration:none; }
+  .footnote a:hover{ text-decoration:underline; }
+
+  @media (max-width:860px){
+    .shell{ flex-direction:column; }
+    nav.toc{
+      width:100%; height:auto; position:static; border-right:none; border-bottom:1px solid var(--border);
+      padding:18px;
+    }
+    nav.toc ul{ flex-direction:row; flex-wrap:wrap; }
+    main{ padding:28px 20px 70px; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+
+<div class="top-bar sans">
+  <div class="brand">Label Studio Project Registry</div>
+  <div class="tabs" role="tablist">
+    <button type="button" id="tab-btn-retail" class="active" role="tab" aria-selected="true">Retail (CE / MFC)</button>
+    <button type="button" id="tab-btn-all" role="tab" aria-selected="false">All / by vertical</button>
+  </div>
+</div>
+
+<!-- ===================== RETAIL PANEL ===================== -->
+<div class="shell sans" id="panel-retail">
+  <nav class="toc" aria-label="Customer index">
+    <h2>Customers</h2>
+    <ul id="toc-list"></ul>
+    <h2>Scheme key</h2>
+    <div class="legend" id="legend-side" style="flex-direction:column;"></div>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <div class="eyebrow">Label Studio</div>
+      <h1>CE &amp; MFC Project Registry</h1>
+      <p>Every Customer/Employee (CE) and Man/Woman/Child (MFC) annotation project on <span class="mono">label.xenreality.com</span>, grouped by customer.</p>
+      <p class="source mono"><span id="gen-count"></span> projects</p>
+    </header>
+
+    <div class="filter-bar">
+      <input type="search" id="search-retail" placeholder="Filter by project title or id…" aria-label="Filter projects">
+      <span class="hint">Filters titles live across every customer section</span>
+    </div>
+
+    <div id="customers"></div>
+
+    <div class="footnote">
+      <h3>Notes</h3>
+      <p><strong>Man/Woman/Child ≡ Male/Female/Child</strong> — every MFC project in this workspace uses the labels <span class="mono">Man / Woman / Child</span>; none currently use the literal words "Male"/"Female", but they mean the same thing.</p>
+      <p><strong>Bata's two CE labeling styles</strong> — the earlier Bata camera batch (<span class="mono">cam*_malleshwaram</span>, <span class="mono">whitefield_cam*</span>) labels people as <span class="mono">Person</span> (customer) vs <span class="mono">Person with red t-shirt and black pant</span> (employee). The later batch (<span class="mono">Malleshwaram_ec_*</span>, <span class="mono">HSRLayot_ec_*</span>, <span class="mono">Noida_ec_*</span>) switched to the standard <span class="mono">Customer</span>/<span class="mono">Employee</span> label pair. Both are grouped under Bata &rarr; CE below, tagged separately.</p>
+      <p><strong>Unnamed early trial projects</strong> — five projects titled "New Project #34–#38" use the same Person / Person-with-red-t-shirt scheme as Bata's early batch but were never renamed to a customer prefix, so they're excluded from the Bata count above. Included here for completeness:</p>
+      <ul id="orphan-list"></ul>
+    </div>
+  </main>
+</div>
+
+<!-- ===================== ALL / VERTICALS PANEL ===================== -->
+<div class="shell sans" id="panel-all" hidden>
+  <nav class="toc" aria-label="Vertical index">
+    <h2>Verticals</h2>
+    <ul id="toc-list-all"></ul>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <div class="eyebrow">Label Studio</div>
+      <h1>Every Project, by Vertical</h1>
+      <p>All annotation projects on <span class="mono">label.xenreality.com</span>, grouped by business vertical rather than by customer. Retail people-analytics (CE/MFC) is repeated here in full (see the other tab for the dedicated view) so this is a complete index.</p>
+      <p class="source mono"><span id="gen-count-all"></span> projects across <span id="vertical-count"></span> verticals</p>
+    </header>
+
+    <div class="filter-bar">
+      <input type="search" id="search-all" placeholder="Filter by project title or id…" aria-label="Filter projects">
+      <span class="hint">Filters titles live across every vertical</span>
+    </div>
+
+    <div id="verticals"></div>
+
+    <div class="footnote">
+      <h3>Notes on categorization</h3>
+      <p><strong>Halli Mane = "Cafe"</strong> — every project prefixed <span class="mono">hallimane_</span>, plus <span class="mono">ppe_*</span>, <span class="mono">food_ppe_*</span>, <span class="mono">cash_bill_*</span>, <span class="mono">CurrencyReceipt_*</span>, <span class="mono">phone_dataset_*</span>, and <span class="mono">Table_*</span>/<span class="mono">tabletop_*</span> (table detection, same workflow as <span class="mono">hallimane_tabletop</span>) is grouped under Cafe.</p>
+      <p><strong>Manufacturing</strong> covers three separate QC/detection pipelines that happen to share a vertical: the Genus meter-reading OCR pipeline (brand names, kWh/kVAh/kVA readings, bounding-box variants), a paint surface-defect set (<span class="mono">paint-detection*</span>, scratch/bubble/dust labels — <span class="mono">trial</span> uses the identical label scheme so it's included here), and a ceramic gasket defect set (<span class="mono">ceramic</span>).</p>
+      <p><strong>Automotive</strong> (<span class="mono">emo_main*</span>) is bike + number-plate detection/verification — a distinct customer from everything else here.</p>
+      <p><strong>Industrial Counting</strong> (<span class="mono">dhuni_*</span>) is bale counting — likely textile/garment, unrelated to the other verticals.</p>
+      <p><strong>Uncategorized</strong> — 16 projects I could not confidently assign: generic/ambiguous titles (<span class="mono">bm_1-3</span>, <span class="mono">tp_training</span>, <span class="mono">helmet</span>, <span class="mono">Fog</span>, <span class="mono">smoke</span>, <span class="mono">PeopleValidation</span>) and eight unnamed early trial projects ("New Project #31-38") that predate customer-prefixed naming — some use the same label schemes as Bata's earliest batch, but titles alone don't confirm the customer. Listed individually below rather than guessed into a bucket.</p>
+    </div>
+  </main>
+</div>
+
+<script id="data-retail" type="application/json">__DATA_JSON__</script>
+<script id="orphans" type="application/json">__ORPHANS_JSON__</script>
+<script id="data-all" type="application/json">__ALL_DATA_JSON__</script>
+<script>
+  // ---------------- shared ----------------
+  const SCHEME_LABEL = {
+    'customer-employee': 'Customer / Employee',
+    'person-redshirt': 'Person / Person w/ red t-shirt (Employee)',
+    'man-woman-child': 'Man / Woman / Child',
+    'gender-split': 'Customer(M/F/Child) / Employee(M/F)',
+    'other': 'Other'
+  };
+  const TYPE_LABEL = { CE: 'Customer / Employee', MFC: 'Man / Woman / Child', OTHER: 'Combined / other' };
+
+  function schemeVar(s){
+    if(s==='customer-employee') return 'accent';
+    if(s==='person-redshirt') return 'employee';
+    if(s==='man-woman-child') return 'mfc';
+    if(s==='gender-split') return 'gender';
+    return 'other';
+  }
+
+  function buildGrid(items, withSchemeDot){
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+    items.forEach(p => {
+      const a = document.createElement('a');
+      a.className = 'proj';
+      a.href = p.link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.dataset.title = (p.title + ' ' + p.id).toLowerCase();
+      const dot = withSchemeDot
+        ? `<span class="scheme-dot" style="background:var(--${schemeVar(p.scheme)})"></span>`
+        : '';
+      a.innerHTML = `<span class="title">${p.title}</span>
+        <span class="row2">
+          <span class="id mono">#${p.id}</span>
+          <span style="display:flex;align-items:center;gap:6px;">${dot}<span class="open">Open →</span></span>
+        </span>`;
+      grid.appendChild(a);
+    });
+    return grid;
+  }
+
+  function wireSearch(inputId, scopeSelector){
+    document.getElementById(inputId).addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      const scope = document.querySelector(scopeSelector);
+      scope.querySelectorAll('.proj').forEach(p => { p.hidden = q.length > 0 && !p.dataset.title.includes(q); });
+      scope.querySelectorAll('.type-block, .bucket, .customer-group').forEach(b => {
+        b.hidden = q.length > 0 && ![...b.querySelectorAll('.proj')].some(p => !p.hidden);
+      });
+      scope.querySelectorAll('section.customer, section.vertical').forEach(s => {
+        s.hidden = q.length > 0 && ![...s.querySelectorAll('.proj')].some(p => !p.hidden);
+      });
+    });
+  }
+
+  // ---------------- retail tab ----------------
+  (function renderRetail(){
+    const data = JSON.parse(document.getElementById('data-retail').textContent);
+    const orphans = JSON.parse(document.getElementById('orphans').textContent);
+
+    let total = 0;
+    const tocList = document.getElementById('toc-list');
+    const customersEl = document.getElementById('customers');
+    const legendSide = document.getElementById('legend-side');
+    const seenSchemes = new Set();
+
+    Object.keys(data).forEach(cust => {
+      const types = data[cust];
+      let custCount = 0;
+      Object.values(types).forEach(items => custCount += items.length);
+      total += custCount;
+
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="#cust-${cust.toLowerCase()}" class="toc-link"><span>${cust}</span><span class="count">${custCount}</span></a>`;
+      tocList.appendChild(li);
+
+      const section = document.createElement('section');
+      section.className = 'customer';
+      section.id = 'cust-' + cust.toLowerCase();
+
+      const typeOrder = ['CE','MFC','OTHER'].filter(t => types[t]);
+      section.innerHTML = `<h2>${cust}</h2><div class="meta">${custCount} project${custCount===1?'':'s'} &middot; ${typeOrder.map(t=>`${types[t].length} ${TYPE_LABEL[t]}`).join(' &middot; ')}</div>`;
+
+      typeOrder.forEach(t => {
+        const items = types[t];
+        const block = document.createElement('div');
+        block.className = 'type-block';
+        const badgeClass = t === 'CE' ? 'ce' : (t === 'MFC' ? 'mfc' : 'other');
+        block.innerHTML = `<div class="type-head"><span class="badge ${badgeClass}">${t}</span><span class="type-name">${TYPE_LABEL[t]}</span><span class="type-count">${items.length}</span></div>`;
+
+        const localSchemes = [...new Set(items.map(i=>i.scheme))];
+        if(localSchemes.length > 1 || (localSchemes.length===1 && t==='OTHER')){
+          const note = document.createElement('div');
+          note.className = 'scheme-note';
+          note.innerHTML = 'Label scheme: ' + localSchemes.map(s=>`<span class="tag ${s}">${SCHEME_LABEL[s]}</span>`).join(' ');
+          block.appendChild(note);
+        }
+        localSchemes.forEach(s=>seenSchemes.add(s));
+        block.appendChild(buildGrid(items, true));
+        section.appendChild(block);
+      });
+
+      customersEl.appendChild(section);
+    });
+
+    document.getElementById('gen-count').textContent = total.toLocaleString();
+
+    [...seenSchemes].sort().forEach(s=>{
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `<span class="swatch" style="background:var(--${schemeVar(s)})"></span>${SCHEME_LABEL[s]}`;
+      legendSide.appendChild(item);
+    });
+
+    const orphanList = document.getElementById('orphan-list');
+    orphans.forEach(o => {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${o.link}" target="_blank" rel="noopener">${o.title}</a> <span class="mono" style="color:var(--text-faint)">#${o.id}</span>`;
+      orphanList.appendChild(li);
+    });
+
+    wireSearch('search-retail', '#panel-retail');
+  })();
+
+  // ---------------- all/verticals tab ----------------
+  (function renderAll(){
+    const data = JSON.parse(document.getElementById('data-all').textContent);
+
+    const VERTICAL_META = {
+      'Retail': { key: 'retail', label: 'Retail (people analytics)' },
+      'Cafe (Halli Mane)': { key: 'cafe', label: 'Cafe — Halli Mane' },
+      'Manufacturing (Genus / Meter Reading + QC)': { key: 'mfg', label: 'Manufacturing' },
+      'Automotive (emo_main — vehicle & plate detection)': { key: 'auto', label: 'Automotive — emo_main' },
+      'Industrial Counting (Dhuni — bale counting)': { key: 'ind', label: 'Industrial Counting — Dhuni' },
+      'Uncategorized / needs manual review': { key: 'unc', label: 'Uncategorized' },
+    };
+
+    function countOf(vertical, groups){
+      if(vertical === 'Retail'){
+        let n = 0;
+        Object.values(groups).forEach(types => Object.values(types).forEach(items => n += items.length));
+        return n;
+      }
+      return Object.values(groups).reduce((n, items) => n + items.length, 0);
+    }
+
+    const tocList = document.getElementById('toc-list-all');
+    const verticalsEl = document.getElementById('verticals');
+    let total = 0;
+    const verticalOrder = Object.keys(data);
+
+    verticalOrder.forEach(vertical => {
+      const meta = VERTICAL_META[vertical] || { key: 'other', label: vertical };
+      const groups = data[vertical];
+      const vCount = countOf(vertical, groups);
+      total += vCount;
+
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="#v-${meta.key}" class="toc-link"><span><span class="vswatch" style="background:var(--v-${meta.key})"></span>${meta.label}</span><span class="count">${vCount}</span></a>`;
+      tocList.appendChild(li);
+
+      const section = document.createElement('section');
+      section.className = 'vertical';
+      section.id = 'v-' + meta.key;
+      section.innerHTML = `<div class="v-head"><span class="v-dot" style="background:var(--v-${meta.key})"></span><h2>${meta.label}</h2></div>
+        <div class="meta">${vCount} project${vCount===1?'':'s'}</div>`;
+
+      if(vertical === 'Retail'){
+        Object.keys(groups).forEach(customer => {
+          const types = groups[customer];
+          const custCount = Object.values(types).reduce((n,i)=>n+i.length,0);
+          const cg = document.createElement('div');
+          cg.className = 'customer-group';
+          cg.innerHTML = `<h3>${customer}</h3><div class="cmeta">${custCount} projects</div>`;
+          ['CE','MFC','OTHER'].filter(t=>types[t]).forEach(t => {
+            const items = types[t];
+            const block = document.createElement('div');
+            block.className = 'type-block';
+            const badgeClass = t === 'CE' ? 'ce' : (t === 'MFC' ? 'mfc' : 'other');
+            block.innerHTML = `<div class="type-head"><span class="badge ${badgeClass}">${t}</span><span class="type-name">${TYPE_LABEL[t]}</span><span class="type-count">${items.length}</span></div>`;
+            block.appendChild(buildGrid(items, false));
+            cg.appendChild(block);
+          });
+          section.appendChild(cg);
+        });
+      } else {
+        Object.keys(groups).forEach(bucket => {
+          const items = groups[bucket];
+          const b = document.createElement('div');
+          b.className = 'bucket';
+          b.innerHTML = `<div class="b-head"><span class="b-name">${bucket}</span><span class="b-count">${items.length}</span></div>`;
+          b.appendChild(buildGrid(items, false));
+          section.appendChild(b);
+        });
+      }
+
+      verticalsEl.appendChild(section);
+    });
+
+    document.getElementById('gen-count-all').textContent = total.toLocaleString();
+    document.getElementById('vertical-count').textContent = verticalOrder.length;
+
+    wireSearch('search-all', '#panel-all');
+  })();
+
+  // ---------------- tab switching ----------------
+  const tabBtnRetail = document.getElementById('tab-btn-retail');
+  const tabBtnAll = document.getElementById('tab-btn-all');
+  const panelRetail = document.getElementById('panel-retail');
+  const panelAll = document.getElementById('panel-all');
+
+  function showTab(name, updateHash){
+    const isRetail = name !== 'all';
+    panelRetail.hidden = !isRetail;
+    panelAll.hidden = isRetail;
+    tabBtnRetail.classList.toggle('active', isRetail);
+    tabBtnAll.classList.toggle('active', !isRetail);
+    tabBtnRetail.setAttribute('aria-selected', String(isRetail));
+    tabBtnAll.setAttribute('aria-selected', String(!isRetail));
+    if(updateHash){
+      history.replaceState(null, '', isRetail ? '#retail' : '#all');
+    }
+  }
+
+  tabBtnRetail.addEventListener('click', () => showTab('retail', true));
+  tabBtnAll.addEventListener('click', () => showTab('all', true));
+
+  showTab(window.location.hash === '#all' ? 'all' : 'retail', false);
+</script>
