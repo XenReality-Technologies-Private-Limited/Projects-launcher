@@ -135,9 +135,7 @@ export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { k
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
-        <div class="header-logo-pill">
-          <img src="/xenlogo.png" alt="XenReality" />
-        </div>
+        <div class="header-logo-pill"><img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" /></div>
         <div class="header-vdivider"></div>
       </div>
       <div class="header-title">PoC Dashboard</div>
