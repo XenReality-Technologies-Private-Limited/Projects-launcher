@@ -42,7 +42,7 @@ body {
   border-radius: 8px;
   padding: 6px 10px;
 }
-.header-logo-pill img { height: 24px; filter: brightness(0) invert(1); }
+.header-logo-pill img { height: 36px; filter: brightness(0) invert(1); }
 
 .header-vdivider { width: 1px; height: 24px; background: var(--card-border); margin: 0 16px; }
 
