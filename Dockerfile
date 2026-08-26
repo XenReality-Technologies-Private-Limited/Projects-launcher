@@ -110,6 +110,12 @@ RUN cd pocs/goyalSons && npm install --prefer-offline
 COPY pocs/goyalSons/ ./pocs/goyalSons/
 RUN cd pocs/goyalSons && npm run build
 
+# ── chicking ──
+COPY pocs/chicking/package*.json ./pocs/chicking/
+RUN cd pocs/chicking && npm install --prefer-offline
+COPY pocs/chicking/ ./pocs/chicking/
+RUN cd pocs/chicking && npm run build
+
 # ── majesticMaharaja ──
 COPY pocs/majesticMaharaja/package*.json ./pocs/majesticMaharaja/
 RUN cd pocs/majesticMaharaja && npm install --prefer-offline
@@ -141,6 +147,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/hiliteMall/dist   _deploy/hiliteMall && \
     cp -r pocs/safeerGroup/dist  _deploy/safeerGroup && \
     cp -r pocs/goyalSons/dist    _deploy/goyalSons && \
+    cp -r pocs/chicking/dist      _deploy/chicking && \
     cp -r pocs/majesticMaharaja/dist _deploy/majesticMaharaja && \
     cp -r pocs/instructions      _deploy/instructions && \
     cp -r pocs/label-studio-projects _deploy/label-studio-projects
