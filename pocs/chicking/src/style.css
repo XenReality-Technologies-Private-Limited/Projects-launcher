@@ -99,11 +99,11 @@ body {
 
 /* ── Content Grid ── */
 .content-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 28px 24px 40px;
-  max-width: 1500px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -130,35 +130,169 @@ body {
   letter-spacing: 0.06em;
 }
 
-.panel-video { width: 100%; display: block; background: #000; }
-
-/* ── KPI row inside panel ── */
-.kpi-row {
+/* ── Panel body: video left, KPIs right ── */
+.panel-body {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--card-border);
+  grid-template-columns: 2fr 3fr;
+  min-height: 0;
 }
 
-.kpi-tile {
-  padding: 12px 14px;
+.panel-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 420px;
+}
+
+/* ── KPI column beside video ── */
+.kpi-col {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  border-right: 1px solid var(--card-border);
-  border-top: 3px solid transparent;
+  border-left: 1px solid var(--card-border);
+  min-width: 0;
 }
-.kpi-tile:last-child { border-right: none; }
 
-.kpi-tile--navy   { border-top-color: #2E3192; }
-.kpi-tile--green  { border-top-color: #10b981; }
-.kpi-tile--red    { border-top-color: #ef4444; }
-.kpi-tile--amber  { border-top-color: #f59e0b; }
-.kpi-tile--purple { border-top-color: #8b5cf6; }
+/* ── Kitchen PPE panel ── */
+.ppe-section-header {
+  padding: 10px 14px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+}
 
-.kpi-tile--alert  { background: #fff1f2; }
+.ppe-compliance-summary {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--card-border);
+}
 
-.kpi-label {
+.ppe-pct {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.ppe-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+}
+
+.ppe-grid-2x2 {
+  display: grid;
+  grid-template-columns: 120px 120px;
+  border-bottom: 1px solid var(--card-border);
+  padding: 12px 16px;
+  gap: 10px;
+}
+
+.ppe-box {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 8px;
+}
+
+.ppe-box--green { background: #dcfce7; }
+.ppe-box--red   { background: #fee2e2; }
+
+.ppe-box-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #374151;
+}
+
+.ppe-box-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1;
+}
+
+.ppe-violations-row {
+  padding: 12px 14px;
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.ppe-history {
+  padding: 10px 14px 12px;
+}
+
+.ppe-history-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.compliance-chart {
+  width: 100%;
+  height: 100px;
+  display: block;
+}
+
+.vio-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Billing Operations panel ── */
+.ops-section-header {
+  padding: 10px 16px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.ops-top-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.ops-bottom-row {
+  display: flex;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.ops-card {
+  padding: 18px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+}
+
+.ops-card--border-left { border-left: 1px solid var(--card-border); }
+.ops-card--full        { flex: 1; }
+
+.ops-card-label {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -166,13 +300,112 @@ body {
   color: var(--text-muted);
 }
 
-.kpi-value {
-  font-size: 1.8rem;
+.ops-card-value {
+  font-size: 2rem;
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1;
 }
-.kpi-value--sm { font-size: 1.1rem; padding-top: 4px; }
+.ops-card-value--sm { font-size: 1.3rem; }
 
-/* Billing panel has 3 tiles — override grid */
-.panel:last-child .kpi-row { grid-template-columns: repeat(3, 1fr); }
+.ops-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ── Inline KPI + graph rows ── */
+.ops-kpi-row {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: stretch;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.ops-kpi-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+}
+
+.ops-avg-row {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ops-mini-graph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 80px;
+}
+
+/* ── Activity trail ── */
+.activity-section {
+  border-top: 1px solid var(--card-border);
+  padding: 14px 16px 16px;
+}
+
+.activity-header {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.activity-mini-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+.activity-mini-label:first-of-type { margin-top: 0; }
+
+.activity-canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.activity-trail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+  min-height: 28px;
+}
+
+.trail-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 18px;
+  text-align: center;
+}
+
+.trail-sep {
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.trail-empty {
+  font-size: 14px;
+  color: var(--text-muted);
+}

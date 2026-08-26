@@ -82,28 +82,19 @@ export async function loadBillWaitData(url) {
   waitStmt.free();
   db.close();
 
-  // Pre-calculate avg billing time from queue reductions
-  // Each time billing_count drops, the service duration = time since last change
-  const avgBillingTime = calcAvgBillingTime(billingRows);
-
-  return { billingRows, waitingRows, avgBillingTime };
-}
-
-function calcAvgBillingTime(rows) {
-  if (rows.length < 2) return 0;
-  const durations = [];
-  for (let i = 1; i < rows.length; i++) {
-    const prev = rows[i - 1];
-    const curr = rows[i];
+  // Build billing completion events: each drop in count = a customer served
+  const billingEvents = [];
+  for (let i = 1; i < billingRows.length; i++) {
+    const prev = billingRows[i - 1];
+    const curr = billingRows[i];
     const drop = prev.billing_count - curr.billing_count;
     if (drop > 0) {
-      const duration = curr.timeSeconds - prev.timeSeconds;
-      // If multiple people served at once, split duration evenly
+      const duration = (curr.timeSeconds - prev.timeSeconds) / drop;
       for (let d = 0; d < drop; d++) {
-        durations.push(duration / drop);
+        billingEvents.push({ timeSeconds: curr.timeSeconds, duration });
       }
     }
   }
-  if (!durations.length) return 0;
-  return durations.reduce((a, b) => a + b, 0) / durations.length;
+
+  return { billingRows, waitingRows, billingEvents };
 }
