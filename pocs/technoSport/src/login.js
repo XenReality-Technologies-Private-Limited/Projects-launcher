@@ -2,10 +2,13 @@
 
 const LOGO = '/xenlogo.png';
 const POC_NAME = 'TechnoSport';
+const POC_SLUG   = 'technoSport';
 const COLLECTION = 'xr_employees';
 
 export function requireAuth(onAuthed) {
-  if (pb.authStore.isValid) { onAuthed(); return; }
+  const _m = pb.authStore.model;
+  if (pb.authStore.isValid && (!_m?.poc || _m.poc === POC_SLUG)) { onAuthed(); return; }
+  if (pb.authStore.isValid) pb.authStore.clear();
 
   const overlay = document.createElement('div');
   overlay.id = 'auth-overlay';
