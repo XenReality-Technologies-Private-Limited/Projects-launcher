@@ -16,7 +16,7 @@ function findRow(rows, t) {
   return result;
 }
 
-export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { kitchenRows }, { billingRows, waitingRows, billingEvents }) {
+export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { kitchenRows }, { billingRows, serviceEvents }) {
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
@@ -79,20 +79,20 @@ export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { k
 
         <div class="metric-group">
           <div class="metric-group-head">
-            <span class="metric-group-title">Billing &amp; Waiting</span>
+            <span class="metric-group-title">Billing</span>
           </div>
           <div class="metric-tiles">
             <div class="tile">
               <div class="tile-label">Billing Queue</div>
               <div class="tile-value" id="billing-queue">—</div>
             </div>
+            <!-- Always in the layout. It reads "—" until the first transaction has
+                 finished, then averages every transaction completed SO FAR, so the
+                 figure only ever reflects what has actually happened by that point in
+                 the clip. -->
             <div class="tile">
               <div class="tile-label">Avg Billing Time</div>
               <div class="tile-value tile-value--sm" id="avg-billing">—</div>
-            </div>
-            <div class="tile">
-              <div class="tile-label">Waiting for Food</div>
-              <div class="tile-value" id="waiting-count">—</div>
             </div>
           </div>
         </div>
@@ -122,7 +122,6 @@ export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { k
 
   const elBillingQ   = appEl.querySelector('#billing-queue');
   const elAvgBilling = appEl.querySelector('#avg-billing');
-  const elWaiting    = appEl.querySelector('#waiting-count');
 
   function updateKitchen() {
     const row = findRow(kitchenRows, kitchenVideo.currentTime);
@@ -137,20 +136,18 @@ export function renderDashboard(appEl, { kitchenVideoUrl, billingVideoUrl }, { k
   kitchenVideo.addEventListener('seeked', updateKitchen);
 
   function updateBilling() {
-    const t    = billingVideo.currentTime;
+    const t = billingVideo.currentTime;
     const bRow = findRow(billingRows, t);
-    const wRow = findRow(waitingRows, t);
     if (bRow) elBillingQ.textContent = bRow.billing_count;
-    if (wRow) elWaiting.textContent   = wRow.waiting_count;
-    // Running average: past events if any, else fall back to session-wide average
-    const pastEvents  = billingEvents.filter(e => e.timeSeconds <= t);
-    const eventsToAvg = pastEvents.length > 0 ? pastEvents : billingEvents;
-    if (eventsToAvg.length) {
-      const avg = eventsToAvg.reduce((s, e) => s + e.duration, 0) / eventsToAvg.length;
-      elAvgBilling.textContent = fmtSecs(avg);
-    }
+
+    // Running mean over the transactions finished by now — nothing from the future.
+    const done = serviceEvents.filter(e => e.timeSeconds <= t);
+    elAvgBilling.textContent = done.length
+      ? fmtSecs(done.reduce((sum, e) => sum + e.duration, 0) / done.length)
+      : '—';
   }
 
   billingVideo.addEventListener('timeupdate', updateBilling);
   billingVideo.addEventListener('seeked', updateBilling);
+
 }

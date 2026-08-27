@@ -53,7 +53,7 @@ export async function loadKitchenData(url) {
 export async function loadBillWaitData(url) {
   const db = await fetchDb(url);
 
-  // billing table
+  // Billing occupancy over time, one row per change.
   const billingStmt = db.prepare(
     'SELECT video_time, billing_count FROM billing ORDER BY video_time ASC'
   );
@@ -67,34 +67,30 @@ export async function loadBillWaitData(url) {
   }
   billingStmt.free();
 
-  // waiting table
-  const waitStmt = db.prepare(
-    'SELECT video_time, waiting_count FROM waiting ORDER BY video_time ASC'
-  );
-  const waitingRows = [];
-  while (waitStmt.step()) {
-    const r = waitStmt.getAsObject();
-    waitingRows.push({
-      timeSeconds:   parseHMSToSeconds(r.video_time),
-      waiting_count: Number(r.waiting_count) || 0,
-    });
-  }
-  waitStmt.free();
-  db.close();
-
-  // Build billing completion events: each drop in count = a customer served
-  const billingEvents = [];
-  for (let i = 1; i < billingRows.length; i++) {
-    const prev = billingRows[i - 1];
-    const curr = billingRows[i];
-    const drop = prev.billing_count - curr.billing_count;
-    if (drop > 0) {
-      const duration = (curr.timeSeconds - prev.timeSeconds) / drop;
-      for (let d = 0; d < drop; d++) {
-        billingEvents.push({ timeSeconds: curr.timeSeconds, duration });
+  // One row per completed transaction: how long it took, and the moment it finished.
+  // The moment is what lets the dashboard show a mean over the transactions done SO FAR
+  // rather than a whole-session figure from the start of playback.
+  //
+  // These are NOT inferred from drops in billing_count. That derivation measured the gap
+  // between two table rows divided by how many people left, which is a property of the
+  // sampling interval and not of how long anybody stood at the till.
+  const serviceEvents = [];
+  try {
+    const svcStmt = db.prepare(
+      'SELECT video_time, service_seconds FROM billing_services ORDER BY video_time ASC'
+    );
+    while (svcStmt.step()) {
+      const r = svcStmt.getAsObject();
+      const d = Number(r.service_seconds);
+      if (Number.isFinite(d) && d > 0) {
+        serviceEvents.push({ timeSeconds: parseHMSToSeconds(r.video_time), duration: d });
       }
     }
+    svcStmt.free();
+  } catch {
+    // An older bill_wait.db has no such table; the tile then just stays at "—".
   }
 
-  return { billingRows, waitingRows, billingEvents };
+  db.close();
+  return { billingRows, serviceEvents };
 }
