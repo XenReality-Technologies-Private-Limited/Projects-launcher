@@ -164,7 +164,37 @@
         <li><label><input type="checkbox" class="req-box"><span>All the brand's AI features turned OFF</span></label></li>
         <li><label><input type="checkbox" class="req-box"><span>Backup and video storage configured beforehand</span></label></li>
       </ul>
-      <div class="callout callout-warn">
+
+      <details class="trouble" style="margin-top: 16px;">
+        <summary>NVR connection details by brand</summary>
+        <div class="trouble-body">
+          <p style="margin-bottom:12px;color:var(--ink-soft);font-size:0.9rem;">Collect the details below for whichever brand is installed at the store — we'll need them before or during the installation visit.</p>
+
+          <p style="font-weight:700;margin-bottom:4px;">CP PLUS <span style="font-weight:400;color:var(--ink-soft);font-size:0.85rem;">— easiest to set up</span></p>
+          <ul class="mini-list" style="margin-bottom:14px;">
+            <li>Serial Number (SN)</li>
+            <li>IP Address</li>
+            <li>Username</li>
+            <li>Password</li>
+          </ul>
+
+          <p style="font-weight:700;margin-bottom:4px;">Hikvision</p>
+          <p style="font-size:0.875rem;color:var(--ink-soft);margin-bottom:6px;">Two connection methods — <strong>Normal login is strongly preferred</strong> as it allows bulk footage download. Cloud P2P only allows ~5 minutes at a time and requires a Cloud ID.</p>
+          <ul class="mini-list" style="margin-bottom:14px;">
+            <li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li>
+            <li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li>
+          </ul>
+
+          <p style="font-weight:700;margin-bottom:4px;">Dahua</p>
+          <ul class="mini-list">
+            <li>IP Address</li>
+            <li>Username</li>
+            <li>Password</li>
+          </ul>
+        </div>
+      </details>
+
+      <div class="callout callout-warn" style="margin-top:14px;">
         <strong>No NVR access?</strong> If the client cannot give us access to the NVR,
         they must instead provide <strong>15&ndash;20 hours of traffic footage</strong> from the store or café.
       </div>
@@ -193,7 +223,8 @@
         <li><label><input type="checkbox" class="req-box"><span>Network cable channels to run the Ethernet cable</span></label></li>
         <li><label><input type="checkbox" class="req-box"><span>Secure storage room for the Pi</span></label></li>
         <li><label><input type="checkbox" class="req-box"><span>Router access (username &amp; password), with a static IP for the cameras and the DVR/NVR</span></label></li>
-        <li><label><input type="checkbox" class="req-box"><span>Firewall (FORTINET): allow Local Area Network access and whitelist the MAC ID of our Pi 5</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Firewall whitelisting done for your brand — Sophos, SonicWall, Fortinet (FortiGate), Palo Alto Networks, Check Point, Netskope, or Cisco / Citrix: allow Local Area Network access and whitelist the MAC ID of our Pi 5</span></label></li>
+        <li><label><input type="checkbox" class="req-box"><span>Tailscale whitelisted on the firewall (required — without this we cannot connect to the cameras remotely)</span></label></li>
       </ul>
       <div class="callout callout-warn">
         <strong>Admin access, not guest.</strong> Clients sometimes hand us a guest user.
