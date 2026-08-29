@@ -7,16 +7,6 @@
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
 <link rel="stylesheet" href="css/style.css?v=3">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
-<script>
-/* Gate: the setup page stays locked until the requirements checklist is complete */
-(function () {
-  try {
-    if (localStorage.getItem("xen-req-complete") !== "true") {
-      location.replace("requirements.html");
-    }
-  } catch (e) { /* if storage is unavailable, let the page load */ }
-})();
-</script>
 </head>
 <body>
 <script>
