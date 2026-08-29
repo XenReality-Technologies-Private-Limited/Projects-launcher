@@ -11,6 +11,8 @@
 <body>
 <script>
 (function(){var a=localStorage.getItem('pocketbase_auth');if(!a){window.location.replace('/instructions/login.html');return;}try{if(!JSON.parse(a).token){window.location.replace('/instructions/login.html');}}catch(e){window.location.replace('/instructions/login.html');}})();
+/* Always start at requirements so users follow the correct flow */
+(function(){if(localStorage.getItem('xen-req-complete')!=='true'){location.replace('requirements.html');}})();
 </script>
 
 <!-- ══════════════════ Reusable SVG symbols ══════════════════ -->
