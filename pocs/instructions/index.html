@@ -421,9 +421,10 @@
             <li>Open a web browser and type in the router's IP address. It will look like this: <code>http://X.X.X.1</code> (for example, <code>http://192.168.1.1</code> or <code>http://10.80.0.1</code> — the exact numbers depend on the site). You can usually find this address on a sticker on the router, or in your computer's network settings.</li>
             <li>Log in with the store's router username and password.</li>
           </ol>
-          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
-            <img src="images/tplink/ui_p1_img1.png" alt="Omada login page" style="width:100%;display:block;">
-          </div>
+          <figure style="margin:16px 0 0;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);text-align:center;background:#f8fafc;">
+            <img src="images/tplink/ui_p1_img1.png" alt="Omada login page" style="max-height:420px;width:auto;max-width:100%;display:block;margin:0 auto;">
+            <figcaption style="font-size:0.8rem;color:var(--ink-soft);padding:8px 12px;">The Omada login screen — enter the store's router username and password.</figcaption>
+          </figure>
         </div>
 
         <div class="tplink-step">
@@ -432,9 +433,10 @@
             <li>On the left-hand menu, click <strong>Network</strong> to open it up.</li>
             <li>Click <strong>LAN</strong>.</li>
           </ol>
-          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+          <figure style="margin:16px 0 0;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);background:#f8fafc;">
             <img src="images/tplink/ui_p2_img1.png" alt="Omada sidebar — Network > LAN selected" style="width:100%;display:block;">
-          </div>
+            <figcaption style="font-size:0.8rem;color:var(--ink-soft);padding:8px 12px;">The left-hand menu, with Network opened and LAN selected — the Address Reservation tab is visible at the top.</figcaption>
+          </figure>
         </div>
 
         <div class="tplink-step">
@@ -443,9 +445,6 @@
             <li>At the top of the LAN page, click the <strong>Address Reservation</strong> tab.</li>
             <li>Click the <strong>+ Add</strong> button on the right to create a new rule.</li>
           </ol>
-          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
-            <img src="images/tplink/ui_p2_img2.png" alt="Address Reservation tab with Add button highlighted" style="max-width:420px;width:100%;display:block;margin:0 auto;">
-          </div>
         </div>
 
         <div class="tplink-step">
@@ -484,9 +483,6 @@
               If it worked, you'll see replies like: <code>64 bytes from 10.80.0.150: icmp_seq=0 ttl=64 time=41.891 ms</code>
             </li>
           </ol>
-          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
-            <img src="images/tplink/ui_p4_img2.png" alt="DHCP Client List showing the reserved IP" style="width:100%;display:block;">
-          </div>
           <div class="callout" style="margin-top:16px;border:2px solid var(--accent);background:var(--accent-soft);">
             <strong style="color:var(--accent-deep);font-size:1rem;">Extra Notes</strong>
             <ul style="margin:8px 0 0 18px;line-height:1.8;">
@@ -987,6 +983,21 @@
                 <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 6l11 5L23 6"/></svg>Narrow Lens</span><span class="angle-degrees">10° – 20°</span><span class="angle-note">Place further back and tilt down slightly. The narrower field of view is compensated by the extra distance.</span></div>
                 <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 9l11 5L23 9"/></svg>Wide Lens</span><span class="angle-degrees">20° – 30°</span><span class="angle-note">Place closer and tilt down more steeply. The wider field of view covers the door at a shorter distance.</span></div>
               </div>
+              <hr class="cg-divider">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:4px;">
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_01.png" alt="Footfall camera placement — where to place" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Where to place — correct positioning facing the door</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_02.png" alt="Footfall camera — distance from door" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Correct distance: 2.5–3.5 m from the door</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_03.png" alt="Footfall camera — height and angle" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Height and tilt angle by lens type</figcaption>
+                </figure>
+              </div>
             </div>
           </div>
         </div>
@@ -1006,6 +1017,21 @@
                 <div class="mistake-item"><span class="mistake-badge">Sarath City Mall</span><div class="mistake-content"><h4>Camera mounted too low and on the side</h4><p>The person standing further away is hidden behind the person standing closer. This happens because the camera is on the side. Being mounted too low makes this problem worse — the occlusion angle increases and people block each other more completely.</p></div></div>
                 <div class="mistake-item"><span class="mistake-badge">AS Rao Nagar</span><div class="mistake-content"><h4>Camera placed outside, not pointing at the store door</h4><p>The camera is placed outside the store and not pointing at the store's door. Because of this, people walking into the shop next door also get counted by mistake — polluting the footfall data.</p></div></div>
                 <div class="mistake-item"><span class="mistake-badge">Lakeshore Mall</span><div class="mistake-content"><h4>Side-mounted camera with partial door coverage</h4><p>The camera is placed on the side, so people block each other in the picture. There is an additional problem: the camera does not see the whole door. Some people walk in through a part of the door the camera cannot see, resulting in missed counts.</p></div></div>
+              </div>
+              <hr class="cg-divider">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:4px;">
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_04.png" alt="Sarath City Mall — camera too low and on the side" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Sarath City Mall — camera too low and side-mounted</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_05.png" alt="AS Rao Nagar — camera outside, not facing door" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">AS Rao Nagar — camera outside, not pointing at the door</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_06.png" alt="Lakeshore Mall — side-mounted with partial door coverage" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Lakeshore Mall — side-mounted, partial door coverage</figcaption>
+                </figure>
               </div>
             </div>
           </div>
@@ -1029,6 +1055,11 @@
                 <div class="good-item"><span class="good-dot">✓</span><span>The <strong>full width of the entrance</strong>, including the steps and mat area, is covered inside the camera's view.</span></div>
                 <div class="good-item"><span class="good-dot">✓</span><span>The camera <strong>keeps detecting people correctly</strong> across different moments in time, showing the setup works reliably throughout the day.</span></div>
               </div>
+              <hr class="cg-divider">
+              <figure style="margin:4px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                <img src="images/camguide/page_07.png" alt="Good footfall camera example from the field" style="width:100%;display:block;">
+                <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Field example — correct setup with each person detected separately</figcaption>
+              </figure>
             </div>
           </div>
         </div>
@@ -1047,6 +1078,17 @@
                 <div class="cg-rule-text"><strong>Ideal position: corner of the billing counter</strong>Place the camera at one corner of the billing counter. From there, the camera should clearly see <strong>both sides</strong> — the customer side and the staff side.</div>
               </div>
               <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments illustrate the correct corner-mounted angle covering both customer and staff sides of the counter.</span></div>
+              <hr class="cg-divider">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:4px;">
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_08.png" alt="Billing camera placement" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Corner-mounted billing camera — covers both customer and staff sides</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_09.png" alt="Billing camera field reference" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Field reference — billing counter coverage angle</figcaption>
+                </figure>
+              </div>
             </div>
           </div>
         </div>
@@ -1065,6 +1107,21 @@
                 <div class="cg-rule-text"><strong>Ideal position: back of the store</strong>Place the camera at the <strong>back of the store</strong>. From there, it should be able to see <strong>most of the store floor</strong> clearly, enabling accurate zone-level dwell-time tracking.</div>
               </div>
               <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments show the recommended elevated rear-of-store mounting angle for maximum floor coverage.</span></div>
+              <hr class="cg-divider">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:4px;">
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_10.png" alt="Heatmap camera placement" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Rear-of-store placement for maximum floor coverage</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_11.png" alt="Heatmap camera field reference" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Field reference — elevated angle for zone coverage</figcaption>
+                </figure>
+                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                  <img src="images/camguide/page_12.png" alt="Heatmap camera additional reference" style="width:100%;display:block;">
+                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Additional field reference</figcaption>
+                </figure>
+              </div>
             </div>
           </div>
         </div>
@@ -1086,6 +1143,11 @@
                 <label class="cg-check-item"><input type="checkbox"><span>The camera is mounted at <strong>ceiling height</strong> with the correct tilt angle for the lens type.</span></label>
                 <label class="cg-check-item"><input type="checkbox"><span>The camera does <strong>not</strong> see into the shop next door or count passers-by on the street.</span></label>
               </div>
+              <hr class="cg-divider">
+              <figure style="margin:4px 0 12px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);background:#f8fafc;">
+                <img src="images/camguide/page_13.png" alt="Pre-departure checklist" style="width:100%;display:block;">
+                <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Pre-departure checklist from the Camera Guidelines PDF</figcaption>
+              </figure>
               <div id="allDoneMsg" style="display:none; margin-top:4px;">
                 <div class="cg-rule cg-rule--good">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
