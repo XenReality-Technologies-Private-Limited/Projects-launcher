@@ -5,29 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XenReality Pi 5 Setup Guide</title>
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
 </head>
 <body>
 <script>
 (function(){var a=localStorage.getItem('pocketbase_auth');if(!a){window.location.replace('/instructions/login.html');return;}try{if(!JSON.parse(a).token){window.location.replace('/instructions/login.html');}}catch(e){window.location.replace('/instructions/login.html');}})();
-/* Always start at requirements so users follow the correct flow */
-(function(){if(localStorage.getItem('xen-req-complete')!=='true'){location.replace('requirements.html');}})();
 </script>
 
 <!-- ══════════════════ Reusable SVG symbols ══════════════════ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <!-- soft shadow -->
     <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0b2545" flood-opacity="0.12"/>
     </filter>
-
-    <!-- ── Raspberry Pi 5 board (top view) ── -->
     <symbol id="sym-pi" viewBox="0 0 220 150">
       <rect x="6" y="6" width="208" height="138" rx="14" fill="#1e7d4f"/>
       <rect x="6" y="6" width="208" height="138" rx="14" fill="url(#piSheen)"/>
-      <!-- GPIO header -->
       <rect x="18" y="12" width="150" height="14" rx="3" fill="#111827"/>
       <g fill="#fbbf24">
         <circle cx="26" cy="19" r="1.8"/><circle cx="36" cy="19" r="1.8"/><circle cx="46" cy="19" r="1.8"/>
@@ -36,23 +30,16 @@
         <circle cx="116" cy="19" r="1.8"/><circle cx="126" cy="19" r="1.8"/><circle cx="136" cy="19" r="1.8"/>
         <circle cx="146" cy="19" r="1.8"/><circle cx="156" cy="19" r="1.8"/>
       </g>
-      <!-- CPU -->
       <rect x="78" y="58" width="40" height="40" rx="6" fill="#c7cdd6"/>
       <rect x="84" y="64" width="28" height="28" rx="4" fill="#8b93a1"/>
-      <!-- RAM -->
       <rect x="132" y="62" width="30" height="22" rx="4" fill="#111827"/>
-      <!-- USB-C power port (bottom-left edge) -->
       <rect x="20" y="128" width="26" height="12" rx="5" fill="#d7dbe2" stroke="#8b93a1"/>
-      <!-- micro HDMI x2 -->
       <rect x="58" y="130" width="20" height="10" rx="2" fill="#c7cdd6"/>
       <rect x="88" y="130" width="20" height="10" rx="2" fill="#c7cdd6"/>
-      <!-- Ethernet port (right edge) -->
       <rect x="186" y="20" width="28" height="30" rx="4" fill="#c7cdd6" stroke="#8b93a1"/>
       <rect x="192" y="28" width="16" height="14" rx="2" fill="#4b5563"/>
-      <!-- USB stacks -->
       <rect x="186" y="62" width="28" height="26" rx="4" fill="#c7cdd6"/>
       <rect x="186" y="96" width="28" height="26" rx="4" fill="#c7cdd6"/>
-      <!-- raspberry logo dot -->
       <circle cx="36" cy="52" r="9" fill="#cd2355"/>
       <path d="M32 48c1.5-2 6.5-2 8 0-1 2-7 2-8 0z" fill="#1e7d4f"/>
       <text x="36" y="76" font-size="9" fill="#eafff3" font-family="sans-serif" font-weight="700">Pi 5</text>
@@ -61,8 +48,6 @@
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
       <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-
-    <!-- ── Case base (red) ── -->
     <symbol id="sym-case-base" viewBox="0 0 220 90">
       <path d="M14 18 h192 a10 10 0 0 1 10 10 v44 a10 10 0 0 1 -10 10 H14 A10 10 0 0 1 4 72 V28 a10 10 0 0 1 10-10z" fill="#cd2355"/>
       <path d="M14 18 h192 a10 10 0 0 1 10 10 v10 H4 V28 a10 10 0 0 1 10-10z" fill="#e0447a" opacity="0.55"/>
@@ -71,8 +56,6 @@
       <rect x="96" y="52" width="22" height="16" rx="3" fill="#8f1740"/>
       <rect x="160" y="52" width="36" height="16" rx="3" fill="#8f1740"/>
     </symbol>
-
-    <!-- ── Case white frame with fan ── -->
     <symbol id="sym-case-frame" viewBox="0 0 220 70">
       <path d="M14 10 h192 a10 10 0 0 1 10 10 v30 a10 10 0 0 1 -10 10 H14 A10 10 0 0 1 4 50 V20 a10 10 0 0 1 10-10z" fill="#f4f5f7" stroke="#d7dbe2"/>
       <circle cx="110" cy="35" r="22" fill="#dfe3e9" stroke="#c2c8d1"/>
@@ -83,50 +66,36 @@
       </g>
       <circle cx="110" cy="35" r="5" fill="#6b7280"/>
     </symbol>
-
-    <!-- ── Case lid (white) ── -->
     <symbol id="sym-case-lid" viewBox="0 0 220 40">
       <rect x="4" y="6" width="212" height="28" rx="12" fill="#ffffff" stroke="#d7dbe2"/>
       <circle cx="182" cy="20" r="7" fill="#cd2355" opacity="0.9"/>
     </symbol>
-
-    <!-- ── Assembled case ── -->
     <symbol id="sym-case-full" viewBox="0 0 220 110">
       <rect x="8" y="14" width="204" height="52" rx="14" fill="#ffffff" stroke="#d7dbe2"/>
       <path d="M18 62 h184 a10 10 0 0 1 10 10 v14 a10 10 0 0 1 -10 10 H18 A10 10 0 0 1 8 86 V72 a10 10 0 0 1 10-10z" fill="#cd2355"/>
       <circle cx="186" cy="40" r="8" fill="#cd2355" opacity="0.9"/>
-      <!-- power button -->
       <rect x="26" y="30" width="22" height="12" rx="6" fill="#eceff3" stroke="#c2c8d1"/>
       <circle cx="37" cy="36" r="3.4" fill="none" stroke="#6b7280" stroke-width="1.6"/>
       <line x1="37" y1="31.6" x2="37" y2="36" stroke="#6b7280" stroke-width="1.6"/>
-      <!-- side ports on red base -->
       <rect x="30" y="72" width="26" height="14" rx="3" fill="#8f1740"/>
       <rect x="66" y="72" width="20" height="14" rx="3" fill="#8f1740"/>
       <rect x="150" y="70" width="30" height="18" rx="3" fill="#4b5563"/>
       <rect x="156" y="75" width="18" height="9" rx="2" fill="#9aa2ae"/>
     </symbol>
-
-    <!-- ── USB-C power adapter ── -->
     <symbol id="sym-adapter" viewBox="0 0 150 130">
       <rect x="30" y="8" width="80" height="72" rx="16" fill="#ffffff" stroke="#d7dbe2"/>
       <rect x="30" y="8" width="80" height="72" rx="16" fill="url(#piSheen)"/>
-      <!-- plug prongs -->
       <rect x="8" y="26" width="22" height="7" rx="3.5" fill="#9aa2ae"/>
       <rect x="8" y="48" width="22" height="7" rx="3.5" fill="#9aa2ae"/>
       <circle cx="70" cy="34" r="8" fill="#cd2355" opacity="0.9"/>
       <text x="70" y="62" font-size="10" text-anchor="middle" fill="#6b7280" font-family="sans-serif" font-weight="600">27W</text>
-      <!-- cable -->
       <path d="M70 80 C70 100 40 96 40 112 C40 122 60 122 74 118" fill="none" stroke="#c2c8d1" stroke-width="6" stroke-linecap="round"/>
-      <!-- USB-C connector -->
       <rect x="72" y="110" width="34" height="14" rx="7" fill="#6b7280"/>
       <rect x="102" y="113" width="14" height="8" rx="4" fill="#9aa2ae"/>
     </symbol>
-
-    <!-- ── LAN cable ── -->
     <symbol id="sym-cable" viewBox="0 0 160 110">
       <path d="M22 88 C-6 66 26 30 62 40 C 96 50 120 18 142 34" fill="none" stroke="#94a8c0" stroke-width="9" stroke-linecap="round"/>
       <path d="M22 88 C-6 66 26 30 62 40 C 96 50 120 18 142 34" fill="none" stroke="#c9d6e6" stroke-width="5" stroke-linecap="round"/>
-      <!-- RJ45 plugs -->
       <g>
         <rect x="10" y="84" width="24" height="18" rx="4" fill="#dbe4f0" stroke="#94a8c0"/>
         <rect x="14" y="98" width="16" height="6" rx="2" fill="#94a8c0"/>
@@ -136,8 +105,6 @@
         <rect x="140" y="20" width="14" height="6" rx="2" fill="#94a8c0"/>
       </g>
     </symbol>
-
-    <!-- ── SD card ── -->
     <symbol id="sym-sd" viewBox="0 0 80 100">
       <path d="M18 10 h34 l16 16 v60 a8 8 0 0 1 -8 8 H18 a8 8 0 0 1 -8-8 V18 a8 8 0 0 1 8-8z" fill="#2b3648"/>
       <rect x="18" y="16" width="8" height="14" rx="2" fill="#fbbf24"/>
@@ -146,24 +113,17 @@
       <rect x="18" y="48" width="42" height="24" rx="4" fill="#f4f5f7"/>
       <text x="39" y="64" font-size="9" text-anchor="middle" fill="#2b3648" font-family="sans-serif" font-weight="700">XenR</text>
     </symbol>
-
-    <!-- ── Router ── -->
     <symbol id="sym-router" viewBox="0 0 180 110">
       <rect x="12" y="52" width="156" height="42" rx="12" fill="#2b3648"/>
       <rect x="12" y="52" width="156" height="12" rx="6" fill="#3d4a61"/>
-      <!-- antennas -->
       <rect x="34" y="14" width="6" height="42" rx="3" fill="#2b3648"/>
       <rect x="140" y="14" width="6" height="42" rx="3" fill="#2b3648"/>
-      <!-- status LEDs -->
       <circle cx="44" cy="76" r="4" fill="#34d399"/>
       <circle cx="60" cy="76" r="4" fill="#34d399"/>
       <circle cx="76" cy="76" r="4" fill="#fbbf24"/>
-      <!-- ethernet jacks -->
       <rect x="108" y="68" width="18" height="16" rx="3" fill="#111827"/>
       <rect x="132" y="68" width="18" height="16" rx="3" fill="#111827"/>
     </symbol>
-
-    <!-- ── Browser window ── -->
     <symbol id="sym-browser" viewBox="0 0 200 130">
       <rect x="6" y="6" width="188" height="118" rx="14" fill="#ffffff" stroke="#d7dbe2"/>
       <rect x="6" y="6" width="188" height="28" rx="14" fill="#f4f5f7"/>
@@ -176,455 +136,977 @@
   </defs>
 </svg>
 
-<!-- ══════════════════ NAV ══════════════════ -->
-<header class="nav-wrap">
-  <nav class="nav-pill">
-    <a class="brand" href="#top">
-      <img src="images/xenreality-logo.png" alt="XenReality" class="brand-logo">
-      <span class="brand-name">XenReality</span>
-    </a>
-    <div class="nav-links">
-      <a href="#about" class="nav-link">Product</a>
-      <a href="requirements.html" class="nav-link">Requirements</a>
-      <a href="#choose" class="nav-link">Setup</a>
-      <a href="#support" class="nav-link">Support</a>
-      <a href="camera-guidelines.html" class="nav-link">Camera Guidelines</a>
-    </div>
-    <button class="btn btn-dark" data-action="start">Start Setup</button>
-  </nav>
-</header>
+<!-- ══════════════════ SPA SHELL ══════════════════ -->
+<div class="spa-wrapper">
 
-<main id="top">
-
-  <!-- print-only header for the PDF export -->
-  <div class="print-only print-header">
-    <img src="images/xenreality-logo.png" alt="XenReality">
-    <div>
-      <strong>XenReality · Pi 5 Setup Guide</strong><br>
-      <span>All installation steps, troubleshooting, and the NVR &amp; tech requirements summary.</span>
-    </div>
-  </div>
-
-  <!-- ══════════════════ HERO ══════════════════ -->
-  <section class="hero" id="home">
-    <span class="badge-chip"><span class="badge-new">NEW</span> Pi 5 guided installation</span>
-    <h1>Set up your <span class="accent">XenReality&nbsp;Pi</span></h1>
-    <p class="hero-sub">A simple, step-by-step guide to connect your Raspberry&nbsp;Pi&nbsp;5 with
-      just the power adapter and one LAN cable. Click <strong>Next</strong> after each step until you're done.</p>
-    <div class="hero-cta">
-      <button class="btn btn-primary btn-lg" data-action="start">Start Setup</button>
-      <button class="btn btn-ghost btn-lg" data-action="learn">What's a Raspberry Pi?</button>
-    </div>
-    <div class="chip-row">
-      <button class="chip" data-vertical="fnb">F&amp;B Setup</button>
-      <button class="chip" data-vertical="retail">Retail Setup</button>
-    </div>
-    <div class="video-cta-row">
-      <button class="btn-watch-video" id="btnWatchVideo">
-        <span class="video-play-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
-        Prefer watching? See the full setup - no reading required
+  <!-- ── Sidebar ── -->
+  <aside class="spa-sidebar">
+    <div class="spa-sidebar-header">
+      <img src="images/xenlogo.png" alt="XenReality" class="logo-full">
+      <button id="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg class="chevron-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg class="chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </div>
-  </section>
 
-  <!-- ══════════════════ WHAT IS A PI ══════════════════ -->
-  <section class="section" id="about">
-    <div class="card about-card">
-      <div class="about-art">
-        <svg viewBox="0 0 220 150" class="art" filter="url(#soft)"><use href="#sym-pi"/></svg>
+    <ul class="spa-sidebar-menu">
+      <!-- Group 1: Requirements flow -->
+      <div class="spa-menu-group">
+        <a class="spa-menu-item active" data-target="sec-guidelines" onclick="appFlow.nav(this)">
+          Camera Guidelines
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-infra" onclick="appFlow.nav(this)">
+          Network Infrastructure
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <div class="spa-sub-group-label">Router Settings</div>
+        <a class="spa-menu-item locked spa-menu-sub2" data-target="sec-static-tplink" onclick="appFlow.nav(this)">
+          Static IP
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-nvr" onclick="appFlow.nav(this)">
+          NVR Requirements
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-creds" onclick="appFlow.nav(this)">
+          Camera Requirements
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
       </div>
-      <div class="about-text">
-        <h2>What is a Raspberry&nbsp;Pi?</h2>
-        <p>A Raspberry Pi is a <strong>tiny computer</strong> about the size of a credit card.
-           Inside your store it works as the <strong>on-site brain</strong> for XenReality: it connects to your
-           camera system, understands what's happening in the store, and sends insights to your dashboard.</p>
-        <p>It only needs two connections to do its job:</p>
-        <ul class="mini-list">
-          <li><strong>Power:</strong> the USB-C adapter that comes in the box.</li>
-          <li><strong>Network:</strong> one LAN cable to your router or switch.</li>
-        </ul>
-        <p class="muted">No screens, no keyboards, no extra wiring. If you can plug in a phone charger, you can set this up.</p>
-        <div class="about-cta">
-          <a href="requirements.html" class="btn btn-primary" style="text-decoration:none">Next: Requirements checklist →</a>
-          <p class="muted" style="margin-top:10px">Step 1 of the journey: make sure the store meets every requirement before touching the hardware.</p>
-        </div>
+      <!-- Group 2: Installation -->
+      <div class="spa-menu-group">
+        <a class="spa-menu-item locked" data-target="sec-rpi" onclick="appFlow.nav(this)">
+          Raspberry Pi
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-setup" onclick="appFlow.nav(this)">
+          Setup
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
       </div>
-    </div>
-  </section>
+    </ul>
+  </aside>
 
-  <!-- ══════════════════ CHOOSE VERTICAL ══════════════════ -->
-  <section class="section" id="choose">
-    <h2 class="section-title">Choose your business type</h2>
-    <p class="section-sub">The Pi setup is exactly the same for both. The difference is what XenReality measures for you.<br>
-       First visit? Make sure the store meets the <a href="requirements.html" class="inline-link">NVR &amp; Tech Requirements</a> first.</p>
-    <div class="choose-grid">
-      <button class="card choice-card" data-vertical="fnb">
-        <div class="choice-icon">
-          <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
-            <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
-            <path d="M14 10 v9 M11 10 v5 a3 3 0 0 0 6 0 v-5 M14 19 v11" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-            <path d="M26 10 c-3 0 -4 4 -4 8 h4 v12 M26 10 v20" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
-          </svg>
-        </div>
-        <h3>F&amp;B</h3>
-        <p>For restaurants, cafés and food courts. XenReality tracks <strong>table turnover, queue times and service speed</strong> so you can serve more guests, faster.</p>
-        <span class="choice-go">Start F&amp;B setup →</span>
-      </button>
-      <button class="card choice-card" data-vertical="retail">
-        <div class="choice-icon">
-          <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
-            <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
-            <path d="M12 15 h16 l-1.6 15 a2 2 0 0 1 -2 1.8 H15.6 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linejoin="round"/>
-            <path d="M15.5 18 v-4 a4.5 4.5 0 0 1 9 0 v4" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3>Retail</h3>
-        <p>For stores and showrooms. XenReality tracks <strong>footfall, conversion and zone dwell time</strong> so you know what shoppers do and what makes them buy.</p>
-        <span class="choice-go">Start Retail setup →</span>
-      </button>
-    </div>
-    <div class="video-cta-row" style="margin-top: 30px; display: flex; justify-content: center;">
-      <button class="btn-watch-video" id="btnWatchConfiguratorVideo">
-        <span class="video-play-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
-        Watch the video to setup the configurator
-      </button>
-    </div>
-  </section>
+  <!-- ── Main content ── -->
+  <main class="spa-main" id="top">
 
-  <!-- ══════════════════ WIZARD ══════════════════ -->
-  <section class="wizard hidden" id="wizard">
-    <div class="wizard-shell card">
-      <div class="wizard-head">
-        <span class="vertical-tag" id="verticalTag">F&amp;B</span>
-        <span class="step-count" id="stepCount">Step 1 of 9</span>
-        <button class="btn btn-ghost btn-sm" id="btnExportPdf" title="Save the full setup guide as a PDF">Export PDF</button>
-        <button class="btn btn-ghost btn-sm" data-action="exit">Exit</button>
-      </div>
-      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+    <!-- ══════════════════ NVR REQUIREMENTS ══════════════════ -->
+    <div class="spa-section" id="sec-nvr">
+      <section class="hero hero-compact">
+        <span class="badge-chip"><span class="badge-new">CHECKLIST</span> NVR setup before installation</span>
+        <h1>NVR <span class="accent">Requirements</span></h1>
+        <p class="hero-sub">The recorder must be set up correctly before we can connect the Pi. Tick every item below to confirm the NVR is ready.</p>
+      </section>
 
-      <!-- STEP 1 — kit -->
-      <div class="step" data-step="1">
-        <div class="step-art">
-          <svg viewBox="0 0 560 170" class="art">
-            <g transform="translate(0,10)"><svg width="200" height="140" viewBox="0 0 220 150"><use href="#sym-pi"/></svg></g>
-            <g transform="translate(212,30)"><svg width="120" height="110" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
-            <g transform="translate(330,36)"><svg width="130" height="96" viewBox="0 0 160 110"><use href="#sym-cable"/></svg></g>
-            <g transform="translate(462,34)"><svg width="56" height="80" viewBox="0 0 80 100"><use href="#sym-sd"/></svg></g>
-          </svg>
-        </div>
-        <h3>Check your kit</h3>
-        <p>Lay everything out on a clean table. You should have:</p>
-        <ul class="check-list">
-          <li>Raspberry Pi 5 board</li>
-          <li>Official Pi 5 case (red base, white frame with fan, white lid, heatsink &amp; feet in a small envelope)</li>
-          <li>27W USB-C power adapter (comes with the Pi)</li>
-          <li>LAN cable</li>
-          <li>SD card provided by XenReality</li>
-        </ul>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Something missing?</strong> Don't start the setup with a partial kit. Contact your XenReality point of contact and we'll ship the missing part.</p>
+      <section class="section">
+        <div class="card about-card">
+          <div class="about-art">
+            <svg viewBox="0 0 220 150" class="art">
+              <rect x="30" y="88" width="160" height="44" rx="10" fill="#2b3648"/>
+              <rect x="30" y="88" width="160" height="12" rx="6" fill="#3d4a61"/>
+              <circle cx="52" cy="114" r="4" fill="#34d399"/>
+              <circle cx="66" cy="114" r="4" fill="#fbbf24"/>
+              <rect x="130" y="106" width="20" height="16" rx="3" fill="#111827"/>
+              <rect x="156" y="106" width="20" height="16" rx="3" fill="#111827"/>
+              <text x="52" y="102" font-size="8" fill="#9aa2ae" font-family="sans-serif" font-weight="700">NVR</text>
+              <g>
+                <circle cx="45" cy="30" r="16" fill="#dfe3e9" stroke="#c2c8d1"/>
+                <circle cx="45" cy="30" r="8" fill="#2b3648"/>
+                <circle cx="47" cy="28" r="2.5" fill="#7dd3fc"/>
+              </g>
+              <g>
+                <rect x="140" y="18" width="40" height="18" rx="9" fill="#dfe3e9" stroke="#c2c8d1"/>
+                <circle cx="176" cy="27" r="6" fill="#2b3648"/>
+              </g>
+              <path d="M50 48 C60 70 80 82 96 88" fill="none" stroke="#94a8c0" stroke-width="3" stroke-dasharray="5 5"/>
+              <path d="M162 38 C158 58 150 74 140 86" fill="none" stroke="#94a8c0" stroke-width="3" stroke-dasharray="5 5"/>
+            </svg>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 2 — case part A -->
-      <div class="step hidden" data-step="2">
-        <div class="step-art">
-          <svg viewBox="0 0 560 190" class="art">
-            <g transform="translate(160,4)"><svg width="240" height="86" viewBox="0 0 220 150" preserveAspectRatio="xMidYMin slice"><use href="#sym-pi"/></svg></g>
-            <path d="M280 96 v22" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead)"/>
-            <g transform="translate(160,124)"><svg width="240" height="64" viewBox="0 0 220 90"><use href="#sym-case-base"/></svg></g>
-            <defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
-          </svg>
-        </div>
-        <h3>Case, part 1: seat the Pi in the red base</h3>
-        <ol class="num-list">
-          <li>Open the accessories envelope in the case box.</li>
-          <li>Peel the backing off the small <strong>heatsink</strong> and stick it onto the raised CPU (the silver square in the middle of the board). Press down firmly.</li>
-          <li>Stick the four <strong>silicone feet</strong> into the marked spots under the red base.</li>
-          <li>Lower the Pi into the <strong>red base</strong>. The board slides <em>under the plastic tab at the SD-card end</em>. Check it sits flat and every port lines up with its hole.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Board won't sit flat?</strong> It's probably not tucked under the tab at the SD-card end. Lift it out, slide the SD-card end in first at an angle, then lower the port side down.</p>
-            <p><strong>Ports don't line up?</strong> The board is in backwards. The USB/Ethernet ports must face the large openings.</p>
+          <div class="about-text">
+            <h2>What is an NVR?</h2>
+            <p>An <strong>NVR (Network Video Recorder)</strong> is the <strong>brain of the camera system</strong>:
+               the one box that collects, stores and plays back the video from every camera in the store.
+               Our AI Edge Device connects to the NVR to read the video, so the NVR has to be set up right before we install.</p>
+            <p>Dome and bullet cameras plug into the network, the NVR records them all, and XenReality's AI Edge Device
+               reads from the NVR. One brain, many eyes.</p>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 3 — case part B -->
-      <div class="step hidden" data-step="3">
-        <div class="step-art">
-          <svg viewBox="0 0 560 190" class="art">
-            <g transform="translate(160,6)"><svg width="240" height="44" viewBox="0 0 220 40"><use href="#sym-case-lid"/></svg></g>
-            <g transform="translate(160,62)"><svg width="240" height="66" viewBox="0 0 220 70"><use href="#sym-case-frame"/></svg></g>
-            <g transform="translate(160,136)"><svg width="240" height="52" viewBox="0 0 220 90" preserveAspectRatio="xMidYMin slice"><use href="#sym-case-base"/></svg></g>
-            <path d="M120 30 c-30 40 -30 80 0 130" stroke="#F7941D" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
-          </svg>
         </div>
-        <h3>Case, part 2: fan cable, frame &amp; lid</h3>
-        <ol class="num-list">
-          <li>Lay the <strong>white frame</strong> (the part with the fan) upside-down next to the base.</li>
-          <li>Plug the <strong>fan cable</strong> into the small 4-pin connector labeled <strong>FAN</strong> on the Pi. The connector only fits one way, so don't force it.</li>
-          <li>Clip the white frame onto the red base until it clicks all around.</li>
-          <li>Press the <strong>lid</strong> on top. Done! The Pi is now safe inside its case.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Fan cable won't go in?</strong> Flip the connector around: it's keyed to fit only one way. Make sure it's pushed fully in.</p>
-            <p><strong>Frame won't clip shut?</strong> The fan cable may be pinched, or the board isn't flat in the base. Re-check step 2 before pressing harder.</p>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Types of NVR</h2>
+        <p class="section-sub">Stores can have different recorder types. Here's how to recognise each one, and what it means for us.</p>
+        <div class="type-grid">
+          <div class="card type-card">
+            <h3>Standalone NVR</h3>
+            <p>A dedicated recorder box for <strong>IP cameras</strong>. The most common setup and the one we prefer.
+               Cameras and NVR talk over the network.</p>
+            <span class="type-tag good">Works great</span>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 4 — SD card -->
-      <div class="step hidden" data-step="4">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(150,30)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <g transform="translate(72,58)" class="anim-slide"><svg width="52" height="66" viewBox="0 0 80 100" ><use href="#sym-sd"/></svg></g>
-            <path d="M132 92 h26" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead2)"/>
-            <defs><marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
-          </svg>
-        </div>
-        <h3>Insert the XenReality SD card</h3>
-        <p>The SD card is the Pi's memory. All the XenReality software is already on it.</p>
-        <ol class="num-list">
-          <li>Find the thin <strong>SD slot on the underside</strong> of the case, at the end with the small opening.</li>
-          <li>Slide the card in with the <strong>gold contacts facing up towards the board</strong>, until it stops.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Card won't go in?</strong> Don't force it. Flip it over: the card only seats fully in one orientation.</p>
-            <p><strong>No SD card in the kit?</strong> Stop here and contact XenReality. The Pi cannot run without our card.</p>
+          <div class="card type-card">
+            <h3>DVR</h3>
+            <p>An older recorder for <strong>analog cameras</strong> (coax cables instead of network cables).
+               No ONVIF, so we usually can't read from it directly.</p>
+            <span class="type-tag warn">Needs checking</span>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 5 — power adapter -->
-      <div class="step hidden" data-step="5">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(80,20)"><svg width="140" height="128" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
-            <path d="M232 128 h64" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7" marker-end="url(#arrowhead3)"/>
-            <g transform="translate(310,28)"><svg width="240" height="120" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <circle cx="345" cy="128" r="10" fill="none" stroke="#F7941D" stroke-width="3" class="anim-pulse"/>
-            <defs><marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
-          </svg>
-        </div>
-        <h3>Connect the power adapter</h3>
-        <ol class="num-list">
-          <li>Plug the adapter into a wall socket, but <strong>keep the wall switch OFF</strong> for now.</li>
-          <li>Plug the <strong>USB-C end</strong> into the Pi's power port: the small oval port on the side of the case (circled in the picture).</li>
-        </ol>
-        <p class="muted">Use only the 27W adapter that came with the Pi. Phone chargers may look identical but can't power it reliably.</p>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Can't find the power port?</strong> It's the small oval (USB-C) port, the same shape as a modern phone charging port, on the side edge of the case next to the two HDMI ports.</p>
+          <div class="card type-card">
+            <h3>Hybrid (XVR)</h3>
+            <p>A recorder that accepts <strong>both analog and IP cameras</strong>. Fine for us as long as
+               the cameras we need are IP and ONVIF is enabled.</p>
+            <span class="type-tag warn">Needs checking</span>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 6 — LAN cable -->
-      <div class="step hidden" data-step="6">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(30,30)"><svg width="220" height="110" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#94a8c0" stroke-width="8" stroke-linecap="round"/>
-            <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#c9d6e6" stroke-width="4" stroke-linecap="round"/>
-            <g transform="translate(352,40)"><svg width="180" height="110" viewBox="0 0 180 110"><use href="#sym-router"/></svg></g>
-          </svg>
-        </div>
-        <h3>Connect the LAN cable</h3>
-        <ol class="num-list">
-          <li>Click one end of the LAN cable into the <strong>Ethernet port</strong> on the Pi's case (the wide square port).</li>
-          <li>Click the other end into a free port on the store's <strong>router or network switch</strong>.</li>
-        </ol>
-        <p class="muted">This one cable is the Pi's entire connection to the world, so it must go to the same network as the store's cameras.</p>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>No free port on the router?</strong> Ask the store's IT contact for a free port on a switch. Do not unplug existing cables yourself.</p>
-            <p><strong>Cable too short?</strong> Any standard Ethernet cable works, but the Pi should sit somewhere safe, dry and ventilated, so prefer moving the Pi closer over stretching cables across walkways.</p>
+          <div class="card type-card">
+            <h3>PC-based VMS</h3>
+            <p>Recording software running on a <strong>computer or server</strong> instead of a dedicated box.
+               Works if it exposes ONVIF/RTSP streams on the local network.</p>
+            <span class="type-tag warn">Needs checking</span>
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 7 — power on -->
-      <div class="step hidden" data-step="7">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(160,26)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
-            <circle cx="360" cy="112" r="5" fill="#34d399" class="anim-blink"/>
-            <circle cx="374" cy="112" r="5" fill="#fbbf24" class="anim-blink d2"/>
-            <path d="M196 62 l-24 -18" stroke="#F7941D" stroke-width="3" stroke-linecap="round"/>
-            <text x="96" y="38" font-size="14" fill="#F7941D" font-family="sans-serif" font-weight="700">Power button</text>
-          </svg>
         </div>
-        <h3>Power on and check the lights</h3>
-        <ol class="num-list">
-          <li>Turn the <strong>wall switch on</strong>.</li>
-          <li>Press the <strong>power button on the case</strong>.</li>
-          <li>Look at the <strong>Ethernet port</strong>: within a minute its little LEDs should light up and blink. Blinking = the Pi is talking to the network. </li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>No lights at all on the Pi?</strong> It's a power problem: check the wall switch, that the USB-C plug is fully in, and that the socket itself works (test with a phone charger).</p>
-            <p><strong>Pi is on but LAN LEDs never blink?</strong> It's a network problem: re-seat both ends of the LAN cable until they click, try a different router/switch port, and check the router itself is powered.</p>
+        <div class="callout">
+          <strong>Whatever the type:</strong> it must be ONVIF compatible, sit on the same Local Area Network as our Pi,
+          and we need a username and password to access it.
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="card req-card">
+          <h3>NVR Checklist</h3>
+          <ul class="req-check" id="nvrCheckList">
+            <li><label><input type="checkbox" class="nvr-box"><span>ONVIF compatible: this is a MUST <img src="images/onvif_logo.png" alt="ONVIF" style="height:16px;vertical-align:middle;margin-left:6px;"></span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>Preferred: same brand as the cameras</span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>On the same Local Area Network</span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>Username and password to access it</span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>Turn off any AI features</span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>Backup and video storage configured beforehand</span></label></li>
+          </ul>
+          <details class="trouble" style="margin-top: 16px;">
+            <summary>NVR connection details by brand</summary>
+            <div class="trouble-body">
+              <p style="margin-bottom:12px;color:var(--ink-soft);font-size:0.9rem;">Collect the details below for whichever brand is installed at the store.</p>
+              <p style="font-weight:700;margin-bottom:4px;">CP PLUS <span style="font-weight:400;color:var(--ink-soft);font-size:0.85rem;">— easiest to set up</span></p>
+              <ul class="mini-list" style="margin-bottom:14px;"><li>Serial Number (Cloud ID - Insta ID)</li><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
+              <p style="font-weight:700;margin-bottom:4px;">Hikvision</p>
+              <p style="font-size:0.875rem;color:var(--ink-soft);margin-bottom:6px;"><strong>Normal login strongly preferred</strong> — allows bulk footage download. Cloud P2P only allows ~5 minutes at a time.</p>
+              <ul class="mini-list" style="margin-bottom:14px;"><li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li><li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li></ul>
+              <p style="font-weight:700;margin-bottom:4px;">Dahua</p>
+              <ul class="mini-list"><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
+            </div>
+          </details>
+          <div class="callout callout-warn" style="margin-top:14px;">
+            <strong>No NVR access?</strong> If the client cannot give us access to the NVR, they must instead provide <strong>15&ndash;20 hours of traffic footage</strong>.
           </div>
-        </details>
-      </div>
-
-      <!-- STEP 8 — connect to the NVR -->
-      <div class="step hidden" data-step="8">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(160,16)"><svg width="250" height="160" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
-            <rect x="222" y="86" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
-            <rect x="222" y="108" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
-            <rect x="252" y="130" width="66" height="16" rx="8" fill="#F7941D"/>
-            <text x="285" y="142" font-size="10" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="600">Log in</text>
-            <text x="285" y="78" font-size="11" text-anchor="middle" fill="#6b7280" font-family="sans-serif">NVR camera system</text>
-          </svg>
         </div>
-        <h3>Connect to the NVR</h3>
-        <p>The <strong>NVR</strong> is the box that records all the cameras. Our Pi reads from it. All you do now is open it and log in:</p>
-        <ol class="num-list">
-          <li>Ask the store's IT contact for the <strong>Pi's address</strong> (or find it yourself with the free <strong>Fing</strong> app: look for "Raspberry Pi" in the list).</li>
-          <li>On a laptop or phone on the store's network, <strong>type that address into the browser</strong>.</li>
-          <li><strong>Log in</strong> with the username and password from XenReality.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>What is this "address"?</strong> Every device on a network gets its own number, called an IP address. It looks like <code>192.168.1.45</code>. Think of it as the Pi's apartment number inside the building.</p>
-            <p><strong>Page won't open?</strong> Make sure your laptop/phone is on the <em>same network</em> as the Pi (not a guest WiFi), and re-check the address. If the Pi's LAN LEDs aren't blinking, go back to step 7 first.</p>
-            <p><strong>Only have a "guest" login?</strong> A guest account can watch cameras but <em>can't enable remote view</em>. Ask the client (or their IT contact) for an <strong>admin</strong> account before continuing.</p>
+        <div class="card req-card">
+          <h3>What XenReality brings</h3>
+          <p class="muted">Nothing for the client to arrange. Every XenReality kit includes:</p>
+          <ul class="check-list"><li>Raspberry Pi 5</li><li>Fan for cooling</li><li>Official case</li><li>27W USB-C power supply</li><li>64GB SD card</li></ul>
+        </div>
+      </section>
+
+      <div class="req-bar" id="nvrBar">
+        <div class="req-bar-inner">
+          <div class="req-bar-status">
+            <span id="nvrCount">0 of 6 checked</span>
+            <div class="req-bar-track"><div class="req-bar-fill" id="nvrFill"></div></div>
           </div>
-        </details>
+          <div class="req-bar-actions">
+            <button class="btn btn-ghost btn-sm" id="btnNvrReset">Reset</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnNvrContinue" disabled>Next: Camera Requirements →</button>
+          </div>
+        </div>
       </div>
 
-      <!-- STEP 9 — remote view -->
-      <div class="step hidden" data-step="9">
-        <div class="step-art">
-          <svg viewBox="0 0 560 180" class="art">
-            <g transform="translate(60,24)"><svg width="200" height="130" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
-            <rect x="80" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
-            <rect x="158" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
-            <circle cx="115" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
-            <circle cx="193" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
-            <path d="M270 92 h60" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7"/>
-            <!-- globe -->
-            <circle cx="390" cy="92" r="42" fill="#eaf2fb" stroke="#94a8c0" stroke-width="3"/>
-            <ellipse cx="390" cy="92" rx="18" ry="42" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
-            <line x1="348" y1="92" x2="432" y2="92" stroke="#94a8c0" stroke-width="2.4"/>
-            <path d="M354 70 q36 14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
-            <path d="M354 114 q36 -14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
-            <circle cx="390" cy="92" r="42" fill="none" stroke="#34d399" stroke-width="3" class="anim-pulse"/>
-          </svg>
+      <div class="modal-overlay hidden" id="nvrResetModal">
+        <div class="modal card">
+          <div class="modal-check"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="30" fill="#e6f4fb" stroke="#1E9BD7" stroke-width="3"/><path d="M42 24 a13 13 0 1 0 3 14" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round"/><path d="M45 16 v9 h-9" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Reset the NVR checklist?</h3>
+          <p>All ticks will be cleared.</p>
+          <div class="feedback-actions">
+            <button class="btn btn-primary" id="btnNvrResetConfirm">Yes, reset</button>
+            <button class="btn btn-ghost" id="btnNvrResetCancel">Cancel</button>
+          </div>
         </div>
-        <h3>Turn on Remote View</h3>
-        <p>Remote view lets XenReality securely see the system from outside the store, so our team can monitor and support it without a site visit.</p>
-        <ol class="num-list">
-          <li>In the NVR you just logged into, switch on <strong>Remote View</strong> in the settings.</li>
-          <li>Check the camera view loads. That's it.</li>
-        </ol>
-        <details class="trouble">
-          <summary>Having a problem?</summary>
-          <div class="trouble-body">
-            <p><strong>Works in-store but Remote View won't load?</strong> The store's <strong>firewall</strong> is probably blocking the Pi. A firewall is like a security guard at the network's door, checking all traffic. Sometimes it's strict enough to block us, and <strong>Fortinet (FortiGate)</strong> is the one we see most.</p>
-            <p><strong>The fix: whitelist the Pi</strong> (needs the client's IT admin).</p>
-            <ol>
-              <li>Log into the FortiGate admin console.</li>
-              <li><strong>Policy &amp; Objects → Addresses</strong> → add an address object with the Pi's IP (and whitelist the Pi's MAC ID).</li>
-              <li><strong>Policy &amp; Objects → Firewall Policy</strong> → allow traffic to/from that address (XenReality can confirm the exact ports).</li>
-              <li>Save, apply, and try Remote View again.</li>
+      </div>
+    </div><!-- /sec-nvr -->
+
+    <!-- ══════════════════ NETWORK INFRASTRUCTURE ══════════════════ -->
+    <div class="spa-section" id="sec-infra">
+      <section class="hero hero-compact">
+        <span class="badge-chip"><span class="badge-new">CHECKLIST</span> Confirm before the installation visit</span>
+        <h1>Network <span class="accent">Infrastructure</span></h1>
+        <p class="hero-sub">The store must have all of this in place before the AI Edge Device can be installed. Tick each item as you verify it with the client's IT contact.</p>
+      </section>
+      <section class="section">
+        <div class="callout callout-warn">
+          <strong>If the client fails any item:</strong> stop and inform the XenReality Point of Contact, the Project Owner and the client's technical team immediately. Only proceed when every item passes.
+        </div>
+        <div class="card req-card">
+          <h3>Network &amp; Power</h3>
+          <ul class="req-check" id="infraCheckList">
+            <li><label><input type="checkbox" class="infra-box"><span>Internet connectivity of at least 10 Mbps</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Power backup <span style="font-weight:400;color:var(--ink-soft);font-size:0.88em;">(optional)</span></span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>1 free ethernet port on network switch or router</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Network cable channels to run the Ethernet cable</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Secure room/space for AI Edge Device</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Router access (username &amp; password), with a static IP for the cameras and the DVR/NVR</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Firewall whitelisting done — Sophos, SonicWall, Fortinet (FortiGate), Palo Alto Networks, Check Point, Netskope, or Cisco / Citrix: allow Local Area Network access and whitelist the MAC ID of our AI Edge Device</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>xenreality.com to be whitelisted (required — without this we cannot connect remotely)</span></label></li>
+          </ul>
+          <div class="callout" style="margin-top:16px;border-left:3px solid var(--accent);">
+            <strong style="display:block;margin-bottom:6px;">What is a MAC ID?</strong>
+            <p style="margin:0 0 6px;font-size:0.9rem;">A MAC (Media Access Control) address is a unique hardware identifier assigned to every network device at the factory. It never changes and looks like six pairs of hex digits.</p>
+            <p style="margin:0;font-size:0.9rem;"><strong>Example:</strong> <code style="background:#f0f4f8;padding:2px 6px;border-radius:4px;font-size:0.85rem;">B8:27:EB:4A:2C:1F</code> — this would be the MAC ID we give the client's IT team to whitelist.</p>
+          </div>
+          <div class="callout callout-warn" style="margin-top:12px;">
+            <strong>Admin access, not guest — for NVR.</strong> A guest account cannot enable <strong>remote view</strong>, so they must provide admin access to the NVR only.
+          </div>
+        </div>
+      </section>
+
+      <div class="req-bar" id="infraBar">
+        <div class="req-bar-inner">
+          <div class="req-bar-status">
+            <span id="infraCount">0 of 8 checked</span>
+            <div class="req-bar-track"><div class="req-bar-fill" id="infraFill"></div></div>
+          </div>
+          <div class="req-bar-actions">
+            <button class="btn btn-ghost btn-sm" id="btnInfraReset">Reset</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnInfraContinue" disabled>Next: TP Link Router →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="infraResetModal">
+        <div class="modal card">
+          <div class="modal-check"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="30" fill="#e6f4fb" stroke="#1E9BD7" stroke-width="3"/><path d="M42 24 a13 13 0 1 0 3 14" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round"/><path d="M45 16 v9 h-9" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Reset the checklist?</h3>
+          <p>All ticks will be cleared so you can reuse the checklist for a new store visit.</p>
+          <div class="feedback-actions">
+            <button class="btn btn-primary" id="btnInfraResetConfirm">Yes, reset</button>
+            <button class="btn btn-ghost" id="btnInfraResetCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /sec-infra -->
+
+    <!-- ══════════════════ TP LINK ROUTER ══════════════════ -->
+    <div class="spa-section" id="sec-static-tplink">
+      <section class="hero hero-compact">
+        <span class="badge-chip"><span class="badge-new" style="background:#eef0fa;color:#2B3990;">ROUTER SETTINGS</span> Static IP setup</span>
+        <h1>Static IP <span class="accent">Address</span></h1>
+        <p class="hero-sub">How to Set Up a Static IP Address on the Omada ER605</p>
+        <div style="margin-top:20px;">
+          <a href="TP-Link_Omada_Static_IP_Setup.pdf" download="TP-Link_Omada_Static_IP_Setup.pdf" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </a>
+        </div>
+      </section>
+
+      <div class="tplink-section-wrap">
+        <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.7;">This guide shows you how to give a device (like a Pi, NVR, or camera) a fixed IP address on the Omada ER605 router. Once set up, that device will always get the same IP address instead of a different one each time.</p>
+
+        <div class="tplink-step">
+          <h3>STEP 1: Log In to the Router</h3>
+          <ol>
+            <li>Connect your computer to the store's network, using Wi-Fi or an Ethernet cable.</li>
+            <li>Open a web browser and type in the router's IP address. It will look like this: <code>http://X.X.X.1</code> (for example, <code>http://192.168.1.1</code> or <code>http://10.80.0.1</code> — the exact numbers depend on the site). You can usually find this address on a sticker on the router, or in your computer's network settings.</li>
+            <li>Log in with the store's router username and password.</li>
+          </ol>
+          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/ui_p1_img1.png" alt="Omada login page" style="width:100%;display:block;">
+          </div>
+        </div>
+
+        <div class="tplink-step">
+          <h3>STEP 2: Go to the LAN Settings</h3>
+          <ol>
+            <li>On the left-hand menu, click <strong>Network</strong> to open it up.</li>
+            <li>Click <strong>LAN</strong>.</li>
+          </ol>
+          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/ui_p2_img1.png" alt="Omada sidebar — Network > LAN selected" style="width:100%;display:block;">
+          </div>
+        </div>
+
+        <div class="tplink-step">
+          <h3>STEP 3: Open Address Reservation</h3>
+          <ol>
+            <li>At the top of the LAN page, click the <strong>Address Reservation</strong> tab.</li>
+            <li>Click the <strong>+ Add</strong> button on the right to create a new rule.</li>
+          </ol>
+          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/ui_p2_img2.png" alt="Address Reservation tab with Add button highlighted" style="max-width:420px;width:100%;display:block;margin:0 auto;">
+          </div>
+        </div>
+
+        <div class="tplink-step">
+          <h3>STEP 4: Fill In the Device Details</h3>
+          <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:14px;">Fill in the form using the guide below:</p>
+          <table class="tplink-table">
+            <tr><th>MAC Address</th><td>Enter the device's MAC address (for example, the Pi, NVR, or camera).</td></tr>
+            <tr><th>Binding with</th><td>Leave the <strong>IP Address</strong> box checked.</td></tr>
+            <tr><th>IP Address</th><td>Enter the fixed IP address you want to give this device (see the format guide below).</td></tr>
+            <tr><th>DHCP Option</th><td>Leave this <strong>unchecked</strong>.</td></tr>
+            <tr><th>Description</th><td>Give the device a simple name, like "XenReality Pi" or "Store NVR".</td></tr>
+            <tr><th>Export to IP-MAC Binding</th><td>Check <strong>Enable</strong>.</td></tr>
+            <tr><th>IP-MAC Binding Interface</th><td>Choose <strong>LAN</strong>.</td></tr>
+            <tr><th>Status</th><td>Check <strong>Enable</strong>.</td></tr>
+          </table>
+          <div class="callout" style="margin-top:16px;">
+            <strong>How to Pick the IP Address</strong><br>
+            The IP address you choose must follow the same pattern as the router's own address — only the last number changes.<br><br>
+            <ul style="margin:8px 0 0 18px;line-height:1.8;">
+              <li><strong>Router's own address:</strong> the first number in the range (for example, <code>10.80.0.1</code>) — this one is already taken by the router itself.</li>
+              <li><strong>Numbers you can use:</strong> everything after that, for example <code>10.80.0.2</code> up to <code>10.80.0.254</code>.</li>
+            </ul>
+            Only change the very last number (the <code>.X</code> part). The first three numbers must stay exactly the same as the router's address.<br><br>
+            <strong>Example:</strong> if a store's router address is <code>192.168.1.1</code>, you could give a device the address <code>192.168.1.150</code>.<br><br>
+            When you're done, click <strong>OK</strong> to save.
+          </div>
+        </div>
+
+        <div class="tplink-step">
+          <h3>STEP 5: Reconnect and Double-Check</h3>
+          <ol>
+            <li><strong>Reconnect the device:</strong> unplug and plug back in the network cable on the device (or just restart it). This makes it ask the router for a new address.</li>
+            <li><strong>Check the client list:</strong> click the <strong>DHCP Client List</strong> tab at the top of the page and make sure the device shows up with its new, fixed IP address.</li>
+            <li><strong>Double-check with a ping:</strong> open Terminal (or Command Prompt) on your computer and type:<br>
+              <code style="display:block;margin:8px 0;padding:8px 12px;background:#eef2f7;border-radius:8px;">ping &lt;Fixed-IP-Address&gt;</code>
+              If it worked, you'll see replies like: <code>64 bytes from 10.80.0.150: icmp_seq=0 ttl=64 time=41.891 ms</code>
+            </li>
+          </ol>
+          <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/ui_p4_img2.png" alt="DHCP Client List showing the reserved IP" style="width:100%;display:block;">
+          </div>
+          <div class="callout" style="margin-top:16px;border:2px solid var(--accent);background:var(--accent-soft);">
+            <strong style="color:var(--accent-deep);font-size:1rem;">Extra Notes</strong>
+            <ul style="margin:8px 0 0 18px;line-height:1.8;">
+              <li><strong>If there's an NVR:</strong> give a fixed IP to both the AI Edge Device and the NVR. Cameras plugged straight into the NVR's PoE ports don't need their own rule on the router.</li>
+              <li><strong>If there's no NVR:</strong> and the cameras connect straight to the main LAN switch, repeat Steps 3–5 for each camera on site.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="spa-section-footer">
+        <button class="btn btn-primary btn-lg" onclick="showNvrAccessModal()">Next →</button>
+      </div>
+    </div><!-- /sec-static-tplink -->
+
+
+    <!-- ══════════════════ CAMERA REQUIREMENTS ══════════════════ -->
+    <div class="spa-section" id="sec-creds">
+      <section class="hero hero-compact">
+        <span class="badge-chip"><span class="badge-new">CHECKLIST + FORM</span> Camera verification &amp; details</span>
+        <h1>Camera <span class="accent">Requirements</span></h1>
+        <p class="hero-sub">Confirm the cameras meet every requirement below, then fill in the credentials form. Your answers are saved directly to XenReality's records.</p>
+      </section>
+
+      <section class="section">
+        <div class="card req-card">
+          <h3>Camera Checklist</h3>
+          <ul class="req-check" id="camCheckList">
+            <li><label><input type="checkbox" class="cam-box"><span>IP addresses for every camera — e.g. <code style="background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:0.87em;">192.168.1.101</code>, <code style="background:#eef2f7;padding:1px 5px;border-radius:4px;font-size:0.87em;">192.168.1.102</code></span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Username &amp; password for login, per camera</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>ONVIF compatible <img src="images/onvif_logo.png" alt="ONVIF" style="height:16px;vertical-align:middle;margin-left:6px;"></span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Minimum 2 megapixels; preferred 4 to 8 megapixels</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>On the Local Area Network (IP)</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Turn off any AI features</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Camera positions can be adjusted for better accuracy and no blind spots</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>A floor plan of the store with camera positions is provided</span></label></li>
+          </ul>
+          <h4 class="brand-title">Supported camera brands</h4>
+          <div class="brand-grid">
+            <span class="brand-tile"><img src="images/brands/cpplus.png" alt="CP Plus"></span>
+            <span class="brand-tile"><img src="images/brands/hikvision.svg" alt="Hikvision"></span>
+            <span class="brand-tile"><img src="images/brands/dahua.svg" alt="Dahua"></span>
+            <span class="brand-tile brand-tile-text" style="color:#0072bc">UNIVISION</span>
+            <span class="brand-tile"><img src="images/brands/bosch.svg" alt="Bosch"></span>
+            <span class="brand-tile"><img src="images/brands/sony.svg" alt="Sony"></span>
+            <span class="brand-tile"><img src="images/brands/axis.svg" alt="Axis Communications"></span>
+            <span class="brand-tile"><img src="images/brands/hanwha-vision.svg" alt="Hanwha Vision"></span>
+            <span class="brand-tile"><img src="images/brands/intelbras.svg" alt="Intelbras"></span>
+            <span class="brand-tile"><img src="images/brands/uniview.png" alt="Uniview Technologies"></span>
+            <span class="brand-tile"><img src="images/prama_logo.png" alt="Prama"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="req-bar" id="camBar">
+        <div class="req-bar-inner">
+          <div class="req-bar-status">
+            <span id="camCount">0 of 9 checked</span>
+            <div class="req-bar-track"><div class="req-bar-fill" id="camFill"></div></div>
+          </div>
+          <div class="req-bar-actions">
+            <button class="btn btn-ghost btn-sm" id="btnCamReset">Reset</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnCamContinue" disabled>Proceed to credentials form ↓</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-overlay hidden" id="camResetModal">
+        <div class="modal card">
+          <div class="modal-check"><svg viewBox="0 0 64 64" width="64" height="64"><circle cx="32" cy="32" r="30" fill="#e6f4fb" stroke="#1E9BD7" stroke-width="3"/><path d="M42 24 a13 13 0 1 0 3 14" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round"/><path d="M45 16 v9 h-9" fill="none" stroke="#1E9BD7" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Reset the camera checklist?</h3>
+          <p>All ticks will be cleared.</p>
+          <div class="feedback-actions">
+            <button class="btn btn-primary" id="btnCamResetConfirm">Yes, reset</button>
+            <button class="btn btn-ghost" id="btnCamResetCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="credFormWrap" style="max-width:820px;margin:32px auto 0;padding:0 28px 40px;">
+        <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;color:var(--ink);">Fill in camera credentials</h3>
+        <p style="font-size:0.9rem;color:var(--ink-soft);margin-bottom:20px;">Complete the form below with the username and password for each camera. Your answers go directly to XenReality's records.</p>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfmB1yFMZv_NVbKDBTP-ZTc4MColtummrCE2qWiHVpdsVCSFA/viewform?embedded=true" width="100%" height="900" frameborder="0" marginheight="0" marginwidth="0" style="border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow);">Loading…</iframe>
+      </div>
+
+      <div class="spa-section-footer">
+        <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next: Raspberry Pi →</button>
+      </div>
+    </div><!-- /sec-creds -->
+
+    <!-- ══════════════════ RASPBERRY PI ══════════════════ -->
+    <div class="spa-section" id="sec-rpi">
+      <section class="hero" id="home">
+        <span class="badge-chip"><span class="badge-new">NEW</span> Pi 5 guided installation</span>
+        <h1>Set up your <span class="accent">XenReality&nbsp;Pi</span></h1>
+        <p class="hero-sub">A simple, step-by-step guide to connect your Raspberry&nbsp;Pi&nbsp;5 with
+          just the power adapter and one LAN cable. Click <strong>Next</strong> after each step until you're done.</p>
+        <div class="video-cta-row">
+          <button class="btn-watch-video" id="btnWatchVideo">
+            <span class="video-play-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+            Prefer watching? See the full setup - no reading required
+          </button>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="card about-card">
+          <div class="about-art">
+            <svg viewBox="0 0 220 150" class="art" filter="url(#soft)"><use href="#sym-pi"/></svg>
+          </div>
+          <div class="about-text">
+            <h2>What is a Raspberry&nbsp;Pi?</h2>
+            <p>A Raspberry Pi is a <strong>tiny computer</strong> about the size of a credit card.
+               Inside your store it works as the <strong>on-site brain</strong> for XenReality: it connects to your
+               camera system, understands what's happening in the store, and sends insights to your dashboard.</p>
+            <p>It only needs two connections to do its job:</p>
+            <ul class="mini-list">
+              <li><strong>Power:</strong> the USB-C adapter that comes in the box.</li>
+              <li><strong>Network:</strong> one LAN cable to your router or switch.</li>
+            </ul>
+            <p class="muted">No screens, no keyboards, no extra wiring. If you can plug in a phone charger, you can set this up.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="spa-section-footer">
+        <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next: Setup →</button>
+      </div>
+    </div><!-- /sec-rpi -->
+
+    <!-- ══════════════════ SETUP ══════════════════ -->
+    <div class="spa-section" id="sec-setup">
+      <section class="section" id="choose">
+        <h2 class="section-title">Choose your business type</h2>
+        <p class="section-sub">The Pi setup is exactly the same for both. The difference is what XenReality measures for you.<br>
+           First visit? Make sure the store meets the <a href="requirements.html" class="inline-link">NVR &amp; Tech Requirements</a> first.</p>
+        <div class="choose-grid">
+          <button class="card choice-card" data-vertical="fnb">
+            <div class="choice-icon">
+              <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+                <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
+                <path d="M14 10 v9 M11 10 v5 a3 3 0 0 0 6 0 v-5 M14 19 v11" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+                <path d="M26 10 c-3 0 -4 4 -4 8 h4 v12 M26 10 v20" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <h3>F&amp;B</h3>
+            <p>For restaurants, cafés and food courts. XenReality tracks <strong>table turnover, queue times and service speed</strong> so you can serve more guests, faster.</p>
+            <span class="choice-go">Start F&amp;B setup →</span>
+          </button>
+          <button class="card choice-card" data-vertical="retail">
+            <div class="choice-icon">
+              <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
+                <circle cx="20" cy="20" r="19" fill="#e6f4fb"/>
+                <path d="M12 15 h16 l-1.6 15 a2 2 0 0 1 -2 1.8 H15.6 a2 2 0 0 1 -2 -1.8 z" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linejoin="round"/>
+                <path d="M15.5 18 v-4 a4.5 4.5 0 0 1 9 0 v4" fill="none" stroke="#1E9BD7" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Retail</h3>
+            <p>For stores and showrooms. XenReality tracks <strong>footfall, conversion and zone dwell time</strong> so you know what shoppers do and what makes them buy.</p>
+            <span class="choice-go">Start Retail setup →</span>
+          </button>
+        </div>
+        <div class="video-cta-row" style="margin-top: 30px; display: flex; justify-content: center;">
+          <button class="btn-watch-video" id="btnWatchConfiguratorVideo">
+            <span class="video-play-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>
+            Watch the video to setup the configurator
+          </button>
+        </div>
+      </section>
+
+      <!-- Wizard -->
+      <section class="wizard hidden" id="wizard">
+        <div class="wizard-shell card">
+          <div class="wizard-head">
+            <span class="vertical-tag" id="verticalTag">F&amp;B</span>
+            <span class="step-count" id="stepCount">Step 1 of 9</span>
+            <button class="btn btn-ghost btn-sm" id="btnExportPdf" title="Save the full setup guide as a PDF">Export PDF</button>
+            <button class="btn btn-ghost btn-sm" data-action="exit">Exit</button>
+          </div>
+          <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
+          <div class="step" data-step="1">
+            <div class="step-art">
+              <svg viewBox="0 0 560 170" class="art">
+                <g transform="translate(0,10)"><svg width="200" height="140" viewBox="0 0 220 150"><use href="#sym-pi"/></svg></g>
+                <g transform="translate(212,30)"><svg width="120" height="110" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
+                <g transform="translate(330,36)"><svg width="130" height="96" viewBox="0 0 160 110"><use href="#sym-cable"/></svg></g>
+                <g transform="translate(462,34)"><svg width="56" height="80" viewBox="0 0 80 100"><use href="#sym-sd"/></svg></g>
+              </svg>
+            </div>
+            <h3>Check your kit</h3>
+            <p>Lay everything out on a clean table. You should have:</p>
+            <ul class="check-list">
+              <li>Raspberry Pi 5 board</li>
+              <li>Official Pi 5 case (red base, white frame with fan, white lid, heatsink &amp; feet in a small envelope)</li>
+              <li>27W USB-C power adapter (comes with the Pi)</li>
+              <li>LAN cable</li>
+              <li>SD card provided by XenReality</li>
+            </ul>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Something missing?</strong> Don't start the setup with a partial kit. Contact your XenReality point of contact and we'll ship the missing part.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="2">
+            <div class="step-art">
+              <svg viewBox="0 0 560 190" class="art">
+                <g transform="translate(160,4)"><svg width="240" height="86" viewBox="0 0 220 150" preserveAspectRatio="xMidYMin slice"><use href="#sym-pi"/></svg></g>
+                <path d="M280 96 v22" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+                <g transform="translate(160,124)"><svg width="240" height="64" viewBox="0 0 220 90"><use href="#sym-case-base"/></svg></g>
+                <defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
+              </svg>
+            </div>
+            <h3>Case, part 1: seat the Pi in the red base</h3>
+            <ol class="num-list">
+              <li>Open the accessories envelope in the case box.</li>
+              <li>Peel the backing off the small <strong>heatsink</strong> and stick it onto the raised CPU (the silver square in the middle of the board). Press down firmly.</li>
+              <li>Stick the four <strong>silicone feet</strong> into the marked spots under the red base.</li>
+              <li>Lower the Pi into the <strong>red base</strong>. The board slides <em>under the plastic tab at the SD-card end</em>. Check it sits flat and every port lines up with its hole.</li>
             </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Board won't sit flat?</strong> It's probably not tucked under the tab at the SD-card end. Lift it out, slide the SD-card end in first at an angle, then lower the port side down.</p><p><strong>Ports don't line up?</strong> The board is in backwards. The USB/Ethernet ports must face the large openings.</p></div></details>
           </div>
-        </details>
+
+          <div class="step hidden" data-step="3">
+            <div class="step-art">
+              <svg viewBox="0 0 560 190" class="art">
+                <g transform="translate(160,6)"><svg width="240" height="44" viewBox="0 0 220 40"><use href="#sym-case-lid"/></svg></g>
+                <g transform="translate(160,62)"><svg width="240" height="66" viewBox="0 0 220 70"><use href="#sym-case-frame"/></svg></g>
+                <g transform="translate(160,136)"><svg width="240" height="52" viewBox="0 0 220 90" preserveAspectRatio="xMidYMin slice"><use href="#sym-case-base"/></svg></g>
+                <path d="M120 30 c-30 40 -30 80 0 130" stroke="#F7941D" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+              </svg>
+            </div>
+            <h3>Case, part 2: fan cable, frame &amp; lid</h3>
+            <ol class="num-list">
+              <li>Lay the <strong>white frame</strong> (the part with the fan) upside-down next to the base.</li>
+              <li>Plug the <strong>fan cable</strong> into the small 4-pin connector labeled <strong>FAN</strong> on the Pi. The connector only fits one way, so don't force it.</li>
+              <li>Clip the white frame onto the red base until it clicks all around.</li>
+              <li>Press the <strong>lid</strong> on top. Done! The Pi is now safe inside its case.</li>
+            </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Fan cable won't go in?</strong> Flip the connector around: it's keyed to fit only one way. Make sure it's pushed fully in.</p><p><strong>Frame won't clip shut?</strong> The fan cable may be pinched, or the board isn't flat in the base. Re-check step 2 before pressing harder.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="4">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(150,30)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+                <g transform="translate(72,58)" class="anim-slide"><svg width="52" height="66" viewBox="0 0 80 100"><use href="#sym-sd"/></svg></g>
+                <path d="M132 92 h26" stroke="#F7941D" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowhead2)"/>
+                <defs><marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
+              </svg>
+            </div>
+            <h3>Insert the XenReality SD card</h3>
+            <p>The SD card is the Pi's memory. All the XenReality software is already on it.</p>
+            <ol class="num-list">
+              <li>Find the thin <strong>SD slot on the underside</strong> of the case, at the end with the small opening.</li>
+              <li>Slide the card in with the <strong>gold contacts facing up towards the board</strong>, until it stops.</li>
+            </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Card won't go in?</strong> Don't force it. Flip it over: the card only seats fully in one orientation.</p><p><strong>No SD card in the kit?</strong> Stop here and contact XenReality. The Pi cannot run without our card.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="5">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(80,20)"><svg width="140" height="128" viewBox="0 0 150 130"><use href="#sym-adapter"/></svg></g>
+                <path d="M232 128 h64" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7" marker-end="url(#arrowhead3)"/>
+                <g transform="translate(310,28)"><svg width="240" height="120" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+                <circle cx="345" cy="128" r="10" fill="none" stroke="#F7941D" stroke-width="3" class="anim-pulse"/>
+                <defs><marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#F7941D"/></marker></defs>
+              </svg>
+            </div>
+            <h3>Connect the power adapter</h3>
+            <ol class="num-list">
+              <li>Plug the adapter into a wall socket, but <strong>keep the wall switch OFF</strong> for now.</li>
+              <li>Plug the <strong>USB-C end</strong> into the Pi's power port: the small oval port on the side of the case (circled in the picture).</li>
+            </ol>
+            <p class="muted">Use only the 27W adapter that came with the Pi. Phone chargers may look identical but can't power it reliably.</p>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Can't find the power port?</strong> It's the small oval (USB-C) port, the same shape as a modern phone charging port, on the side edge of the case next to the two HDMI ports.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="6">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(30,30)"><svg width="220" height="110" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+                <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#94a8c0" stroke-width="8" stroke-linecap="round"/>
+                <path d="M212 116 C260 150 310 150 356 122" fill="none" stroke="#c9d6e6" stroke-width="4" stroke-linecap="round"/>
+                <g transform="translate(352,40)"><svg width="180" height="110" viewBox="0 0 180 110"><use href="#sym-router"/></svg></g>
+              </svg>
+            </div>
+            <h3>Connect the LAN cable</h3>
+            <ol class="num-list">
+              <li>Click one end of the LAN cable into the <strong>Ethernet port</strong> on the Pi's case (the wide square port).</li>
+              <li>Click the other end into a free port on the store's <strong>router or network switch</strong>.</li>
+            </ol>
+            <p class="muted">This one cable is the Pi's entire connection to the world, so it must go to the same network as the store's cameras.</p>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>No free port on the router?</strong> Ask the store's IT contact for a free port on a switch. Do not unplug existing cables yourself.</p><p><strong>Cable too short?</strong> Any standard Ethernet cable works, but the Pi should sit somewhere safe, dry and ventilated, so prefer moving the Pi closer over stretching cables across walkways.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="7">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(160,26)"><svg width="260" height="130" viewBox="0 0 220 110"><use href="#sym-case-full"/></svg></g>
+                <circle cx="360" cy="112" r="5" fill="#34d399" class="anim-blink"/>
+                <circle cx="374" cy="112" r="5" fill="#fbbf24" class="anim-blink d2"/>
+                <path d="M196 62 l-24 -18" stroke="#F7941D" stroke-width="3" stroke-linecap="round"/>
+                <text x="96" y="38" font-size="14" fill="#F7941D" font-family="sans-serif" font-weight="700">Power button</text>
+              </svg>
+            </div>
+            <h3>Power on and check the lights</h3>
+            <ol class="num-list">
+              <li>Turn the <strong>wall switch on</strong>.</li>
+              <li>Press the <strong>power button on the case</strong>.</li>
+              <li>Look at the <strong>Ethernet port</strong>: within a minute its little LEDs should light up and blink. Blinking = the Pi is talking to the network.</li>
+            </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>No lights at all on the Pi?</strong> It's a power problem: check the wall switch, that the USB-C plug is fully in, and that the socket itself works (test with a phone charger).</p><p><strong>Pi is on but LAN LEDs never blink?</strong> It's a network problem: re-seat both ends of the LAN cable until they click, try a different router/switch port, and check the router itself is powered.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="8">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(160,16)"><svg width="250" height="160" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
+                <rect x="222" y="86" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
+                <rect x="222" y="108" width="126" height="14" rx="7" fill="#eceff3" stroke="#d7dbe2"/>
+                <rect x="252" y="130" width="66" height="16" rx="8" fill="#F7941D"/>
+                <text x="285" y="142" font-size="10" text-anchor="middle" fill="#fff" font-family="sans-serif" font-weight="600">Log in</text>
+                <text x="285" y="78" font-size="11" text-anchor="middle" fill="#6b7280" font-family="sans-serif">NVR camera system</text>
+              </svg>
+            </div>
+            <h3>Connect to the NVR</h3>
+            <p>The <strong>NVR</strong> is the box that records all the cameras. Our Pi reads from it. All you do now is open it and log in:</p>
+            <ol class="num-list">
+              <li>Ask the store's IT contact for the <strong>Pi's address</strong> (or find it yourself with the free <strong>Fing</strong> app: look for "Raspberry Pi" in the list).</li>
+              <li>On a laptop or phone on the store's network, <strong>type that address into the browser</strong>.</li>
+              <li><strong>Log in</strong> with the username and password from XenReality.</li>
+            </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>What is this "address"?</strong> Every device on a network gets its own number, called an IP address. It looks like <code>192.168.1.45</code>. Think of it as the Pi's apartment number inside the building.</p><p><strong>Page won't open?</strong> Make sure your laptop/phone is on the <em>same network</em> as the Pi (not a guest WiFi), and re-check the address. If the Pi's LAN LEDs aren't blinking, go back to step 7 first.</p><p><strong>Only have a "guest" login?</strong> A guest account can watch cameras but <em>can't enable remote view</em>. Ask the client (or their IT contact) for an <strong>admin</strong> account before continuing.</p></div></details>
+          </div>
+
+          <div class="step hidden" data-step="9">
+            <div class="step-art">
+              <svg viewBox="0 0 560 180" class="art">
+                <g transform="translate(60,24)"><svg width="200" height="130" viewBox="0 0 200 130"><use href="#sym-browser"/></svg></g>
+                <rect x="80" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
+                <rect x="158" y="70" width="70" height="46" rx="6" fill="#0b2545"/>
+                <circle cx="115" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
+                <circle cx="193" cy="93" r="10" fill="none" stroke="#34d399" stroke-width="3"/>
+                <path d="M270 92 h60" stroke="#F7941D" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 7"/>
+                <circle cx="390" cy="92" r="42" fill="#eaf2fb" stroke="#94a8c0" stroke-width="3"/>
+                <ellipse cx="390" cy="92" rx="18" ry="42" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+                <line x1="348" y1="92" x2="432" y2="92" stroke="#94a8c0" stroke-width="2.4"/>
+                <path d="M354 70 q36 14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+                <path d="M354 114 q36 -14 72 0" fill="none" stroke="#94a8c0" stroke-width="2.4"/>
+                <circle cx="390" cy="92" r="42" fill="none" stroke="#34d399" stroke-width="3" class="anim-pulse"/>
+              </svg>
+            </div>
+            <h3>Turn on Remote View</h3>
+            <p>Remote view lets XenReality securely see the system from outside the store, so our team can monitor and support it without a site visit.</p>
+            <ol class="num-list">
+              <li>In the NVR you just logged into, switch on <strong>Remote View</strong> in the settings.</li>
+              <li>Check the camera view loads. That's it.</li>
+            </ol>
+            <details class="trouble"><summary>Having a problem?</summary><div class="trouble-body"><p><strong>Works in-store but Remote View won't load?</strong> The store's <strong>firewall</strong> is probably blocking the Pi. A firewall is like a security guard at the network's door, checking all traffic. Sometimes it's strict enough to block us, and <strong>Fortinet (FortiGate)</strong> is the one we see most.</p><p><strong>The fix: whitelist the Pi</strong> (needs the client's IT admin).</p><ol><li>Log into the FortiGate admin console.</li><li><strong>Policy &amp; Objects → Addresses</strong> → add an address object with the Pi's IP (and whitelist the Pi's MAC ID).</li><li><strong>Policy &amp; Objects → Firewall Policy</strong> → allow traffic to/from that address (XenReality can confirm the exact ports).</li><li>Save, apply, and try Remote View again.</li></ol></div></details>
+          </div>
+
+          <div class="step-confirm">
+            <label>
+              <input type="checkbox" id="stepConfirm">
+              <span>I've completed this step correctly</span>
+            </label>
+          </div>
+          <div class="wizard-foot">
+            <button class="btn btn-ghost" id="btnBack">← Back</button>
+            <button class="btn btn-ghost" id="btnHelp">Need help?</button>
+            <button class="btn btn-success btn-lg" id="btnNext" disabled>Done, next →</button>
+            <button class="btn btn-success btn-lg hidden" id="btnDone" disabled>Setup Done</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- print-only NVR summary -->
+      <section class="print-only print-req">
+        <h2>NVR &amp; Tech Requirements: Summary</h2>
+        <p>The client must have all of this ready before installation. Full interactive checklist: the Requirements page.</p>
+        <div class="print-req-grid">
+          <div class="print-req-block">
+            <h3>Cameras</h3>
+            <ul class="check-list">
+              <li>ONVIF compatible, on the Local Area Network, with an IP address each</li>
+              <li>Min 2 MP (4&ndash;8 MP preferred), dome or bullet</li>
+              <li>Username &amp; password per camera</li>
+              <li>All brand AI features OFF (no person/face detection, motion capture or bounding boxes)</li>
+              <li>Repositioning allowed; floor plan with camera positions provided</li>
+              <li>Supported brands: CP Plus, Hikvision, Dahua, Univision, Bosch, Sony, Axis, Hanwha Vision, Intelbras, Uniview</li>
+            </ul>
+          </div>
+          <div class="print-req-block">
+            <h3>NVR</h3>
+            <ul class="check-list">
+              <li>ONVIF compatible (a MUST); same brand as cameras preferred</li>
+              <li>Same Local Area Network as the Pi</li>
+              <li>Username &amp; password provided; all brand AI features OFF</li>
+              <li>Backup and video storage configured beforehand</li>
+              <li>No NVR access? Client must provide 15&ndash;20 hours of store traffic footage instead</li>
+            </ul>
+          </div>
+          <div class="print-req-block">
+            <h3>Infrastructure</h3>
+            <ul class="check-list">
+              <li>Internet at least 50 Mbps; power backup</li>
+              <li>Ethernet port on the LAN + cable channels to run the cable</li>
+              <li>Secure storage room for the Pi</li>
+              <li>Router access (username &amp; password); static IP for cameras and DVR/NVR</li>
+              <li>Firewall (Fortinet): allow LAN access and whitelist the Pi's MAC ID</li>
+            </ul>
+          </div>
+          <div class="print-req-block">
+            <h3>Access</h3>
+            <ul class="check-list">
+              <li>Admin access only: a guest account cannot enable remote view</li>
+              <li>If any requirement fails, inform the XenReality Point of Contact, the Project Owner and the client's technical team immediately</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="support">
+        <div class="card support-card">
+          <h2>Stuck? We've got you.</h2>
+          <p>Every step has a <strong>"Having a problem?"</strong> button with fixes for the most common issues:
+             no lights, guest-only logins, firewalls blocking the Pi. If none of them help, contact your
+             XenReality point of contact and we'll take it from there.</p>
+        </div>
+      </section>
+    </div><!-- /sec-setup -->
+
+    <!-- ══════════════════ CAMERA GUIDELINES (landing) ══════════════════ -->
+    <div class="spa-section active" id="sec-guidelines">
+      <div class="cg-hero">
+        <span class="badge-chip" style="margin-bottom: 16px; display: inline-flex;">
+          <span class="badge-new">FIELD GUIDE</span> Camera placement for every XenReality installation
+        </span>
+        <h1>Camera Placement <span class="accent">Guidelines</span></h1>
+        <p>Follow these guidelines to ensure each camera captures accurate, reliable data. Correct placement is the single biggest factor in data quality.</p>
       </div>
 
-      <!-- wizard footer -->
-      <div class="step-confirm">
-        <label>
-          <input type="checkbox" id="stepConfirm">
-          <span>I've completed this step correctly</span>
-        </label>
-      </div>
-      <div class="wizard-foot">
-        <button class="btn btn-ghost" id="btnBack">← Back</button>
-        <button class="btn btn-ghost" id="btnHelp">Need help?</button>
-        <button class="btn btn-success btn-lg" id="btnNext" disabled>Done, next →</button>
-        <button class="btn btn-success btn-lg hidden" id="btnDone" disabled>Setup Done</button>
-      </div>
-    </div>
-  </section>
+      <div class="cg-wrap">
+        <!-- Download banner -->
+        <div style="display:flex;align-items:center;gap:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 24px;box-shadow:var(--shadow);">
+          <div style="flex:1;">
+            <p style="margin:0 0 3px;font-size:0.95rem;font-weight:700;color:var(--ink);">Take this guide with you to the field.</p>
+            <p style="margin:0;font-size:0.85rem;color:var(--ink-soft);">Download the original PDF and share it with your install team before they head to the store.</p>
+          </div>
+          <a href="Camera Guidelines.pdf" download="Camera Guidelines.pdf"
+             style="display:inline-flex;align-items:center;gap:8px;background:var(--accent-deep);color:#fff;text-decoration:none;border-radius:999px;padding:10px 20px;font-size:14px;font-weight:700;white-space:nowrap;flex-shrink:0;transition:opacity .15s;"
+             onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download PDF
+          </a>
+        </div>
 
-  <!-- print-only: NVR & tech requirements summary (appears in the exported PDF) -->
-  <section class="print-only print-req">
-    <h2>NVR &amp; Tech Requirements: Summary</h2>
-    <p>The client must have all of this ready before installation. Full interactive checklist: the Requirements page.</p>
-    <div class="print-req-grid">
-      <div class="print-req-block">
-        <h3>Cameras</h3>
-        <ul class="check-list">
-          <li>ONVIF compatible, on the Local Area Network, with an IP address each</li>
-          <li>Min 2 MP (4&ndash;8 MP preferred), dome or bullet</li>
-          <li>Username &amp; password per camera</li>
-          <li>All brand AI features OFF (no person/face detection, motion capture or bounding boxes)</li>
-          <li>Repositioning allowed; floor plan with camera positions provided</li>
-          <li>Supported brands: CP Plus, Hikvision, Dahua, Univision, Bosch, Sony, Axis, Hanwha Vision, Intelbras, Uniview</li>
-        </ul>
-      </div>
-      <div class="print-req-block">
-        <h3>NVR</h3>
-        <ul class="check-list">
-          <li>ONVIF compatible (a MUST); same brand as cameras preferred</li>
-          <li>Same Local Area Network as the Pi</li>
-          <li>Username &amp; password provided; all brand AI features OFF</li>
-          <li>Backup and video storage configured beforehand</li>
-          <li>No NVR access? Client must provide 15&ndash;20 hours of store traffic footage instead</li>
-        </ul>
-      </div>
-      <div class="print-req-block">
-        <h3>Infrastructure</h3>
-        <ul class="check-list">
-          <li>Internet at least 50 Mbps; power backup</li>
-          <li>Ethernet port on the LAN + cable channels to run the cable</li>
-          <li>Secure storage room for the Pi</li>
-          <li>Router access (username &amp; password); static IP for cameras and DVR/NVR</li>
-          <li>Firewall (Fortinet): allow LAN access and whitelist the Pi's MAC ID</li>
-        </ul>
-      </div>
-      <div class="print-req-block">
-        <h3>Access</h3>
-        <ul class="check-list">
-          <li>Admin access only: a guest account cannot enable remote view</li>
-          <li>If any requirement fails, inform the XenReality Point of Contact, the Project Owner and the client's technical team immediately</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <!-- Section 1: Footfall -->
+        <div>
+          <p class="cg-section-title">Footfall Detection</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--blue">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="cg-card-head-text">
+                <h2>Footfall Camera Placement</h2>
+                <p>Counting people entering and exiting the store</p>
+              </div>
+            </div>
+            <div class="cg-body">
+              <h3 style="font-size:0.95rem; font-weight:700;">1. Where to Place the Camera</h3>
+              <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">Put the camera a little distance from the door. Point it <strong>straight at the door</strong>, not from the side. This way, the camera can see everyone walking in clearly. If the camera is on the side, one person can hide behind another — the camera may miss counting them.</p>
+              <div class="cg-rule cg-rule--warn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F7941D" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div class="cg-rule-text"><strong>Do not obstruct the view</strong>Do not put anything in front of the camera — no mannequins, clothing racks, or stands. Nothing should block the door or walking path.</div>
+              </div>
+              <div class="cg-rule">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <div class="cg-rule-text">The camera must see the door clearly. If something blocks part of the door, at least <strong>90% of the door</strong> should still be visible.</div>
+              </div>
+              <hr class="cg-divider">
+              <h3 style="font-size:0.95rem; font-weight:700;">2. How Far the Camera Should Be From the Door</h3>
+              <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">The best distance is where the camera can see the whole door, plus a little extra space on both sides. If too close, it misses the full door. If too far, people look too small to count correctly.</p>
+              <div class="dist-grid">
+                <div class="dist-block dist-block--bad"><span class="dist-label" style="color:#ef4444;">Too Close</span><span class="dist-value">1 – 1.5 m</span><span class="dist-desc">Cannot see the full door. Parts of the doorway are missing from the picture.</span><span class="dist-status dist-status--bad">✕ Not recommended</span></div>
+                <div class="dist-block dist-block--good"><span class="dist-label" style="color:#22c55e;">Correct</span><span class="dist-value">2.5 – 3.5 m</span><span class="dist-desc">Full door, with a little extra space, fits nicely in the frame.</span><span class="dist-status dist-status--good">✓ Ideal range</span></div>
+                <div class="dist-block dist-block--bad"><span class="dist-label" style="color:#ef4444;">Too Far</span><span class="dist-value">6 m+</span><span class="dist-desc">Door looks very small. People can't be seen clearly enough to count accurately.</span><span class="dist-status dist-status--bad">✕ Not recommended</span></div>
+              </div>
+              <div class="cg-tip">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-deep)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span><strong>Note:</strong> The correct distance depends on the camera lens. A <strong>narrow lens</strong> needs more distance. A <strong>wide lens</strong> needs less distance.</span>
+              </div>
+              <hr class="cg-divider">
+              <h3 style="font-size:0.95rem; font-weight:700;">3. Camera Height and Angle</h3>
+              <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">Always mount the camera at <strong>ceiling height</strong>. In both cases, point the camera at the same spot — the door entry point.</p>
+              <div class="angle-grid">
+                <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 6l11 5L23 6"/></svg>Narrow Lens</span><span class="angle-degrees">10° – 20°</span><span class="angle-note">Place further back and tilt down slightly. The narrower field of view is compensated by the extra distance.</span></div>
+                <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 9l11 5L23 9"/></svg>Wide Lens</span><span class="angle-degrees">20° – 30°</span><span class="angle-note">Place closer and tilt down more steeply. The wider field of view covers the door at a shorter distance.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <!-- ══════════════════ SUPPORT ══════════════════ -->
-  <section class="section" id="support">
-    <div class="card support-card">
-      <h2>Stuck? We've got you.</h2>
-      <p>Every step has a <strong>"Having a problem?"</strong> button with fixes for the most common issues:
-         no lights, guest-only logins, firewalls blocking the Pi. If none of them help, contact your
-         XenReality point of contact and we'll take it from there.</p>
-    </div>
-  </section>
+        <!-- Section 2: Mistakes -->
+        <div>
+          <p class="cg-section-title">Real-World Mistakes to Avoid</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--orange">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F7941D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="cg-card-head-text"><h2>Mistakes Found in Real Stores</h2><p>Examples of incorrect setups observed during field deployments</p></div>
+            </div>
+            <div class="cg-body">
+              <div class="mistake-list">
+                <div class="mistake-item"><span class="mistake-badge">Sarath City Mall</span><div class="mistake-content"><h4>Camera mounted too low and on the side</h4><p>The person standing further away is hidden behind the person standing closer. This happens because the camera is on the side. Being mounted too low makes this problem worse — the occlusion angle increases and people block each other more completely.</p></div></div>
+                <div class="mistake-item"><span class="mistake-badge">AS Rao Nagar</span><div class="mistake-content"><h4>Camera placed outside, not pointing at the store door</h4><p>The camera is placed outside the store and not pointing at the store's door. Because of this, people walking into the shop next door also get counted by mistake — polluting the footfall data.</p></div></div>
+                <div class="mistake-item"><span class="mistake-badge">Lakeshore Mall</span><div class="mistake-content"><h4>Side-mounted camera with partial door coverage</h4><p>The camera is placed on the side, so people block each other in the picture. There is an additional problem: the camera does not see the whole door. Some people walk in through a part of the door the camera cannot see, resulting in missed counts.</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <footer class="footer">© XenReality · Pi 5 Setup Guide</footer>
-<!-- ── Video modal ── -->
+        <!-- Section 3: Best Practice -->
+        <div>
+          <p class="cg-section-title">Best Practice</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="cg-card-head-text"><h2>A Good Example From the Field</h2><p>Footfall camera setup done correctly — every requirement met</p></div>
+            </div>
+            <div class="cg-body">
+              <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">The photos below show a footfall camera set up the right way. The green and red boxes are the camera system detecting each person automatically.</p>
+              <div class="good-list">
+                <div class="good-item"><span class="good-dot">✓</span><span>The camera is <strong>mounted high and set back</strong>, giving a clear, wide view of the whole entrance and the walking path leading up to it.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span>The camera <strong>faces the entrance directly</strong>, not from the side, so people are seen clearly as they walk in.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span><strong>Nothing blocks the view</strong> — there are no mannequins, stands, or displays in front of the entrance or the walking path.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span>Each person is <strong>detected separately</strong> with their own bounding box, showing that people are not hidden behind each other, even when walking close together.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span>The <strong>full width of the entrance</strong>, including the steps and mat area, is covered inside the camera's view.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span>The camera <strong>keeps detecting people correctly</strong> across different moments in time, showing the setup works reliably throughout the day.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Billing -->
+        <div>
+          <p class="cg-section-title">Billing Operations</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--navy"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div class="cg-card-head-text"><h2>Billing Camera Placement</h2><p>Tracking billing queue, counter activity, and service time</p></div>
+            </div>
+            <div class="cg-body">
+              <div class="cg-rule cg-rule--good">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <div class="cg-rule-text"><strong>Ideal position: corner of the billing counter</strong>Place the camera at one corner of the billing counter. From there, the camera should clearly see <strong>both sides</strong> — the customer side and the staff side.</div>
+              </div>
+              <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments illustrate the correct corner-mounted angle covering both customer and staff sides of the counter.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Zone Analytics -->
+        <div>
+          <p class="cg-section-title">Zone Analytics</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--blue"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M9 3v18"/><path d="M3 9h18"/></svg></div>
+              <div class="cg-card-head-text"><h2>Heatmap Camera Placement</h2><p>Capturing floor-level movement and dwell zones</p></div>
+            </div>
+            <div class="cg-body">
+              <div class="cg-rule cg-rule--good">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <div class="cg-rule-text"><strong>Ideal position: back of the store</strong>Place the camera at the <strong>back of the store</strong>. From there, it should be able to see <strong>most of the store floor</strong> clearly, enabling accurate zone-level dwell-time tracking.</div>
+              </div>
+              <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments show the recommended elevated rear-of-store mounting angle for maximum floor coverage.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Pre-Departure Checklist -->
+        <div>
+          <p class="cg-section-title">Before You Leave</p>
+          <div class="cg-card">
+            <div class="cg-card-head">
+              <div class="cg-card-head-icon cg-card-head-icon--green"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+              <div class="cg-card-head-text"><h2>Pre-Departure Checklist</h2><p>Tick every item before leaving the store</p></div>
+            </div>
+            <div class="cg-body">
+              <div class="cg-checklist" id="departureChecklist">
+                <label class="cg-check-item"><input type="checkbox"><span>The camera faces the door <strong>directly</strong>, not from the side.</span></label>
+                <label class="cg-check-item"><input type="checkbox"><span>At least <strong>90% of the door</strong> is visible in the camera picture.</span></label>
+                <label class="cg-check-item"><input type="checkbox"><span><strong>No object</strong> (mannequin, rack, stand) is blocking the camera's view.</span></label>
+                <label class="cg-check-item"><input type="checkbox"><span>The camera is placed at the <strong>correct distance</strong> from the door — not too close (min 2.5 m), not too far (max ~3.5 m for standard lenses).</span></label>
+                <label class="cg-check-item"><input type="checkbox"><span>The camera is mounted at <strong>ceiling height</strong> with the correct tilt angle for the lens type.</span></label>
+                <label class="cg-check-item"><input type="checkbox"><span>The camera does <strong>not</strong> see into the shop next door or count passers-by on the street.</span></label>
+              </div>
+              <div id="allDoneMsg" style="display:none; margin-top:4px;">
+                <div class="cg-rule cg-rule--good">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <div class="cg-rule-text"><strong>All checks passed!</strong>The camera setup is complete. Inform your XenReality Project Owner that the install is done.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer" style="text-align:center; padding: 0 0 40px;">© XenReality · Camera Placement Guidelines</footer>
+      </div>
+      <div class="spa-section-footer">
+        <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next: Network Infrastructure →</button>
+      </div>
+    </div><!-- /sec-guidelines -->
+
+  </main>
+</div><!-- /spa-wrapper -->
+
+<!-- ── Video modal (outside spa-wrapper so it overlays everything) ── -->
 <div class="xr-video-modal" id="xrVideoModal">
   <div class="xr-video-wrap">
     <div class="xr-video-hdr">
@@ -646,9 +1128,28 @@
     </div>
   </div>
 </div>
-</main>
 
-<!-- ══════════════════ DONE MODAL ══════════════════ -->
+<!-- ── NVR Access modal ── -->
+<div class="modal-overlay hidden" id="nvrAccessModal">
+  <div class="modal card" style="max-width:440px;">
+    <div class="modal-check">
+      <svg viewBox="0 0 64 64" width="64" height="64">
+        <circle cx="32" cy="32" r="30" fill="#eef0fa" stroke="#2B3990" stroke-width="3"/>
+        <rect x="20" y="18" width="24" height="18" rx="3" fill="none" stroke="#2B3990" stroke-width="3"/>
+        <rect x="26" y="36" width="12" height="10" rx="1" fill="#2B3990"/>
+        <circle cx="32" cy="27" r="3" fill="#2B3990"/>
+      </svg>
+    </div>
+    <h3>Does the store have NVR access?</h3>
+    <p>If the store can give you access to the NVR (username &amp; password), we'll walk you through setting it up. If not, we'll go straight to camera credentials.</p>
+    <div class="feedback-actions" style="flex-direction:column;gap:10px;">
+      <button class="btn btn-primary" id="btnNvrAccessYes">Yes — NVR access is available</button>
+      <button class="btn btn-ghost" id="btnNvrAccessNo">No — skip to Camera Requirements</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Done modal ── -->
 <div class="modal-overlay hidden" id="doneModal">
   <div class="modal card">
     <div class="modal-check">
@@ -662,7 +1163,6 @@
        <strong>We will notify you about the configuration.</strong><br>
        <span class="muted">Inform your XenReality Project Owner/Engineer that the install is done.
        Our team finishes the rest remotely. Nothing more to do on-site.</span></p>
-
     <div class="feedback" id="feedbackBlock">
       <h4>How was the setup? Help us improve it.</h4>
       <div class="stars" id="fbStars" role="radiogroup" aria-label="Rate the setup experience">
@@ -682,6 +1182,179 @@
     </div>
   </div>
 </div>
+
+<script>
+// ── App flow (progressive unlock) ──
+var appFlow = {
+  order: ['sec-guidelines','sec-infra','sec-static-tplink','sec-nvr','sec-creds','sec-rpi','sec-setup'],
+
+  get unlocked() { return parseInt(localStorage.getItem('xr-instructions-unlocked') || '0'); },
+  set unlocked(v) { localStorage.setItem('xr-instructions-unlocked', v); },
+
+  init: function() {
+    this.refreshMenu();
+    var saved = localStorage.getItem('xr-instructions-current');
+    var idx = this.order.indexOf(saved);
+    this.showSection(idx >= 0 && idx <= this.unlocked ? saved : 'sec-guidelines');
+  },
+
+  nav: function(el) {
+    if (el.classList.contains('locked')) return;
+    this.showSection(el.dataset.target);
+  },
+
+  showSection: function(id) {
+    document.querySelectorAll('.spa-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.spa-menu-item').forEach(function(a) { a.classList.remove('active'); });
+    var sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
+    var link = document.querySelector('[data-target="' + id + '"]');
+    if (link) link.classList.add('active');
+    var main = document.querySelector('.spa-main');
+    if (main) main.scrollTop = 0;
+    try { localStorage.setItem('xr-instructions-current', id); } catch(e) {}
+  },
+
+  next: function() {
+    var active = document.querySelector('.spa-section.active');
+    if (!active) return;
+    var cur = active.id;
+    var idx = this.order.indexOf(cur);
+    if (idx < 0) return;
+    var nextIdx = idx + 1;
+    if (nextIdx > this.unlocked) { this.unlocked = nextIdx; }
+    this.refreshMenu();
+    if (nextIdx < this.order.length) this.showSection(this.order[nextIdx]);
+  },
+
+  refreshMenu: function() {
+    var u = this.unlocked;
+    this.order.forEach(function(id, i) {
+      var el = document.querySelector('[data-target="' + id + '"]');
+      if (!el) return;
+      el.classList.toggle('locked', i > u);
+      el.classList.toggle('completed', i < u);
+    });
+  }
+};
+
+// ── NVR access choice modal ──
+function showNvrAccessModal() {
+  // First unlock next step (sec-nvr at index 3) so user can return to it later
+  var nvrIdx = appFlow.order.indexOf('sec-nvr');
+  var credsIdx = appFlow.order.indexOf('sec-creds');
+  if (nvrIdx > appFlow.unlocked) { appFlow.unlocked = nvrIdx; appFlow.refreshMenu(); }
+  document.getElementById('nvrAccessModal').classList.remove('hidden');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btnNvrAccessYes').addEventListener('click', function() {
+    document.getElementById('nvrAccessModal').classList.add('hidden');
+    appFlow.next(); // from sec-static-tplink → sec-nvr
+  });
+  document.getElementById('btnNvrAccessNo').addEventListener('click', function() {
+    document.getElementById('nvrAccessModal').classList.add('hidden');
+    // Skip NVR, unlock and navigate to Camera Requirements
+    var credsIdx = appFlow.order.indexOf('sec-creds');
+    if (credsIdx > appFlow.unlocked) { appFlow.unlocked = credsIdx; appFlow.refreshMenu(); }
+    appFlow.showSection('sec-creds');
+  });
+});
+
+// ── Reusable checklist gate factory ──
+function makeChecklist(cfg) {
+  // cfg: { boxSel, storeKey, countId, fillId, continueId, resetBtnId, modalId, confirmId, cancelId, onNext }
+  document.addEventListener('DOMContentLoaded', function() {
+    var boxes = Array.from(document.querySelectorAll(cfg.boxSel));
+    var countEl   = document.getElementById(cfg.countId);
+    var fillEl    = document.getElementById(cfg.fillId);
+    var contBtn   = document.getElementById(cfg.continueId);
+    var resetBtn  = document.getElementById(cfg.resetBtnId);
+    var modal     = document.getElementById(cfg.modalId);
+    var confirmBtn = document.getElementById(cfg.confirmId);
+    var cancelBtn  = document.getElementById(cfg.cancelId);
+    var TOTAL = boxes.length;
+    if (!boxes.length || !contBtn) return;
+
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem(cfg.storeKey)) || []; } catch(e) {}
+    boxes.forEach(function(b, i) { b.checked = !!saved[i]; });
+    boxes.forEach(function(b) { b.addEventListener('change', function() { update(true); }); });
+
+    contBtn.addEventListener('click', function() {
+      if (contBtn.classList.contains('disabled')) {
+        var first = boxes.find(function(b) { return !b.checked; });
+        if (first) {
+          var li = first.closest('li');
+          if (li) { li.scrollIntoView({ behavior: 'smooth', block: 'center' }); li.classList.add('req-nudge'); setTimeout(function() { li.classList.remove('req-nudge'); }, 1200); }
+        }
+        return;
+      }
+      if (cfg.onNext) cfg.onNext(); else appFlow.next();
+    });
+
+    if (resetBtn && modal) {
+      resetBtn.addEventListener('click', function() { modal.classList.remove('hidden'); });
+      cancelBtn.addEventListener('click', function() { modal.classList.add('hidden'); });
+      modal.addEventListener('click', function(e) { if (e.target === modal) modal.classList.add('hidden'); });
+      confirmBtn.addEventListener('click', function() {
+        boxes.forEach(function(b) { b.checked = false; });
+        try { localStorage.removeItem(cfg.storeKey); } catch(e) {}
+        update(false);
+        modal.classList.add('hidden');
+        var main = document.querySelector('.spa-main');
+        if (main) main.scrollTop = 0;
+      });
+    }
+
+    update(true);
+
+    function update(persist) {
+      var done = boxes.filter(function(b) { return b.checked; }).length;
+      if (countEl) countEl.textContent = done + ' of ' + TOTAL + ' checked';
+      if (fillEl)  fillEl.style.width = (TOTAL ? (done / TOTAL) * 100 : 0) + '%';
+      var ready = done === TOTAL && TOTAL > 0;
+      contBtn.classList.toggle('disabled', !ready);
+      contBtn.disabled = !ready;
+      if (persist) {
+        try { localStorage.setItem(cfg.storeKey, JSON.stringify(boxes.map(function(b) { return b.checked; }))); } catch(e) {}
+      }
+    }
+  });
+}
+
+// Infrastructure checklist
+makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 'infraCount', fillId: 'infraFill', continueId: 'btnInfraContinue', resetBtnId: 'btnInfraReset', modalId: 'infraResetModal', confirmId: 'btnInfraResetConfirm', cancelId: 'btnInfraResetCancel' });
+// NVR checklist
+makeChecklist({ boxSel: '.nvr-box', storeKey: 'xen-nvr-checklist', countId: 'nvrCount', fillId: 'nvrFill', continueId: 'btnNvrContinue', resetBtnId: 'btnNvrReset', modalId: 'nvrResetModal', confirmId: 'btnNvrResetConfirm', cancelId: 'btnNvrResetCancel' });
+// Camera checklist — "continue" scrolls to the form, then Next button advances flow
+makeChecklist({ boxSel: '.cam-box', storeKey: 'xen-cam-checklist', countId: 'camCount', fillId: 'camFill', continueId: 'btnCamContinue', resetBtnId: 'btnCamReset', modalId: 'camResetModal', confirmId: 'btnCamResetConfirm', cancelId: 'btnCamResetCancel', onNext: function() { var f = document.getElementById('credFormWrap'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+
+// ── Camera guidelines departure checklist ──
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    var list = document.getElementById('departureChecklist');
+    var msg  = document.getElementById('allDoneMsg');
+    if (!list) return;
+    list.addEventListener('change', function() {
+      var boxes = list.querySelectorAll('input[type="checkbox"]');
+      msg.style.display = Array.from(boxes).every(function(b) { return b.checked; }) ? '' : 'none';
+    });
+  });
+})();
+
+// ── Sidebar toggle ──
+document.addEventListener('DOMContentLoaded', function() {
+  appFlow.init();
+
+  var sidebar = document.querySelector('.spa-sidebar');
+  var toggle  = document.getElementById('sidebar-toggle');
+  if (localStorage.getItem('xr-sidebar-collapsed') === '1') sidebar.classList.add('collapsed');
+  toggle.addEventListener('click', function() {
+    var c = sidebar.classList.toggle('collapsed');
+    localStorage.setItem('xr-sidebar-collapsed', c ? '1' : '0');
+  });
+});
+</script>
 
 <script src="js/app.js?v=3"></script>
 <script src="js/video-modal.js?v=1"></script>
