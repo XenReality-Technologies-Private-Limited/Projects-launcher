@@ -244,6 +244,44 @@ body {
 }
 .tile-value--sm { font-size: clamp(0.95rem, 1.55vh, 1.2rem); }
 
+/* ── Employee headcount + history ── */
+/* Its own row under the PPE tiles. A fifth tile in that grid would squeeze
+   "Hairnet OFF" into an ellipsis, and the chart needs the width regardless.
+   Fixed left column so the chart starts at the same x whatever the count is. */
+.emp-strip {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+  align-items: stretch;
+}
+
+.emp-now {
+  min-width: 0;
+  padding: 8px 10px 9px;
+  border-radius: 8px;
+  background: #eef0ff;
+  border: 1px solid #d8dcff;
+}
+
+.emp-chart {
+  min-width: 0;                 /* lets the grid column actually shrink */
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  padding: 2px 4px;
+}
+
+/* Height is fixed rather than flexed: the metrics row is `flex: 0 0 auto`, so
+   anything that grows here takes height from the video row above. A fixed,
+   modest height keeps the page on one screen with no scrolling. */
+.emp-chart canvas {
+  display: block;
+  width: 100%;
+  height: 52px;
+}
+
 /* Short viewports: shrink the chrome before anything has to scroll. */
 @media (max-height: 720px) {
   .content { gap: 10px; padding: 10px 14px 12px; }
@@ -251,4 +289,11 @@ body {
   .metrics { gap: 10px; }
   .metric-group { padding: 8px 10px 9px; }
   .tile { padding: 6px 9px 7px; }
+  .emp-strip { margin-top: 6px; gap: 6px; }
+  .emp-now { padding: 6px 9px 7px; }
+  .emp-chart canvas { height: 38px; }
+}
+
+@media (max-height: 600px) {
+  .emp-chart canvas { height: 30px; }
 }

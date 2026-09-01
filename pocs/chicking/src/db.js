@@ -27,21 +27,56 @@ async function fetchDb(url) {
 }
 
 // ── kitchen.db ─────────────────────────────────────────────────────────────
+
+/** Does this table have the column? Older published databases do not. */
+function hasColumn(db, table, column) {
+  try {
+    const stmt = db.prepare(`PRAGMA table_info("${table}")`);
+    let found = false;
+    while (stmt.step()) {
+      if (String(stmt.getAsObject().name).toLowerCase() === column.toLowerCase()) found = true;
+    }
+    stmt.free();
+    return found;
+  } catch {
+    return false;
+  }
+}
+
 export async function loadKitchenData(url) {
-  const db   = await fetchDb(url);
+  const db = await fetchDb(url);
+
+  // The pipeline records an employee count, but the published kitchen.db has
+  // historically shipped only the four PPE columns. Use the real column when it
+  // is there, and derive it when it is not, so this keeps working either way.
+  const TABLE = 'chicking_kitchen_ppe_status';
+  const hasEmployees = hasColumn(db, TABLE, 'employees');
+
   const stmt = db.prepare(
-    'SELECT video_time, gloves_on, gloves_off, hairnet_on, hairnet_off ' +
-    'FROM chicking_kitchen_ppe_status ORDER BY video_time ASC'
+    'SELECT video_time, gloves_on, gloves_off, hairnet_on, hairnet_off' +
+    (hasEmployees ? ', employees' : '') +
+    ` FROM ${TABLE} ORDER BY video_time ASC`
   );
   const rows = [];
   while (stmt.step()) {
     const r = stmt.getAsObject();
+    const gloves_on   = Number(r.gloves_on)   || 0;
+    const gloves_off  = Number(r.gloves_off)  || 0;
+    const hairnet_on  = Number(r.hairnet_on)  || 0;
+    const hairnet_off = Number(r.hairnet_off) || 0;
+
+    // Every employee in frame lands in exactly one of the glove buckets and one
+    // of the hairnet buckets, so either pair sums to the headcount. They can
+    // disagree by one when an item is unclear on somebody and that person is
+    // dropped from one pair but not the other, so take the larger — it is the
+    // count that accounts for every person seen.
+    const derived = Math.max(gloves_on + gloves_off, hairnet_on + hairnet_off);
+
     rows.push({
       timeSeconds: parseHMSToSeconds(r.video_time),
-      gloves_on:   Number(r.gloves_on)   || 0,
-      gloves_off:  Number(r.gloves_off)  || 0,
-      hairnet_on:  Number(r.hairnet_on)  || 0,
-      hairnet_off: Number(r.hairnet_off) || 0,
+      gloves_on, gloves_off, hairnet_on, hairnet_off,
+      employees: hasEmployees ? (Number(r.employees) || 0) : derived,
+      employeesDerived: !hasEmployees,
     });
   }
   stmt.free();
