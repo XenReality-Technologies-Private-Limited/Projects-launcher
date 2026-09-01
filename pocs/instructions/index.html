@@ -984,7 +984,7 @@
                 <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 9l11 5L23 9"/></svg>Wide Lens</span><span class="angle-degrees">20° – 30°</span><span class="angle-note">Place closer and tilt down more steeply. The wider field of view covers the door at a shorter distance.</span></div>
               </div>
               <hr class="cg-divider">
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:4px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;">
                 <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                   <img src="images/camguide/p1_photo1.png" alt="Correct vs incorrect camera positioning" style="width:100%;display:block;">
                   <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Correct: facing the door directly vs incorrect: mounted to the side</figcaption>
@@ -993,11 +993,11 @@
                   <img src="images/camguide/p2_photo1.png" alt="Camera distance from door diagram" style="width:100%;display:block;">
                   <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Distance guide: too close / correct (2.5–3.5 m) / too far</figcaption>
                 </figure>
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                  <img src="images/camguide/p3_photo1.png" alt="Camera height and angle diagram" style="width:100%;display:block;">
-                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Ceiling mount with correct tilt angle by lens type</figcaption>
-                </figure>
               </div>
+              <figure style="margin:12px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <img src="images/camguide/p3_photo1.png" alt="Camera height and angle diagram" style="width:100%;display:block;">
+                <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Ceiling mount with correct tilt angle by lens type</figcaption>
+              </figure>
             </div>
           </div>
         </div>
@@ -1013,30 +1013,29 @@
               <div class="cg-card-head-text"><h2>Mistakes Found in Real Stores</h2><p>Examples of incorrect setups observed during field deployments</p></div>
             </div>
             <div class="cg-body">
-              <div class="mistake-list">
-                <div class="mistake-item"><span class="mistake-badge">Sarath City Mall</span><div class="mistake-content"><h4>Camera mounted too low and on the side</h4><p>The person standing further away is hidden behind the person standing closer. This happens because the camera is on the side. Being mounted too low makes this problem worse — the occlusion angle increases and people block each other more completely.</p></div></div>
-                <div class="mistake-item"><span class="mistake-badge">AS Rao Nagar</span><div class="mistake-content"><h4>Camera placed outside, not pointing at the store door</h4><p>The camera is placed outside the store and not pointing at the store's door. Because of this, people walking into the shop next door also get counted by mistake — polluting the footfall data.</p></div></div>
-                <div class="mistake-item"><span class="mistake-badge">Lakeshore Mall</span><div class="mistake-content"><h4>Side-mounted camera with partial door coverage</h4><p>The camera is placed on the side, so people block each other in the picture. There is an additional problem: the camera does not see the whole door. Some people walk in through a part of the door the camera cannot see, resulting in missed counts.</p></div></div>
-              </div>
-              <hr class="cg-divider">
-              <p style="font-size:0.8rem;font-weight:700;color:var(--ink-soft);margin:4px 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Sarath City Mall</p>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:14px;">
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <!-- Sarath City Mall -->
+              <div class="mistake-item"><span class="mistake-badge">Sarath City Mall</span><div class="mistake-content"><h4>Camera mounted too low and on the side</h4><p>The person standing further away is hidden behind the person standing closer. This happens because the camera is on the side. Being mounted too low makes this problem worse — the occlusion angle increases and people block each other more completely.</p></div></div>
+              <div style="margin:10px 0 18px;">
+                <figure style="margin:0 0 8px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                   <img src="images/camguide/p4_photo1.png" alt="Sarath City Mall wide shot" style="width:100%;display:block;">
                 </figure>
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                  <img src="images/camguide/p4_photo2.png" alt="Sarath City Mall close-up 1" style="width:100%;display:block;">
-                </figure>
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                  <img src="images/camguide/p4_photo3.png" alt="Sarath City Mall close-up 2" style="width:100%;display:block;">
-                </figure>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                  <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                    <img src="images/camguide/p4_photo2.png" alt="Sarath City Mall close-up 1" style="width:100%;display:block;">
+                  </figure>
+                  <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                    <img src="images/camguide/p4_photo3.png" alt="Sarath City Mall close-up 2" style="width:100%;display:block;">
+                  </figure>
+                </div>
               </div>
-              <p style="font-size:0.8rem;font-weight:700;color:var(--ink-soft);margin:4px 0 8px;text-transform:uppercase;letter-spacing:0.05em;">AS Rao Nagar</p>
-              <figure style="margin:0 0 14px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <!-- AS Rao Nagar -->
+              <div class="mistake-item"><span class="mistake-badge">AS Rao Nagar</span><div class="mistake-content"><h4>Camera placed outside, not pointing at the store door</h4><p>The camera is placed outside the store and not pointing at the store's door. Because of this, people walking into the shop next door also get counted by mistake — polluting the footfall data.</p></div></div>
+              <figure style="margin:10px 0 18px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <img src="images/camguide/p5_photo1.png" alt="AS Rao Nagar — camera outside store" style="width:100%;display:block;">
               </figure>
-              <p style="font-size:0.8rem;font-weight:700;color:var(--ink-soft);margin:4px 0 8px;text-transform:uppercase;letter-spacing:0.05em;">Lakeshore Mall</p>
-              <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <!-- Lakeshore Mall -->
+              <div class="mistake-item"><span class="mistake-badge">Lakeshore Mall</span><div class="mistake-content"><h4>Side-mounted camera with partial door coverage</h4><p>The camera is placed on the side, so people block each other in the picture. There is an additional problem: the camera does not see the whole door. Some people walk in through a part of the door the camera cannot see, resulting in missed counts.</p></div></div>
+              <figure style="margin:10px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <img src="images/camguide/p6_photo1.png" alt="Lakeshore Mall — side-mounted camera" style="width:100%;display:block;">
               </figure>
             </div>
@@ -1094,7 +1093,7 @@
                 <img src="images/camguide/p8_photo1.png" alt="Billing camera zone diagram" style="width:100%;display:block;">
                 <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Camera and zone placement diagram — corner-mounted, covering customer and staff sides</figcaption>
               </figure>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                   <img src="images/camguide/p9_photo1.png" alt="Billing counter field photo 1" style="width:100%;display:block;">
                 </figure>
