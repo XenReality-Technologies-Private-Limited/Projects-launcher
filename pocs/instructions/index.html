@@ -139,11 +139,14 @@
 <!-- ══════════════════ SPA SHELL ══════════════════ -->
 <div class="spa-wrapper">
 
+  <!-- ── Brand logo: fixed, always visible ── -->
+  <div class="spa-brand">
+    <img src="images/xenlogo.png" alt="XenReality" class="spa-brand-logo">
+  </div>
+
   <!-- ── Sidebar ── -->
   <aside class="spa-sidebar">
     <div class="spa-sidebar-header">
-      <img src="images/xenlogo.png" alt="XenReality" class="logo-full">
-      <div class="logo-mark">XR</div>
       <button id="sidebar-toggle" aria-label="Toggle sidebar">
         <svg class="chevron-left" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
         <svg class="chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -194,6 +197,13 @@
         </a>
       </div>
     </ul>
+
+    <div class="spa-sidebar-footer">
+      <button class="spa-signout-btn" onclick="(function(){localStorage.removeItem('pocketbase_auth');window.location.replace('/instructions/login.html');})()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign out
+      </button>
+    </div>
   </aside>
 
   <!-- ── Main content ── -->
