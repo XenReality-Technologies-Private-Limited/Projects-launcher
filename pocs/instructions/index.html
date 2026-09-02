@@ -303,16 +303,12 @@
             <div class="trouble-body">
               <p style="margin-bottom:12px;color:var(--ink-soft);font-size:0.9rem;">Collect the details below for whichever brand is installed at the store.</p>
               <p style="font-weight:700;margin-bottom:4px;">CP PLUS <span style="font-weight:400;color:var(--ink-soft);font-size:0.85rem;">— easiest to set up</span></p>
-              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;">
-                <ul class="mini-list" style="margin:0;flex-shrink:0;"><li>Serial Number (Cloud ID / InstaOn)</li><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
-                <img src="images/CP_Plus.png" alt="CP Plus InstaOn dialog" style="max-width:220px;width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
-              </div>
+              <ul class="mini-list" style="margin-bottom:10px;"><li>Serial Number (Cloud ID / InstaOn)</li><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
+              <img src="images/CP_Plus.png" alt="CP Plus InstaOn dialog" style="width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);margin-bottom:16px;display:block;">
               <p style="font-weight:700;margin-bottom:4px;">Hikvision</p>
               <p style="font-size:0.875rem;color:var(--ink-soft);margin-bottom:6px;"><strong>Normal login strongly preferred</strong> — allows bulk footage download. Cloud P2P only allows ~5 minutes at a time.</p>
-              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;">
-                <ul class="mini-list" style="margin:0;flex-shrink:0;"><li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li><li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li></ul>
-                <img src="images/Hikvision.jpg" alt="Hikvision IP/Domain login dialog" style="max-width:220px;width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
-              </div>
+              <ul class="mini-list" style="margin-bottom:10px;"><li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li><li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li></ul>
+              <img src="images/Hikvision.jpg" alt="Hikvision IP/Domain login dialog" style="width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);margin-bottom:16px;display:block;">
               <p style="font-weight:700;margin-bottom:4px;">Dahua</p>
               <ul class="mini-list"><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
             </div>
@@ -391,7 +387,9 @@
             <strong style="display:block;margin-bottom:6px;">What is a MAC ID?</strong>
             <p style="margin:0 0 6px;font-size:0.9rem;">A MAC (Media Access Control) address is a unique hardware identifier assigned to every network device at the factory. It never changes and looks like six pairs of hex digits.</p>
             <p style="margin:0 0 6px;font-size:0.9rem;"><strong>Example:</strong> <code style="background:#f0f4f8;padding:2px 6px;border-radius:4px;font-size:0.85rem;">B8:27:EB:4A:2C:1F</code> — this would be the MAC ID we give the client's IT team to whitelist.</p>
-            <p style="margin:0;font-size:0.9rem;">For the AI Edge Device, the XenReality team will provide the MAC ID. For any other devices such as NVR or cameras, please contact the IT admin.</p>
+          </div>
+          <div class="callout" style="margin-top:10px;background:#eef0fa;border-left:3px solid #2B3990;">
+            <strong style="color:#2B3990;">Note:</strong> For the AI Edge Device, the XenReality team will provide the MAC ID. For any other devices such as NVR or cameras, please contact the IT admin.
           </div>
           <div class="callout callout-warn" style="margin-top:12px;">
             <strong>Admin access, not guest — for NVR.</strong> A guest account cannot enable <strong>remote view</strong>, so they must provide admin access to the NVR only.
@@ -499,7 +497,7 @@
         </div>
 
         <div class="tplink-step">
-          <h3>STEP 5: Reconnect and Double-Check <span style="font-size:0.75em;font-weight:400;color:var(--ink-soft);">(Optional, Recommended)</span></h3>
+          <h3>STEP 5: Reconnect and Double-Check <span style="font-size:0.75em;font-weight:700;color:var(--ink-soft);">(Optional, Recommended)</span></h3>
           <ol>
             <li><strong>Reconnect the device:</strong> unplug and plug back in the network cable on the device (or just restart it). This makes it ask the router for a new address.</li>
             <li><strong>Check the client list:</strong> click the <strong>DHCP Client List</strong> tab at the top of the page and make sure the device shows up with its new, fixed IP address.</li>
@@ -512,12 +510,13 @@
             <img src="images/tplink/ui_p4_img2.png" alt="LAN tabs — DHCP Client List selected" style="width:100%;display:block;">
             <figcaption style="font-size:0.8rem;color:var(--ink-soft);padding:8px 12px;">The tabs under LAN — click DHCP Client List to check the device's new address.</figcaption>
           </figure>
-          <div class="callout" style="margin-top:16px;border:2px solid var(--accent);background:var(--accent-soft);">
-            <strong style="color:var(--accent-deep);font-size:1rem;">Extra Notes</strong>
-            <ul style="margin:8px 0 0 18px;line-height:1.8;">
-              <li><strong>If there's an NVR:</strong> give a fixed IP to both the AI Edge Device and the NVR. Cameras plugged straight into the NVR's PoE ports don't need their own rule on the router.</li>
-              <li><strong>If there's no NVR:</strong> and the cameras connect straight to the main LAN switch, repeat Steps 3–5 for each camera on site.</li>
-            </ul>
+          <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#e8f8ec;border-left:4px solid #22c55e;border-radius:10px;padding:14px 16px;">
+              <strong style="color:#15803d;">If there's an NVR:</strong> give a fixed IP to both the AI Edge Device and the NVR. Cameras plugged straight into the NVR's PoE ports don't need their own rule on the router.
+            </div>
+            <div style="background:#eef0fa;border-left:4px solid #2B3990;border-radius:10px;padding:14px 16px;">
+              <strong style="color:#2B3990;">If there's no NVR:</strong> and the cameras connect straight to the main LAN switch, repeat Steps 3–5 for each camera on site.
+            </div>
           </div>
         </div>
       </div>

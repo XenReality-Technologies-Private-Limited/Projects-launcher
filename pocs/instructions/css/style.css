@@ -148,7 +148,7 @@ code {
 .about-art .art { width: 100%; height: auto; }
 .about-text h2 { font-size: 28px; letter-spacing: -0.02em; margin-bottom: 14px; }
 .about-text p { color: var(--ink-soft); line-height: 1.65; margin-bottom: 12px; }
-.mini-list { margin: 0 0 12px 20px; color: var(--ink-soft); line-height: 1.8; }
+.mini-list { margin: 0 0 12px 0; padding-left: 20px; color: var(--ink-soft); line-height: 1.8; }
 
 /* choose */
 .choose-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
