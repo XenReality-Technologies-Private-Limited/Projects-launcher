@@ -1241,20 +1241,12 @@
 
 <!-- ── NVR Access modal ── -->
 <div class="modal-overlay hidden" id="nvrAccessModal">
-  <div class="modal card" style="max-width:440px;">
-    <div class="modal-check">
-      <svg viewBox="0 0 64 64" width="64" height="64">
-        <circle cx="32" cy="32" r="30" fill="#eef0fa" stroke="#2B3990" stroke-width="3"/>
-        <rect x="20" y="18" width="24" height="18" rx="3" fill="none" stroke="#2B3990" stroke-width="3"/>
-        <rect x="26" y="36" width="12" height="10" rx="1" fill="#2B3990"/>
-        <circle cx="32" cy="27" r="3" fill="#2B3990"/>
-      </svg>
-    </div>
-    <h3>Does the store have NVR access?</h3>
-    <p>If the store can give you access to the NVR (username &amp; password), we'll walk you through setting it up. If not, we'll go straight to camera credentials.</p>
+  <div class="modal card" style="max-width:400px;">
+    <h3 style="font-size:1.2rem;margin-bottom:10px;">Do you have the NVR login?</h3>
+    <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.6;margin-bottom:20px;">Ask the store for the NVR username and password. If they have it, tap <strong>Yes</strong>. If not, tap <strong>No</strong>.</p>
     <div class="feedback-actions" style="flex-direction:column;gap:10px;">
-      <button class="btn btn-primary" id="btnNvrAccessYes">Yes — NVR access is available</button>
-      <button class="btn btn-ghost" id="btnNvrAccessNo">No — skip to Camera Requirements</button>
+      <button class="btn btn-primary" id="btnNvrAccessYes">Yes, I have it</button>
+      <button class="btn btn-ghost" id="btnNvrAccessNo">No, skip this</button>
     </div>
   </div>
 </div>
