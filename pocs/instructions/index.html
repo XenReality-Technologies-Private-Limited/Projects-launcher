@@ -295,7 +295,7 @@
             <li><label><input type="checkbox" class="nvr-box"><span>Preferred: same brand as the cameras</span></label></li>
             <li><label><input type="checkbox" class="nvr-box"><span>On the same Local Area Network</span></label></li>
             <li><label><input type="checkbox" class="nvr-box"><span>Username and password to access it</span></label></li>
-            <li><label><input type="checkbox" class="nvr-box"><span>Turn off any AI features</span></label></li>
+            <li><label><input type="checkbox" class="nvr-box"><span>Turn off any AI features <span style="font-weight:400;color:var(--ink-soft);font-size:0.88em;">(e.g. Motion detection, Vehicle detection, People detection)</span></span></label></li>
             <li><label><input type="checkbox" class="nvr-box"><span>Backup and video storage configured beforehand</span></label></li>
           </ul>
           <details class="trouble" style="margin-top: 16px;">
@@ -303,16 +303,22 @@
             <div class="trouble-body">
               <p style="margin-bottom:12px;color:var(--ink-soft);font-size:0.9rem;">Collect the details below for whichever brand is installed at the store.</p>
               <p style="font-weight:700;margin-bottom:4px;">CP PLUS <span style="font-weight:400;color:var(--ink-soft);font-size:0.85rem;">— easiest to set up</span></p>
-              <ul class="mini-list" style="margin-bottom:14px;"><li>Serial Number (Cloud ID - Insta ID)</li><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
+              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;">
+                <ul class="mini-list" style="margin:0;flex-shrink:0;"><li>Serial Number (Cloud ID / InstaOn)</li><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
+                <img src="images/CP_Plus.png" alt="CP Plus InstaOn dialog" style="max-width:220px;width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
+              </div>
               <p style="font-weight:700;margin-bottom:4px;">Hikvision</p>
               <p style="font-size:0.875rem;color:var(--ink-soft);margin-bottom:6px;"><strong>Normal login strongly preferred</strong> — allows bulk footage download. Cloud P2P only allows ~5 minutes at a time.</p>
-              <ul class="mini-list" style="margin-bottom:14px;"><li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li><li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li></ul>
+              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:14px;">
+                <ul class="mini-list" style="margin:0;flex-shrink:0;"><li><strong>Normal login:</strong> IP Address, Port (default 8000), Username, Password</li><li><strong>Cloud P2P:</strong> Cloud ID — use only when Normal login is not possible</li></ul>
+                <img src="images/Hikvision.jpg" alt="Hikvision IP/Domain login dialog" style="max-width:220px;width:100%;border-radius:8px;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.10);">
+              </div>
               <p style="font-weight:700;margin-bottom:4px;">Dahua</p>
               <ul class="mini-list"><li>IP Address</li><li>Port</li><li>Username</li><li>Password</li></ul>
             </div>
           </details>
           <div class="callout callout-warn" style="margin-top:14px;">
-            <strong>No NVR access?</strong> If the client cannot give us access to the NVR, they must instead provide <strong>15&ndash;20 hours of traffic footage</strong>.
+            <strong>No NVR access?</strong> If the client cannot give us access to the NVR, they must instead provide <strong>24&ndash;48 hours of video recording</strong>.
           </div>
         </div>
         <div class="card req-card">
@@ -365,10 +371,10 @@
             <li><label><input type="checkbox" class="infra-box"><span>Internet connectivity of at least 10 Mbps</span></label></li>
             <li><label><input type="checkbox" class="infra-box"><span>Power backup <span style="font-weight:400;color:var(--ink-soft);font-size:0.88em;">(optional)</span></span></label></li>
             <li><label><input type="checkbox" class="infra-box"><span>1 free ethernet port on network switch or router</span></label></li>
-            <li><label><input type="checkbox" class="infra-box"><span>Network cable channels to run the Ethernet cable</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Network cable channels to run the Ethernet cable <span style="font-weight:400;color:var(--ink-soft);font-size:0.88em;">(optional)</span></span></label></li>
             <li><label><input type="checkbox" class="infra-box"><span>Secure room/space for AI Edge Device</span></label></li>
-            <li><label><input type="checkbox" class="infra-box"><span>Router access (username &amp; password), with a static IP for the cameras and the DVR/NVR</span></label></li>
-            <li><label><input type="checkbox" class="infra-box"><span>Firewall whitelisting done — Sophos, SonicWall, Fortinet (FortiGate), Palo Alto Networks, Check Point, Netskope, or Cisco / Citrix: allow Local Area Network access and whitelist the MAC ID of our AI Edge Device
+            <li><label><input type="checkbox" class="infra-box"><span>Router access (username &amp; password), with a static IP for the cameras and the DVR/NVR <a href="javascript:void(0)" onclick="appFlow.showSection('sec-static-tplink')" style="color:var(--accent);font-weight:500;font-size:0.88em;">(more info in next section)</a></span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>Firewall whitelisting done — Sophos, SonicWall, Fortinet (FortiGate), Palo Alto Networks, Check Point, Netskope, or Cisco / Citrix: allow Local Area Network access and whitelist the MAC ID of our AI Edge Device <span style="font-weight:500;color:var(--ink-soft);font-size:0.88em;">(Contact IT admin)</span>
               <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;">
                 <div style="width:100px;height:36px;display:flex;align-items:center;justify-content:center;background:#1e293b;border-radius:8px;padding:6px 10px;"><img src="images/sophos-logo.svg"      alt="Sophos"               style="max-width:80px;max-height:24px;width:auto;height:auto;object-fit:contain;display:block;"></div>
                 <div style="width:100px;height:36px;display:flex;align-items:center;justify-content:center;background:#f1f5f9;border-radius:8px;padding:6px 10px;"><img src="images/sonicwall_logo.svg"   alt="SonicWall"            style="max-width:80px;max-height:24px;width:auto;height:auto;object-fit:contain;display:block;"></div>
@@ -379,12 +385,13 @@
                 <div style="width:100px;height:36px;display:flex;align-items:center;justify-content:center;background:#f1f5f9;border-radius:8px;padding:6px 10px;"><img src="images/ciscologo.webp"       alt="Cisco"                style="max-width:80px;max-height:24px;width:auto;height:auto;object-fit:contain;display:block;"></div>
               </div>
             </span></label></li>
-            <li><label><input type="checkbox" class="infra-box"><span>xenreality.com to be whitelisted (required — without this we cannot connect remotely)</span></label></li>
+            <li><label><input type="checkbox" class="infra-box"><span>*.xenreality.com to be whitelisted on the firewall (required — without this we cannot connect remotely)</span></label></li>
           </ul>
           <div class="callout" style="margin-top:16px;border-left:3px solid var(--accent);">
             <strong style="display:block;margin-bottom:6px;">What is a MAC ID?</strong>
             <p style="margin:0 0 6px;font-size:0.9rem;">A MAC (Media Access Control) address is a unique hardware identifier assigned to every network device at the factory. It never changes and looks like six pairs of hex digits.</p>
-            <p style="margin:0;font-size:0.9rem;"><strong>Example:</strong> <code style="background:#f0f4f8;padding:2px 6px;border-radius:4px;font-size:0.85rem;">B8:27:EB:4A:2C:1F</code> — this would be the MAC ID we give the client's IT team to whitelist.</p>
+            <p style="margin:0 0 6px;font-size:0.9rem;"><strong>Example:</strong> <code style="background:#f0f4f8;padding:2px 6px;border-radius:4px;font-size:0.85rem;">B8:27:EB:4A:2C:1F</code> — this would be the MAC ID we give the client's IT team to whitelist.</p>
+            <p style="margin:0;font-size:0.9rem;">For the AI Edge Device, the XenReality team will provide the MAC ID. For any other devices such as NVR or cameras, please contact the IT admin.</p>
           </div>
           <div class="callout callout-warn" style="margin-top:12px;">
             <strong>Admin access, not guest — for NVR.</strong> A guest account cannot enable <strong>remote view</strong>, so they must provide admin access to the NVR only.
@@ -423,7 +430,7 @@
       <section class="hero hero-compact">
         <span class="badge-chip"><span class="badge-new" style="background:#eef0fa;color:#2B3990;">ROUTER SETTINGS</span> Static IP setup</span>
         <h1>Static IP <span class="accent">Address</span></h1>
-        <p class="hero-sub">How to Set Up a Static IP Address on the Omada ER605</p>
+        <p class="hero-sub">How to Set Up a Static IP Address for any router</p>
         <div style="margin-top:20px;">
           <a href="TP-Link_Omada_Static_IP_Setup.pdf" download="TP-Link_Omada_Static_IP_Setup.pdf" class="btn btn-primary">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -433,14 +440,14 @@
       </section>
 
       <div class="tplink-section-wrap">
-        <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.7;">This guide shows you how to give a device (like a Pi, NVR, or camera) a fixed IP address on the Omada ER605 router. Once set up, that device will always get the same IP address instead of a different one each time.</p>
+        <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.7;">This guide shows you how to give a device (like an AI Edge Device, NVR, or camera) a fixed IP address on the router. Once set up, that device will always get the same IP address (static IP).</p>
 
         <div class="tplink-step">
           <h3>STEP 1: Log In to the Router</h3>
           <ol>
             <li>Connect your computer to the store's network, using Wi-Fi or an Ethernet cable.</li>
             <li>Open a web browser and type in the router's IP address. It will look like this: <code>http://X.X.X.1</code> (for example, <code>http://192.168.1.1</code> or <code>http://10.80.0.1</code> — the exact numbers depend on the site). You can usually find this address on a sticker on the router, or in your computer's network settings.</li>
-            <li>Log in with the store's router username and password.</li>
+            <li>Log in using the store's router username and password provided by the IT admin.</li>
           </ol>
           <figure style="margin:16px 0 0;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);text-align:center;background:#f8fafc;">
             <img src="images/tplink/ui_p1_img1.png" alt="Omada login page" style="max-height:420px;width:auto;max-width:100%;display:block;margin:0 auto;">
@@ -476,11 +483,11 @@
           <h3>STEP 4: Fill In the Device Details</h3>
           <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:14px;">Fill in the form using the guide below:</p>
           <table class="tplink-table">
-            <tr><th>MAC Address</th><td>Enter the device's MAC address (for example, the Pi, NVR, or camera).</td></tr>
+            <tr><th>MAC Address</th><td>Enter the device's MAC address (for example, the AI Edge Device, NVR, or camera).</td></tr>
             <tr><th>Binding with</th><td>Leave the <strong>IP Address</strong> box checked.</td></tr>
             <tr><th>IP Address</th><td>Enter the fixed IP address you want to give this device (see the format guide below).</td></tr>
             <tr><th>DHCP Option</th><td>Leave this <strong>unchecked</strong>.</td></tr>
-            <tr><th>Description</th><td>Give the device a simple name, like "XenReality Pi" or "Store NVR".</td></tr>
+            <tr><th>Description</th><td>Give the device a simple name, like "AI Edge Device" or "Store NVR".</td></tr>
             <tr><th>Export to IP-MAC Binding</th><td>Check <strong>Enable</strong>.</td></tr>
             <tr><th>IP-MAC Binding Interface</th><td>Choose <strong>LAN</strong>.</td></tr>
             <tr><th>Status</th><td>Check <strong>Enable</strong>.</td></tr>
@@ -489,21 +496,10 @@
             <img src="images/tplink/ui_p4_img1.png" alt="Address Reservation form" style="max-height:480px;width:auto;max-width:100%;display:block;margin:0 auto;">
             <figcaption style="font-size:0.8rem;color:var(--ink-soft);padding:8px 12px;">The Address Reservation form — fill in each box as described above.</figcaption>
           </figure>
-          <div class="callout" style="margin-top:16px;">
-            <strong>How to Pick the IP Address</strong><br>
-            The IP address you choose must follow the same pattern as the router's own address — only the last number changes.<br><br>
-            <ul style="margin:8px 0 0 18px;line-height:1.8;">
-              <li><strong>Router's own address:</strong> the first number in the range (for example, <code>10.80.0.1</code>) — this one is already taken by the router itself.</li>
-              <li><strong>Numbers you can use:</strong> everything after that, for example <code>10.80.0.2</code> up to <code>10.80.0.254</code>.</li>
-            </ul>
-            Only change the very last number (the <code>.X</code> part). The first three numbers must stay exactly the same as the router's address.<br><br>
-            <strong>Example:</strong> if a store's router address is <code>192.168.1.1</code>, you could give a device the address <code>192.168.1.150</code>.<br><br>
-            When you're done, click <strong>OK</strong> to save.
-          </div>
         </div>
 
         <div class="tplink-step">
-          <h3>STEP 5: Reconnect and Double-Check</h3>
+          <h3>STEP 5: Reconnect and Double-Check <span style="font-size:0.75em;font-weight:400;color:var(--ink-soft);">(Optional, Recommended)</span></h3>
           <ol>
             <li><strong>Reconnect the device:</strong> unplug and plug back in the network cable on the device (or just restart it). This makes it ask the router for a new address.</li>
             <li><strong>Check the client list:</strong> click the <strong>DHCP Client List</strong> tab at the top of the page and make sure the device shows up with its new, fixed IP address.</li>
@@ -549,8 +545,8 @@
             <li><label><input type="checkbox" class="cam-box"><span>ONVIF compatible <img src="images/onvif_logo.png" alt="ONVIF" style="height:16px;vertical-align:middle;margin-left:6px;"></span></label></li>
             <li><label><input type="checkbox" class="cam-box"><span>Minimum 2 megapixels; preferred 4 to 8 megapixels</span></label></li>
             <li><label><input type="checkbox" class="cam-box"><span>On the Local Area Network (IP)</span></label></li>
-            <li><label><input type="checkbox" class="cam-box"><span>Turn off any AI features</span></label></li>
-            <li><label><input type="checkbox" class="cam-box"><span>Camera positions can be adjusted for better accuracy and no blind spots</span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Turn off any AI features <span style="font-weight:400;color:var(--ink-soft);font-size:0.88em;">(e.g. Motion detection, Vehicle detection, People detection)</span></span></label></li>
+            <li><label><input type="checkbox" class="cam-box"><span>Camera positions can be adjusted for better accuracy and no blind spots <a href="javascript:void(0)" onclick="appFlow.showSection('sec-guidelines')" style="color:var(--accent);font-weight:500;font-size:0.88em;">(refer Camera Guidelines section)</a></span></label></li>
             <li><label><input type="checkbox" class="cam-box"><span>A floor plan of the store with camera positions is provided</span></label></li>
           </ul>
           <h4 class="brand-title">Supported camera brands</h4>
@@ -578,7 +574,7 @@
           </div>
           <div class="req-bar-actions">
             <button class="btn btn-ghost btn-sm" id="btnCamReset">Reset</button>
-            <button class="btn btn-success btn-lg req-continue disabled" id="btnCamContinue" disabled>Proceed to credentials form ↓</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnCamContinue" disabled>Proceed</button>
           </div>
         </div>
       </div>
@@ -997,6 +993,10 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 <div class="cg-rule-text">The camera must see the door clearly. If something blocks part of the door, at least <strong>90% of the door</strong> should still be visible.</div>
               </div>
+              <figure style="margin:12px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <img src="images/camguide/p1_photo1.png" alt="Correct vs incorrect camera positioning" style="width:100%;display:block;">
+                <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Correct: facing the door directly vs incorrect: mounted to the side</figcaption>
+              </figure>
               <hr class="cg-divider">
               <h3 style="font-size:0.95rem; font-weight:700;">2. How Far the Camera Should Be From the Door</h3>
               <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">The best distance is where the camera can see the whole door, plus a little extra space on both sides. If too close, it misses the full door. If too far, people look too small to count correctly.</p>
@@ -1009,6 +1009,10 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-deep)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                 <span><strong>Note:</strong> The correct distance depends on the camera lens. A <strong>narrow lens</strong> needs more distance. A <strong>wide lens</strong> needs less distance.</span>
               </div>
+              <figure style="margin:12px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+                <img src="images/camguide/p2_photo1.png" alt="Camera distance from door diagram" style="width:100%;display:block;">
+                <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Distance guide: too close / correct (2.5–3.5 m) / too far</figcaption>
+              </figure>
               <hr class="cg-divider">
               <h3 style="font-size:0.95rem; font-weight:700;">3. Camera Height and Angle</h3>
               <p style="font-size:0.9rem; color:var(--ink-soft); line-height:1.65;">Always mount the camera at <strong>ceiling height</strong>. In both cases, point the camera at the same spot — the door entry point.</p>
@@ -1017,17 +1021,7 @@
                 <div class="angle-block"><span class="angle-tag"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 9l11 5L23 9"/></svg>Wide Lens</span><span class="angle-degrees">20° – 30°</span><span class="angle-note">Place closer and tilt down more steeply. The wider field of view covers the door at a shorter distance.</span></div>
               </div>
               <hr class="cg-divider">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px;">
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                  <img src="images/camguide/p1_photo1.png" alt="Correct vs incorrect camera positioning" style="width:100%;display:block;">
-                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Correct: facing the door directly vs incorrect: mounted to the side</figcaption>
-                </figure>
-                <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-                  <img src="images/camguide/p2_photo1.png" alt="Camera distance from door diagram" style="width:100%;display:block;">
-                  <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Distance guide: too close / correct (2.5–3.5 m) / too far</figcaption>
-                </figure>
-              </div>
-              <figure style="margin:12px 0 0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <figure style="margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <img src="images/camguide/p3_photo1.png" alt="Camera height and angle diagram" style="width:100%;display:block;">
                 <figcaption style="font-size:0.75rem;color:var(--ink-soft);padding:6px 10px;">Ceiling mount with correct tilt angle by lens type</figcaption>
               </figure>
@@ -1089,7 +1083,7 @@
                 <div class="good-item"><span class="good-dot">✓</span><span>The camera is <strong>mounted high and set back</strong>, giving a clear, wide view of the whole entrance and the walking path leading up to it.</span></div>
                 <div class="good-item"><span class="good-dot">✓</span><span>The camera <strong>faces the entrance directly</strong>, not from the side, so people are seen clearly as they walk in.</span></div>
                 <div class="good-item"><span class="good-dot">✓</span><span><strong>Nothing blocks the view</strong> — there are no mannequins, stands, or displays in front of the entrance or the walking path.</span></div>
-                <div class="good-item"><span class="good-dot">✓</span><span>Each person is <strong>detected separately</strong> with their own bounding box, showing that people are not hidden behind each other, even when walking close together.</span></div>
+                <div class="good-item"><span class="good-dot">✓</span><span>Each person is <strong>detected separately</strong>, showing that people are not hidden behind each other, even when walking close together.</span></div>
                 <div class="good-item"><span class="good-dot">✓</span><span>The <strong>full width of the entrance</strong>, including the steps and mat area, is covered inside the camera's view.</span></div>
                 <div class="good-item"><span class="good-dot">✓</span><span>The camera <strong>keeps detecting people correctly</strong> across different moments in time, showing the setup works reliably throughout the day.</span></div>
               </div>
@@ -1120,7 +1114,6 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                 <div class="cg-rule-text"><strong>Ideal position: corner of the billing counter</strong>Place the camera at one corner of the billing counter. From there, the camera should clearly see <strong>both sides</strong> — the customer side and the staff side.</div>
               </div>
-              <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments illustrate the correct corner-mounted angle covering both customer and staff sides of the counter.</span></div>
               <hr class="cg-divider">
               <figure style="margin:4px 0 12px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <img src="images/camguide/p8_photo1.png" alt="Billing camera zone diagram" style="width:100%;display:block;">
@@ -1137,6 +1130,7 @@
                   <img src="images/camguide/p9_photo3.png" alt="Billing counter field photo 3" style="width:100%;display:block;">
                 </figure>
               </div>
+              <p style="font-size:0.75rem;color:var(--ink-soft);margin:8px 0 0;">Field reference photos from live deployments illustrate the correct corner-mounted angle covering both customer and staff sides of the counter.</p>
             </div>
           </div>
         </div>
@@ -1154,7 +1148,6 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
                 <div class="cg-rule-text"><strong>Ideal position: back of the store</strong>Place the camera at the <strong>back of the store</strong>. From there, it should be able to see <strong>most of the store floor</strong> clearly, enabling accurate zone-level dwell-time tracking.</div>
               </div>
-              <div class="cg-photo-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Field reference photos from live deployments show the recommended elevated rear-of-store mounting angle for maximum floor coverage.</span></div>
               <hr class="cg-divider">
               <figure style="margin:4px 0 12px;border-radius:8px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,0.06);">
                 <img src="images/camguide/p10_photo1.png" alt="Heatmap camera placement diagram" style="width:100%;display:block;">
@@ -1174,6 +1167,7 @@
                   <img src="images/camguide/p12_photo2.png" alt="Heatmap field photo 4" style="width:100%;display:block;">
                 </figure>
               </div>
+              <p style="font-size:0.75rem;color:var(--ink-soft);margin:8px 0 0;">Field reference photos from live deployments show the recommended elevated rear-of-store mounting angle for maximum floor coverage.</p>
             </div>
           </div>
         </div>
@@ -1242,11 +1236,10 @@
 <!-- ── NVR Access modal ── -->
 <div class="modal-overlay hidden" id="nvrAccessModal">
   <div class="modal card" style="max-width:400px;">
-    <h3 style="font-size:1.2rem;margin-bottom:10px;">Does the store have NVR login?</h3>
-    <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.6;margin-bottom:20px;">Ask the store for the NVR username and password. If they have it, tap <strong>Yes</strong>. If not, tap <strong>No</strong>.</p>
+    <h3 style="font-size:1.2rem;margin-bottom:20px;">Does the store have NVR?</h3>
     <div class="feedback-actions" style="flex-direction:column;gap:10px;">
-      <button class="btn btn-primary" id="btnNvrAccessYes">Yes, the store has NVR access</button>
-      <button class="btn btn-ghost" id="btnNvrAccessNo">No NVR access</button>
+      <button class="btn btn-primary" id="btnNvrAccessYes">Yes, the store has NVR</button>
+      <button class="btn btn-ghost" id="btnNvrAccessNo">No NVR</button>
     </div>
   </div>
 </div>

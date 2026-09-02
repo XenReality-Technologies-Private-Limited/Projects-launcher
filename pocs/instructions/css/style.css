@@ -575,7 +575,7 @@ main { padding-bottom: 110px; }
 .cg-rule--bad  { background: #fee2e2; }
 .cg-rule svg { flex-shrink: 0; margin-top: 1px; }
 .cg-rule-text { font-size: 0.9rem; line-height: 1.6; }
-.cg-rule-text strong { display: block; margin-bottom: 2px; }
+.cg-rule-text strong:first-child { display: block; margin-bottom: 2px; }
 .dist-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 .dist-block { border: 1px solid var(--line); border-radius: 12px; padding: 16px 14px; text-align: center; display: flex; flex-direction: column; gap: 6px; }
 .dist-block--bad   { border-color: #fca5a5; background: #fff5f5; }
