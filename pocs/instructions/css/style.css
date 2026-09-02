@@ -642,7 +642,7 @@ main { padding-bottom: 110px; }
 .spa-main { flex: 1; overflow-y: auto; position: relative; background: transparent; transition: all 0.28s cubic-bezier(0.4,0,0.2,1); }
 .spa-section { display: none; padding-bottom: 24px; }
 .spa-section.active { display: block; }
-.spa-section-footer { margin-top: 32px; display: flex; justify-content: flex-end; padding: 0 40px 20px; }
+.spa-section-footer { margin-top: 12px; display: flex; justify-content: flex-end; padding: 0 40px 20px; }
 .spa-section .req-bar { position: fixed; bottom: 0; left: 0; right: 0; }
 #sidebar-toggle { flex-shrink: 0; background: none; border: none; cursor: pointer; padding: 6px; border-radius: 8px; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }
 #sidebar-toggle:hover { background: var(--line); color: var(--ink); }
