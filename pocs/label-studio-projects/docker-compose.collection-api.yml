@@ -1,0 +1,43 @@
+# Backend for the "Create collection" tab.
+#
+# Paste this `collection-api` service into the Label Studio compose file at
+#   /home/xen/Documents/LabelStudio/docker-compose.yml
+# alongside the existing `db`, `app` and `nginx` services.
+#
+# Before starting, create a .env next to that compose file containing:
+#   LS_EMAIL=vaibhav@xenreality.com
+#   LS_PASS=<the Label Studio account password>
+#
+# `context` must point at a checkout of the label-studio-projects branch that
+# will still exist next month - not a temporary worktree in a home directory:
+#   sudo git clone -b label-studio-projects <repo-url> /opt/ls-collection
+
+services:
+  collection-api:
+    build:
+      context: /opt/ls-collection
+      dockerfile: Dockerfile.collection-api
+    container_name: collection-api
+    restart: always
+    user: "1017:1007"                 # vaibhav:polaris - so created symlinks have sane ownership
+    depends_on:
+      - app
+    environment:
+      # `app` is Label Studio on this compose network - Django listens on 8000,
+      # the stack.s own nginx serves 8080. Reaching it
+      # directly means no openresty in the way, so no basic-auth credentials here.
+      LS_URL: "http://app:8000"
+      LS_EMAIL: "${LS_EMAIL}"
+      LS_PASS: "${LS_PASS}"
+
+      # Same path on both sides: this container mounts the dataset where Label
+      # Studio does, so "where we write" == "what Label Studio serves".
+      LS_DOCUMENT_ROOT: "/label-studio-local-data"
+      LS_ZEUS_ROOT: "/label-studio-local-data"
+      LS_COLLECTIONS_DIR: "_collections"
+    volumes:
+      # The same bind mount Label Studio has. Symlink mode writes only inside
+      # _collections/; everything else is read-only in practice.
+      - /home/navneet/Documents/polaris_data_labelling:/label-studio-local-data
+    ports:
+      - "8800:8800"

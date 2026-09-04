@@ -193,6 +193,68 @@
     main{ padding:28px 20px 70px; }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+  /* ---------------- create collection ---------------- */
+  .cc-form{ max-width:760px; }
+  .cc-field{ margin-bottom:26px; }
+  .cc-field > label{ display:block; font-size:0.84rem; font-weight:600; margin-bottom:7px; }
+  .cc-field input[type="number"], .cc-field input[type="text"]{
+    font-family:inherit; font-size:0.9rem; color:var(--text); background:var(--surface);
+    border:1px solid var(--border); border-radius:7px; padding:9px 12px; width:100%; max-width:340px;
+  }
+  .cc-help{ display:block; font-size:0.78rem; color:var(--text-muted); margin-top:6px; line-height:1.55; max-width:560px; }
+  .cc-picker-tools{ display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .cc-picker-tools input[type="search"]{
+    font-family:inherit; font-size:0.84rem; color:var(--text); background:var(--surface);
+    border:1px solid var(--border); border-radius:7px; padding:7px 11px; flex:1 1 220px; min-width:0;
+  }
+  .cc-picker{
+    border:1px solid var(--border); border-radius:9px; background:var(--surface);
+    max-height:360px; overflow-y:auto;
+  }
+  .cc-row{
+    display:grid; grid-template-columns:18px 1fr auto; gap:11px; align-items:center;
+    padding:9px 13px; border-bottom:1px solid var(--border); cursor:pointer; font-size:0.86rem;
+  }
+  .cc-row:last-child{ border-bottom:none; }
+  .cc-row:hover{ background:var(--surface-2); }
+  .cc-row input{ margin:0; accent-color:var(--accent); }
+  .cc-row-name{ font-weight:600; }
+  .cc-row-vert{ font-size:0.73rem; color:var(--text-faint); display:block; font-weight:400; margin-top:1px; }
+  .cc-row-count{ font-size:0.78rem; color:var(--text-muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .cc-btn{
+    font-family:inherit; font-size:0.84rem; font-weight:600; cursor:pointer;
+    padding:9px 16px; border-radius:7px; border:1px solid var(--border);
+    background:var(--surface); color:var(--text);
+  }
+  .cc-btn:hover:not(:disabled){ background:var(--surface-2); }
+  .cc-btn-primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .cc-btn-primary:hover:not(:disabled){ filter:brightness(1.1); background:var(--accent); }
+  .cc-btn:disabled{ opacity:0.42; cursor:not-allowed; }
+  .cc-btn-ghost{
+    font-family:inherit; font-size:0.78rem; font-weight:600; cursor:pointer;
+    background:transparent; border:none; color:var(--accent); padding:6px 4px;
+  }
+  .cc-btn-ghost:hover{ text-decoration:underline; }
+  .cc-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:4px; }
+  .cc-result{ margin-top:30px; }
+  .cc-result h3{ font-size:0.95rem; margin:0 0 12px; }
+  .cc-table{ border-collapse:collapse; width:100%; max-width:640px; font-size:0.84rem; }
+  .cc-table th{
+    text-align:left; font-weight:600; color:var(--text-muted); font-size:0.72rem;
+    text-transform:uppercase; letter-spacing:0.05em; padding:7px 14px 7px 0;
+    border-bottom:1px solid var(--border); white-space:nowrap;
+  }
+  .cc-table td{ padding:8px 14px 8px 0; border-bottom:1px solid var(--border); }
+  .cc-table td.num, .cc-table th.num{ text-align:right; font-variant-numeric:tabular-nums; padding-right:0; }
+  .cc-table tr.total td{ font-weight:700; border-bottom:none; }
+  .cc-table td.capped{ color:var(--mfc); }
+  .cc-note{ font-size:0.82rem; color:var(--text-muted); line-height:1.6; margin-top:14px; max-width:640px; }
+  .cc-note.warn{ color:var(--employee); }
+  .cc-note.ok{ color:var(--v-mfg); }
+  .cc-summary{ display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+  .cc-stat{ font-size:0.8rem; color:var(--text-muted); }
+  .cc-stat-num{ font-size:1.08rem; font-weight:700; color:var(--text); display:inline-block; }
 </style>
 
 <div class="top-bar sans">
@@ -200,6 +262,7 @@
   <div class="tabs" role="tablist">
     <button type="button" id="tab-btn-retail" class="active" role="tab" aria-selected="true">Retail (CE / MFC)</button>
     <button type="button" id="tab-btn-all" role="tab" aria-selected="false">All / by vertical</button>
+    <button type="button" id="tab-btn-collection" role="tab" aria-selected="false">Create collection</button>
   </div>
 </div>
 
@@ -267,6 +330,62 @@
       <p><strong>Industrial Counting</strong> (<span class="mono">dhuni_*</span>) is bale counting — likely textile/garment, unrelated to the other verticals.</p>
       <p><strong>Uncategorized</strong> — 16 projects I could not confidently assign: generic/ambiguous titles (<span class="mono">bm_1-3</span>, <span class="mono">tp_training</span>, <span class="mono">helmet</span>, <span class="mono">Fog</span>, <span class="mono">smoke</span>, <span class="mono">PeopleValidation</span>) and eight unnamed early trial projects ("New Project #31-38") that predate customer-prefixed naming — some use the same label schemes as Bata's earliest batch, but titles alone don't confirm the customer. Listed individually below rather than guessed into a bucket.</p>
     </div>
+  </main>
+</div>
+
+
+<!-- ===================== CREATE COLLECTION PANEL ===================== -->
+<div class="shell sans" id="panel-collection" hidden>
+  <nav class="toc" aria-label="Selection summary">
+    <h2>Selection</h2>
+    <div class="cc-summary">
+      <div class="cc-stat"><span class="cc-stat-num" id="cc-n-groups">0</span> customers selected</div>
+      <div class="cc-stat"><span class="cc-stat-num" id="cc-n-projects">0</span> source projects</div>
+      <div class="cc-stat"><span class="cc-stat-num" id="cc-n-images">&mdash;</span> images available</div>
+    </div>
+    <h2>How it works</h2>
+    <p class="cc-note" style="margin-top:0;">Whole projects are picked at random from each customer you select, then imported into one new Label Studio project. Images are <strong>referenced in place</strong> &mdash; nothing is copied or moved.</p>
+  </nav>
+
+  <main>
+    <header class="page-head">
+      <div class="eyebrow">Label Studio</div>
+      <h1>Create Collection</h1>
+      <p>Pull a fixed number of images from across several customers and assemble them into one new annotation project on <span class="mono">label.xenreality.com</span>. Existing images are referenced in place &mdash; no files are copied.</p>
+    </header>
+
+    <form id="cc-form" class="cc-form" autocomplete="off">
+
+      <div class="cc-field">
+        <label for="cc-count">1 &nbsp;&middot;&nbsp; Number of images</label>
+        <input type="number" id="cc-count" min="1" step="1" placeholder="20000" required>
+        <span class="cc-help">Total across every customer selected. Split as evenly as availability allows &mdash; a customer with fewer images than its share contributes everything it has, and the shortfall is redistributed to the others.</span>
+      </div>
+
+      <div class="cc-field">
+        <label>2 &nbsp;&middot;&nbsp; Customers</label>
+        <div class="cc-picker-tools">
+          <input type="search" id="cc-search" placeholder="Filter customers&hellip;" aria-label="Filter customers">
+          <button type="button" class="cc-btn-ghost" id="cc-select-all">Select all</button>
+          <button type="button" class="cc-btn-ghost" id="cc-select-none">Clear</button>
+        </div>
+        <div class="cc-picker" id="cc-picker"></div>
+        <span class="cc-help">Same groupings as the other two tabs, driven by <span class="mono">group_rules.json</span>.</span>
+      </div>
+
+      <div class="cc-field">
+        <label for="cc-name">3 &nbsp;&middot;&nbsp; New project name</label>
+        <input type="text" id="cc-name" placeholder="batch_2026_09" required pattern="[A-Za-z0-9._-]+">
+        <span class="cc-help">Title of the new Label Studio project. Letters, digits, dot, dash and underscore only.</span>
+      </div>
+
+      <div class="cc-actions">
+        <button type="button" class="cc-btn" id="cc-preview-btn">Preview allocation</button>
+        <button type="submit" class="cc-btn cc-btn-primary" id="cc-submit-btn" disabled>Create collection</button>
+      </div>
+    </form>
+
+    <div class="cc-result" id="cc-result" hidden></div>
   </main>
 </div>
 
@@ -479,27 +598,351 @@
     wireSearch('search-all', '#panel-all');
   })();
 
+  // ---------------- create collection ----------------
+  // Same-origin path on purpose: have the proxy forward /api/collections to the
+  // backend service that samples images, creates the symlinks and calls the
+  // Label Studio API. Same scheme+host+port means no CORS and no preflight.
+  const COLLECTION_API = '/api/collections';
+
+  (function(){
+    const picker     = document.getElementById('cc-picker');
+    const searchIn   = document.getElementById('cc-search');
+    const countIn    = document.getElementById('cc-count');
+    const nameIn     = document.getElementById('cc-name');
+    const previewBtn = document.getElementById('cc-preview-btn');
+    const submitBtn  = document.getElementById('cc-submit-btn');
+    const resultEl   = document.getElementById('cc-result');
+    const form       = document.getElementById('cc-form');
+
+    const data = JSON.parse(document.getElementById('data-all').textContent);
+
+    // Flatten verticals into selectable groups. Retail nests three deep
+    // (customer -> CE/MFC/OTHER -> items); every other vertical is two
+    // (bucket -> items). Both collapse to a flat project list here.
+    const groups = [];
+    Object.keys(data).forEach(function(vertical){
+      const gmap = data[vertical];
+      Object.keys(gmap).forEach(function(name){
+        const val = gmap[name];
+        const projects = Array.isArray(val)
+          ? val
+          : Object.keys(val).reduce(function(acc, k){ return acc.concat(val[k]); }, []);
+        groups.push({ key: vertical + '␟' + name, vertical: vertical, name: name, projects: projects });
+      });
+    });
+    groups.sort(function(a, b){
+      return a.vertical.localeCompare(b.vertical) || a.name.localeCompare(b.name);
+    });
+
+    const byKey = {};
+    groups.forEach(function(g){ byKey[g.key] = g; });
+
+    // Selection lives here, not in the DOM, so filtering the list never drops it.
+    const selected = new Set();
+
+    // task_number only exists once build_registry.py starts recording it.
+    // Until then counts are unknown and the server does the real allocation.
+    function imagesOf(g){
+      let total = 0;
+      for(let i = 0; i < g.projects.length; i++){
+        const n = g.projects[i].task_number;
+        if(typeof n !== 'number') return null;
+        total += n;
+      }
+      return total;
+    }
+    const COUNTS_KNOWN = groups.every(function(g){ return imagesOf(g) !== null; });
+
+    function fmt(n){ return n.toLocaleString('en-US'); }
+    function esc(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+      });
+    }
+
+    // ---- even split, capped by what each customer actually has ----
+    // Anything with fewer images than its share contributes everything it has,
+    // and the shortfall is spread over the customers that still have room.
+    function waterfill(total, entries){
+      const alloc = {};
+      entries.forEach(function(e){ alloc[e.key] = 0; });
+      let remaining = total;
+      let guard = 0;
+
+      while(remaining > 0 && guard++ < 1000){
+        const open = entries.filter(function(e){ return alloc[e.key] < e.cap; });
+        if(!open.length) break;
+        const share = Math.floor(remaining / open.length);
+        if(share < 1) break;
+        open.forEach(function(e){
+          const give = Math.min(share, e.cap - alloc[e.key]);
+          alloc[e.key] += give;
+          remaining   -= give;
+        });
+      }
+
+      // integer remainder, one at a time, most headroom first
+      let open = entries.filter(function(e){ return alloc[e.key] < e.cap; })
+                        .sort(function(a, b){
+                          return (b.cap - alloc[b.key]) - (a.cap - alloc[a.key]);
+                        });
+      let i = 0;
+      while(remaining > 0 && open.length){
+        const e = open[i % open.length];
+        alloc[e.key]++;
+        remaining--;
+        if(alloc[e.key] >= e.cap){
+          open = open.filter(function(x){ return x !== e; });
+        } else {
+          i++;
+        }
+      }
+      return { alloc: alloc, assigned: total - remaining, shortfall: remaining };
+    }
+
+    // ---- rendering ----
+    function updateSummary(){
+      const keys = Array.from(selected);
+      let projects = 0;
+      keys.forEach(function(k){ projects += byKey[k].projects.length; });
+      document.getElementById('cc-n-groups').textContent   = keys.length;
+      document.getElementById('cc-n-projects').textContent = projects;
+      const imgEl = document.getElementById('cc-n-images');
+      if(COUNTS_KNOWN){
+        let imgs = 0;
+        keys.forEach(function(k){ imgs += imagesOf(byKey[k]); });
+        imgEl.textContent = fmt(imgs);
+      } else {
+        imgEl.textContent = '—';
+      }
+      // any change invalidates a previous preview
+      submitBtn.disabled = true;
+      resultEl.hidden = true;
+    }
+
+    function visibleGroups(){
+      const q = searchIn.value.trim().toLowerCase();
+      if(!q) return groups;
+      return groups.filter(function(g){
+        return g.name.toLowerCase().indexOf(q) !== -1 ||
+               g.vertical.toLowerCase().indexOf(q) !== -1;
+      });
+    }
+
+    function renderPicker(){
+      const shown = visibleGroups();
+      picker.innerHTML = '';
+      if(!shown.length){
+        const d = document.createElement('div');
+        d.className = 'cc-note';
+        d.style.padding = '14px';
+        d.textContent = 'No customers match that filter.';
+        picker.appendChild(d);
+        return;
+      }
+      shown.forEach(function(g){
+        const imgs = imagesOf(g);
+        const label = document.createElement('label');
+        label.className = 'cc-row';
+
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = g.key;
+        cb.checked = selected.has(g.key);
+        cb.addEventListener('change', function(){
+          if(cb.checked) selected.add(g.key); else selected.delete(g.key);
+          updateSummary();
+        });
+
+        const mid = document.createElement('div');
+        const nm = document.createElement('span');
+        nm.className = 'cc-row-name';
+        nm.textContent = g.name;
+        const vt = document.createElement('span');
+        vt.className = 'cc-row-vert';
+        vt.textContent = g.vertical;
+        mid.append(nm, vt);
+
+        const cnt = document.createElement('span');
+        cnt.className = 'cc-row-count';
+        cnt.textContent = g.projects.length + ' project' + (g.projects.length === 1 ? '' : 's') +
+                          (imgs === null ? '' : ' · ' + fmt(imgs) + ' images');
+
+        label.append(cb, mid, cnt);
+        picker.appendChild(label);
+      });
+    }
+
+    function showNote(html, cls){
+      resultEl.hidden = false;
+      resultEl.innerHTML = '<p class="cc-note ' + (cls || '') + '">' + html + '</p>';
+    }
+
+    // ---- preview ----
+    function preview(){
+      const keys  = Array.from(selected);
+      const count = parseInt(countIn.value, 10);
+
+      if(!keys.length){
+        showNote('Select at least one customer first.', 'warn');
+        submitBtn.disabled = true;
+        return;
+      }
+      if(!(count > 0)){
+        showNote('Enter how many images you want.', 'warn');
+        submitBtn.disabled = true;
+        return;
+      }
+
+      if(!COUNTS_KNOWN){
+        showNote(
+          'Per-customer image counts are not in <span class="mono">ls_projects_dump.json</span> yet, ' +
+          'so the split cannot be previewed here. ' +
+          '<strong>' + fmt(count) + '</strong> images will be divided across <strong>' + keys.length +
+          '</strong> customer' + (keys.length === 1 ? '' : 's') + ', and the exact allocation ' +
+          'is computed by the backend before anything is created.'
+        );
+        submitBtn.disabled = false;
+        return;
+      }
+
+      const entries = keys.map(function(k){ return { key: k, cap: imagesOf(byKey[k]) }; });
+      const r = waterfill(count, entries);
+
+      let rows = '';
+      entries.slice().sort(function(a, b){
+        return byKey[a.key].name.localeCompare(byKey[b.key].name);
+      }).forEach(function(e){
+        const g = byKey[e.key];
+        const got = r.alloc[e.key];
+        const capped = got >= e.cap;
+        rows += '<tr>' +
+          '<td>' + esc(g.name) + '</td>' +
+          '<td class="num">' + fmt(e.cap) + '</td>' +
+          '<td class="num' + (capped ? ' capped' : '') + '">' + fmt(got) +
+            (capped ? ' <span title="entire project used">&#9679;</span>' : '') + '</td>' +
+          '</tr>';
+      });
+
+      let html = '<h3>Allocation preview</h3>' +
+        '<table class="cc-table"><thead><tr>' +
+        '<th>Customer</th><th class="num">Available</th><th class="num">Selected</th>' +
+        '</tr></thead><tbody>' + rows +
+        '<tr class="total"><td>Total</td>' +
+        '<td class="num">' + fmt(entries.reduce(function(n, e){ return n + e.cap; }, 0)) + '</td>' +
+        '<td class="num">' + fmt(r.assigned) + '</td></tr>' +
+        '</tbody></table>';
+
+      if(r.shortfall > 0){
+        html += '<p class="cc-note warn">Only <strong>' + fmt(r.assigned) + '</strong> of the ' +
+                fmt(count) + ' requested are available across these customers &mdash; short by ' +
+                fmt(r.shortfall) + '. Select more customers, or lower the number.</p>';
+      } else {
+        html += '<p class="cc-note ok">' + fmt(r.assigned) + ' images will be sampled. ' +
+                'A dot marks a customer whose entire set is used because it had fewer than its even share.</p>';
+      }
+
+      resultEl.hidden = false;
+      resultEl.innerHTML = html;
+      submitBtn.disabled = false;
+    }
+
+    // ---- submit ----
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      const keys = Array.from(selected);
+      if(!keys.length) return;
+
+      const payload = {
+        name: nameIn.value.trim(),
+        count: parseInt(countIn.value, 10),
+        selections: keys.map(function(k){
+          return {
+            vertical: byKey[k].vertical,
+            group: byKey[k].name,
+            project_ids: byKey[k].projects.map(function(p){ return p.id; })
+          };
+        })
+      };
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+      submitBtn.textContent = 'Creating…';
+      showNote('Sampling images and building the project&hellip; this can take a few minutes for large collections.');
+
+      fetch(COLLECTION_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(res){
+        if(!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
+        return res.json();
+      }).then(function(out){
+        let html = '<h3>Collection created</h3><p class="cc-note ok">' +
+                   esc(payload.name) + ' &mdash; ' + fmt(out.imported || payload.count) + ' images.</p>';
+        if(out.project_url){
+          html += '<p class="cc-note"><a href="' + esc(out.project_url) + '" target="_blank" rel="noopener">' +
+                  'Open the project in Label Studio &rarr;</a></p>';
+        }
+        if(out.projects_used){
+          html += '<p class="cc-note">Sourced from ' + out.projects_used + ' project' +
+                  (out.projects_used === 1 ? '' : 's') + '.</p>';
+        }
+        resultEl.innerHTML = html;
+      }).catch(function(err){
+        showNote('Could not create the collection: <span class="mono">' + esc(err.message) + '</span>. ' +
+                 'The backend at <span class="mono">' + COLLECTION_API + '</span> must be running and ' +
+                 'reachable on this origin.', 'warn');
+      }).finally(function(){
+        submitBtn.textContent = originalLabel;
+        submitBtn.disabled = false;
+      });
+    });
+
+    // ---- wiring ----
+    searchIn.addEventListener('input', renderPicker);
+    previewBtn.addEventListener('click', preview);
+    countIn.addEventListener('input', function(){ submitBtn.disabled = true; resultEl.hidden = true; });
+    nameIn.addEventListener('input', function(){ submitBtn.disabled = true; resultEl.hidden = true; });
+
+    document.getElementById('cc-select-all').addEventListener('click', function(){
+      visibleGroups().forEach(function(g){ selected.add(g.key); });
+      renderPicker(); updateSummary();
+    });
+    document.getElementById('cc-select-none').addEventListener('click', function(){
+      selected.clear();
+      renderPicker(); updateSummary();
+    });
+
+    renderPicker();
+    updateSummary();
+  })();
+
   // ---------------- tab switching ----------------
-  const tabBtnRetail = document.getElementById('tab-btn-retail');
-  const tabBtnAll = document.getElementById('tab-btn-all');
-  const panelRetail = document.getElementById('panel-retail');
-  const panelAll = document.getElementById('panel-all');
+  const TABS = {
+    retail:     { btn: 'tab-btn-retail',     panel: 'panel-retail'     },
+    all:        { btn: 'tab-btn-all',        panel: 'panel-all'        },
+    collection: { btn: 'tab-btn-collection', panel: 'panel-collection' }
+  };
 
   function showTab(name, updateHash){
-    const isRetail = name !== 'all';
-    panelRetail.hidden = !isRetail;
-    panelAll.hidden = isRetail;
-    tabBtnRetail.classList.toggle('active', isRetail);
-    tabBtnAll.classList.toggle('active', !isRetail);
-    tabBtnRetail.setAttribute('aria-selected', String(isRetail));
-    tabBtnAll.setAttribute('aria-selected', String(!isRetail));
+    if(!TABS[name]) name = 'retail';
+    Object.keys(TABS).forEach(function(key){
+      const t  = TABS[key];
+      const on = key === name;
+      document.getElementById(t.panel).hidden = !on;
+      const btn = document.getElementById(t.btn);
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-selected', String(on));
+    });
     if(updateHash){
-      history.replaceState(null, '', isRetail ? '#retail' : '#all');
+      history.replaceState(null, '', '#' + name);
     }
   }
 
-  tabBtnRetail.addEventListener('click', () => showTab('retail', true));
-  tabBtnAll.addEventListener('click', () => showTab('all', true));
+  Object.keys(TABS).forEach(function(key){
+    document.getElementById(TABS[key].btn).addEventListener('click', function(){ showTab(key, true); });
+  });
 
-  showTab(window.location.hash === '#all' ? 'all' : 'retail', false);
+  showTab((window.location.hash || '').slice(1) || 'retail', false);
 </script>
