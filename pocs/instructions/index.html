@@ -1470,6 +1470,50 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+// ── Protect technical terms from translation ──
+(function() {
+  var TERMS = [
+    'DHCP Client List','Vehicle Detection','People Detection','Motion detection',
+    'Network Settings','AI Edge Device','TP Link Router','Network Cable',
+    'MAC Address','Raspberry Pi','Static IP','Connectivity','XenReality',
+    'Dashboard','Ethernet','Firewall','Footfall','Internet','TP-Link','TP Link',
+    'MAC ID','ONVIF','Camera','MBPS','Mbps','DHCP','LAN','NVR','IP'
+  ];
+  TERMS.sort(function(a,b){ return b.length - a.length; });
+  var RE = new RegExp('\\b(' + TERMS.map(function(t){ return t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }).join('|') + ')\\b','g');
+
+  function protect(node) {
+    if (node.nodeType === 3) {
+      var txt = node.nodeValue;
+      if (!RE.test(txt)) { RE.lastIndex = 0; return; }
+      RE.lastIndex = 0;
+      var parent = node.parentNode;
+      if (!parent) return;
+      if (parent.classList && parent.classList.contains('notranslate')) return;
+      var frag = document.createDocumentFragment(), last = 0, m;
+      while ((m = RE.exec(txt)) !== null) {
+        if (m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+        var s = document.createElement('span');
+        s.className = 'notranslate';
+        s.textContent = m[0];
+        frag.appendChild(s);
+        last = m.index + m[0].length;
+      }
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      parent.replaceChild(frag, node);
+    } else if (node.nodeType === 1) {
+      var tag = node.tagName;
+      if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'NOSCRIPT') return;
+      if (node.classList && node.classList.contains('notranslate')) return;
+      Array.from(node.childNodes).forEach(protect);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    protect(document.querySelector('.spa-main') || document.body);
+  });
+})();
+
 // ── Language toggle ──
 window.setLang = function(lang) {
   if (lang === 'hi') {
