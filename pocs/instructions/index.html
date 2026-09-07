@@ -7,6 +7,9 @@
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
 <link rel="stylesheet" href="css/style.css?v=4">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
+<!-- Google Translate -->
+<script>function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',includedLanguages:'hi',autoDisplay:false},'google_translate_element');}</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 <script>
@@ -199,6 +202,10 @@
     </ul>
 
     <div class="spa-sidebar-footer">
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="btnLangEn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btnLangHi" onclick="setLang('hi')">हिंदी</button>
+      </div>
       <button class="spa-signout-btn" onclick="(function(){localStorage.removeItem('pocketbase_auth');window.location.replace('/instructions/login.html');})()">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Sign out
@@ -1461,6 +1468,48 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('xr-sidebar-collapsed', c ? '1' : '0');
   });
 });
+
+// ── Language toggle ──
+window.setLang = function(lang) {
+  if (lang === 'hi') {
+    var trySelect = function() {
+      var sel = document.querySelector('.goog-te-combo');
+      if (sel) {
+        sel.value = 'hi';
+        sel.dispatchEvent(new Event('change'));
+        localStorage.setItem('xr-lang', 'hi');
+        document.getElementById('btnLangEn').classList.remove('active');
+        document.getElementById('btnLangHi').classList.add('active');
+      } else {
+        setTimeout(trySelect, 350);
+      }
+    };
+    trySelect();
+  } else {
+    localStorage.removeItem('xr-lang');
+    ['/'].forEach(function(p) {
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p;
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=' + p + '; domain=.' + location.hostname;
+    });
+    location.reload();
+  }
+};
+
+// Restore saved language on load
+(function() {
+  if (localStorage.getItem('xr-lang') === 'hi') {
+    var enBtn = document.getElementById('btnLangEn');
+    var hiBtn = document.getElementById('btnLangHi');
+    if (enBtn) enBtn.classList.remove('active');
+    if (hiBtn) hiBtn.classList.add('active');
+    var trySelect = function() {
+      var sel = document.querySelector('.goog-te-combo');
+      if (sel) { sel.value = 'hi'; sel.dispatchEvent(new Event('change')); }
+      else { setTimeout(trySelect, 400); }
+    };
+    setTimeout(trySelect, 800);
+  }
+})();
 </script>
 
 <script src="js/app.js?v=3"></script>
