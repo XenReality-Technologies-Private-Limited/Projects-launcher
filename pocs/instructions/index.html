@@ -391,6 +391,71 @@
             </span></label></li>
             <li><label><input type="checkbox" class="infra-box"><span>*.xenreality.com to be whitelisted on the firewall (required — without this we cannot connect remotely) <span style="font-weight:500;color:var(--ink-soft);font-size:0.88em;">(Contact IT admin)</span></span></label></li>
           </ul>
+
+          <!-- Outbound whitelist table -->
+          <div style="margin-top:16px;border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+            <div style="background:var(--accent-deep);padding:12px 16px;">
+              <p style="margin:0;font-size:0.82rem;font-weight:700;color:#fff;letter-spacing:0.05em;text-transform:uppercase;">Outbound Internet Whitelist for AI Edge Device</p>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead>
+                <tr style="background:#f1f5f9;">
+                  <th style="text-align:left;padding:9px 14px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);width:40%;">Service</th>
+                  <th style="text-align:left;padding:9px 14px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);width:40%;">Domains</th>
+                  <th style="text-align:left;padding:9px 14px;font-weight:700;color:var(--ink);border-bottom:1px solid var(--line);width:20%;">Ports</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--line);">
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">XenReality</td>
+                  <td style="padding:10px 14px;color:var(--ink);vertical-align:top;"><code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.xenreality.com</code></td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 80, 443</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--line);background:#fafafa;">
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">Tailscale</td>
+                  <td style="padding:10px 14px;color:var(--ink);vertical-align:top;"><code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.tailscale.com</code></td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 80, 443</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--line);">
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">GitHub / Git</td>
+                  <td style="padding:10px 14px;color:var(--ink);vertical-align:top;line-height:1.7;">
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">github.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.github.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.githubusercontent.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.githubassets.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">objects.githubusercontent.com</code>
+                  </td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 443, 80, 22</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--line);background:#fafafa;">
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">Docker</td>
+                  <td style="padding:10px 14px;color:var(--ink);vertical-align:top;line-height:1.7;">
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.docker.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.docker.io</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">registry-1.docker.io</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">auth.docker.io</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">hub.docker.com</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">production.cloudfront.docker.com</code>
+                  </td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 443</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--line);">
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">Debian / Linux Updates</td>
+                  <td style="padding:10px 14px;color:var(--ink);vertical-align:top;line-height:1.7;">
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">deb.debian.org</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">security.debian.org</code><br>
+                    <code style="background:#f1f5f9;padding:1px 5px;border-radius:4px;font-size:0.8rem;">*.debian.org</code>
+                  </td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 80, 443</td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 14px;font-weight:700;color:var(--accent-deep);vertical-align:top;">Remote SSH Access</td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">—</td>
+                  <td style="padding:10px 14px;color:var(--ink-soft);vertical-align:top;">TCP 22</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <div class="callout" style="margin-top:16px;border-left:3px solid var(--accent);">
             <strong style="display:block;margin-bottom:6px;">What is a MAC ID?</strong>
             <p style="margin:0 0 6px;font-size:0.9rem;">A MAC (Media Access Control) address is a unique hardware identifier assigned to every network device at the factory. It never changes and looks like six pairs of hex digits.</p>
@@ -448,10 +513,54 @@
       <div class="tplink-section-wrap">
         <p style="color:var(--ink-soft);font-size:0.95rem;line-height:1.7;">This guide shows you how to give a device (like an AI Edge Device, NVR, or camera) a fixed IP address on the router. Once set up, that device will always get the same IP address (static IP).</p>
 
+        <!-- Static vs Dynamic IP explainer -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0 28px;">
+          <!-- Static IP card -->
+          <div style="background:#eef9f0;border:1px solid #86efac;border-radius:12px;padding:18px 20px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span style="background:#22c55e;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:0.04em;">STATIC IP</span>
+              <span style="font-size:0.8rem;color:#15803d;font-weight:600;">Address Reservation</span>
+            </div>
+            <p style="font-size:0.88rem;color:#166534;line-height:1.6;margin:0 0 12px;">A fixed network address configured manually on the store's router. By using Address Reservation, you ensure that a critical device always checks into the exact same network location.</p>
+            <div style="background:#dcfce7;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+              <p style="font-size:0.82rem;font-weight:700;color:#15803d;margin:0 0 4px;">Technician Example</p>
+              <p style="font-size:0.82rem;color:#166534;line-height:1.55;margin:0;">You log into the store's router, go to Network &gt; LAN &gt; Address Reservation, and bind the NVR's MAC ID to <code style="background:#bbf7d0;padding:1px 5px;border-radius:4px;">10.80.0.100</code> and the XenReality Pi to <code style="background:#bbf7d0;padding:1px 5px;border-radius:4px;">10.80.0.150</code>.</p>
+            </div>
+            <div style="border-top:1px solid #86efac;padding-top:10px;">
+              <p style="font-size:0.82rem;font-weight:700;color:#15803d;margin:0 0 4px;">Why it is Required</p>
+              <p style="font-size:0.82rem;color:#166534;line-height:1.55;margin:0;">The AI Edge Device constantly reads live RTSP video feeds from the NVR. Locking these IP addresses ensures the Pi always knows exactly where to find the video streams. It prevents "device disconnected" bugs and keeps your cloud dashboard running 24/7.</p>
+            </div>
+          </div>
+          <!-- Dynamic IP card -->
+          <div style="background:#fff7f7;border:1px solid #fca5a5;border-radius:12px;padding:18px 20px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <span style="background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:0.04em;">DYNAMIC IP</span>
+              <span style="font-size:0.8rem;color:#b91c1c;font-weight:600;">DHCP</span>
+            </div>
+            <p style="font-size:0.88rem;color:#7f1d1d;line-height:1.6;margin:0 0 12px;">A temporary address assigned automatically by the router's DHCP server. It is designed for general user devices like phones or staff laptops that leave and rejoin the network.</p>
+            <div style="background:#fee2e2;border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+              <p style="font-size:0.82rem;font-weight:700;color:#b91c1c;margin:0 0 4px;">Technician Example</p>
+              <p style="font-size:0.82rem;color:#7f1d1d;line-height:1.55;margin:0;">You plug the NVR into the network switch without creating a router rule. The router dynamically hands it <code style="background:#fecaca;padding:1px 5px;border-radius:4px;">10.80.0.105</code> on day one. A week later, the store loses power. When the router reboots, it dynamically assigns the NVR a new address, like <code style="background:#fecaca;padding:1px 5px;border-radius:4px;">10.80.0.122</code>.</p>
+            </div>
+            <div style="border-top:1px solid #fca5a5;padding-top:10px;">
+              <p style="font-size:0.82rem;font-weight:700;color:#b91c1c;margin:0 0 4px;">Why it Breaks the Installation</p>
+              <p style="font-size:0.82rem;color:#7f1d1d;line-height:1.55;margin:0;">Because the NVR's IP changed dynamically, the XenReality Pi is still trying to fetch data from .105. The network link breaks, the camera feed goes offline, and the system stops capturing store analytics.</p>
+            </div>
+          </div>
+        </div>
+          <figure style="margin:0 0 28px;border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/static_vs_dynamic.png" alt="Static IP vs Dynamic IP illustration" style="width:100%;display:block;">
+          </figure>
+
         <div class="tplink-step">
           <h3>STEP 1: Log In to the Router</h3>
           <ol>
             <li>Connect your computer to the store's network, using Wi-Fi or an Ethernet cable.</li>
+          </ol>
+          <figure style="margin:12px 0 16px;border-radius:10px;overflow:hidden;border:1px solid var(--line);box-shadow:0 2px 12px rgba(0,0,0,0.07);">
+            <img src="images/tplink/network_settings.jpg" alt="Finding network settings on Windows" style="width:100%;display:block;">
+          </figure>
+          <ol start="2">
             <li>Open a web browser and type in the router's IP address. It will look like this: <code>http://X.X.X.1</code> (for example, <code>http://192.168.1.1</code> or <code>http://10.80.0.1</code> — the exact numbers depend on the site). You can usually find this address on a sticker on the router, or in your computer's network settings.</li>
             <li>Log in using the store's router username and password provided by the IT admin.</li>
           </ol>
