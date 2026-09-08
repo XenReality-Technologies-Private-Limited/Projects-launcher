@@ -101,7 +101,7 @@ code {
 .hero {
   text-align: center;
   padding: 96px 20px 72px;
-  max-width: 1080px; margin: 0 auto;
+  max-width: 1200px; margin: 0 auto;
 }
 .badge-chip {
   display: inline-flex; align-items: center; gap: 8px;
@@ -129,7 +129,7 @@ code {
 .chip-row { margin-top: 26px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
 /* ─────────── Sections & cards ─────────── */
-.section { max-width: 1080px; margin: 0 auto; padding: 40px 20px; }
+.section { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
 .section-title { text-align: center; font-size: 32px; letter-spacing: -0.02em; }
 .section-sub { text-align: center; color: var(--ink-soft); margin: 10px 0 32px; }
 
@@ -553,10 +553,10 @@ main { padding-bottom: 110px; }
 }
 
 /* ── Camera Guidelines ── */
-.cg-hero { text-align: center; padding: 64px 24px 40px; max-width: 1080px; margin: 0 auto; }
+.cg-hero { text-align: center; padding: 64px 24px 40px; max-width: 1200px; margin: 0 auto; }
 .cg-hero h1 { font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
 .cg-hero p { font-size: 1.05rem; color: var(--ink-soft); line-height: 1.65; }
-.cg-wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 24px; display: flex; flex-direction: column; gap: 32px; }
+.cg-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px 24px; display: flex; flex-direction: column; gap: 32px; }
 .cg-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); margin-bottom: 16px; }
 .cg-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
 .cg-card-head { display: flex; align-items: center; gap: 14px; padding: 20px 24px 18px; border-bottom: 1px solid var(--line); }
@@ -669,4 +669,4 @@ body { top: 0 !important; }
 .tplink-table th { background: #f4f7fb; font-weight: 700; color: var(--ink); width: 38%; }
 .tplink-table td { color: var(--ink-soft); }
 .tplink-step code { background: #eef2f7; padding: 2px 6px; border-radius: 5px; font-size: 0.87rem; color: var(--ink); }
-.tplink-section-wrap { max-width: 1080px; margin: 0 auto; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; }
+.tplink-section-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 28px; display: flex; flex-direction: column; gap: 20px; }
