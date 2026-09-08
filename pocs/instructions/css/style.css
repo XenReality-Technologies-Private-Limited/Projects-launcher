@@ -121,7 +121,7 @@ code {
   font-weight: 720;
 }
 .hero-sub {
-  margin: 22px auto 0; max-width: 560px;
+  margin: 22px auto 0;
   color: var(--ink-soft); font-size: 17.5px; line-height: 1.6;
 }
 .hero-cta { margin-top: 34px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -307,7 +307,7 @@ code {
 }
 
 /* ─────────── Requirements page ─────────── */
-.hero-compact { padding: 72px 20px 40px; }
+.hero-compact { padding: 72px 5% 40px; }
 
 .type-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
