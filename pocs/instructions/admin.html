@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard – Camera & NVR Submissions</title>
+<link rel="icon" type="image/png" href="images/xenreality-logo.png">
+<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/admin.css">
+<style>
+  /* Loading screen */
+  #admin-loader {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+</style>
+</head>
+<body>
+
+<div id="admin-loader">
+  <div style="width:40px;height:40px;border:3px solid #eef2f7;border-top-color:#1E9BD7;border-radius:50%;animation:spin 1s linear infinite;"></div>
+  <p style="margin-top:16px;color:#5c6270;font-weight:600;">Verifying access...</p>
+</div>
+
+<!-- Main UI (hidden until auth verified) -->
+<div id="admin-app" style="display: none;">
+  <header class="admin-header">
+    <div class="admin-title">
+      <img src="images/xenreality-logo.png" alt="XenReality" style="height:32px;">
+      <h1>Submissions Dashboard</h1>
+      <span class="admin-badge">Admin</span>
+    </div>
+    <div class="admin-actions">
+      <span id="user-greeting" style="font-size:0.9rem;font-weight:600;color:var(--ink-soft);margin-right:12px;"></span>
+      <a href="/instructions/" class="btn btn-ghost btn-sm">← Back to Site</a>
+      <button class="btn btn-ghost btn-sm" id="btn-logout" style="color:#ef4444;border-color:#fca5a5;background:#fef2f2;">Sign out</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" class="search-input" id="search-input" placeholder="Search by store or engineer...">
+      </div>
+      <select class="filter-select" id="filter-status">
+        <option value="all">All Statuses</option>
+        <option value="pending">Pending</option>
+        <option value="reviewed">Reviewed</option>
+        <option value="actioned">Actioned</option>
+      </select>
+      <button class="btn btn-ghost" id="btn-refresh">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M21 2v6h-6"></path><path d="M3 12a9 9 0 1 0 2.81-6.61L21 8"></path><path d="M3 22v-6h6"></path><path d="M21 12a9 9 0 1 0-2.81 6.61L3 16"></path></svg>
+        Refresh
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Store Name</th>
+            <th>Location</th>
+            <th>Engineer</th>
+            <th>NVR</th>
+            <th>Cameras</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="8" style="text-align:center;padding:30px;">Loading submissions...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modal-title">Submission Details</h2>
+      <button class="modal-close" id="modal-close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- Content populated by JS -->
+    </div>
+    <div class="modal-footer">
+      <div class="status-updater">
+        <label for="update-status">Update Status:</label>
+        <select id="update-status">
+          <option value="pending">Pending</option>
+          <option value="reviewed">Reviewed</option>
+          <option value="actioned">Actioned</option>
+        </select>
+        <button class="btn btn-primary btn-sm" id="btn-save-status">Save</button>
+        <span id="save-msg" style="font-size:0.85rem;color:#10b981;margin-left:8px;opacity:0;transition:opacity 0.3s;">Saved!</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('detail-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/admin.js"></script>
+
+</body>
+</html>
