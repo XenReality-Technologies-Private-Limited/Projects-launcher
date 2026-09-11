@@ -1,4 +1,4 @@
-import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
+﻿import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
 
 const pb = new PocketBase('https://pb.xenreality.com');
 
@@ -138,7 +138,7 @@ function renderFormStructure(container) {
           <label class="form-label">What is the camera brand? <span class="req">*</span></label>
           <select class="form-control" id="f_brand" required>
             <option value="">Select...</option>
-            ${NAMED_BRANDS.map(b => \`<option value="\${b}">\${b}</option>\`).join('')}
+            ${NAMED_BRANDS.map(b => `<option value="${b}">${b}</option>`).join('')}
             <option value="Other">Other</option>
           </select>
           <div class="form-error-msg">Brand is required</div>
@@ -415,53 +415,53 @@ function generateCameraFields() {
   
   let html = '<h3 style="margin: 30px 0 15px; color: var(--accent-deep);">Camera Details</h3>';
   if (needCreds && count > 1) {
-    html += \`
+    html += `
       <div style="margin-bottom: 15px; text-align: right;">
         <button type="button" class="copy-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
           Copy credentials from Camera 1 to all
         </button>
       </div>
-    \`;
+    `;
   }
   
   for (let i = 1; i <= count; i++) {
-    html += \`
+    html += `
       <div class="camera-card" style="margin-bottom: 20px;">
-        <div class="camera-card-head">Camera \${i}</div>
+        <div class="camera-card-head">Camera ${i}</div>
         <div class="camera-card-body">
           <div class="form-group">
             <label class="form-label">IP Address <span class="req">*</span></label>
-            <input type="text" class="form-control cam-ip" data-idx="\${i}" required placeholder="e.g. 192.168.1.10\${i}">
+            <input type="text" class="form-control cam-ip" data-idx="${i}" required placeholder="e.g. 192.168.1.10${i}">
           </div>
           <div class="form-group">
             <label class="form-label">Channel Number</label>
-            <input type="text" class="form-control cam-chan" data-idx="\${i}">
+            <input type="text" class="form-control cam-chan" data-idx="${i}">
           </div>
-    \`;
+    `;
     
     if (needCreds) {
-      html += \`
+      html += `
           <div class="form-group">
             <label class="form-label">Username <span class="req">*</span></label>
-            <input type="text" class="form-control cam-user" data-idx="\${i}" required>
+            <input type="text" class="form-control cam-user" data-idx="${i}" required>
           </div>
           <div class="form-group">
             <label class="form-label">Password <span class="req">*</span></label>
             <div class="pwd-wrap">
-              <input type="password" class="form-control cam-pass" data-idx="\${i}" required autocomplete="off">
+              <input type="password" class="form-control cam-pass" data-idx="${i}" required autocomplete="off">
               <button type="button" class="pwd-toggle" tabindex="-1">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </div>
           </div>
-      \`;
+      `;
     }
     
-    html += \`
+    html += `
         </div>
       </div>
-    \`;
+    `;
   }
   
   // Preserve existing values if re-generating
@@ -498,7 +498,7 @@ function copyCredentialsFromFirstCamera() {
 
 function validateStep(step) {
   let isValid = true;
-  const currentStepEl = document.getElementById(\`step-\${step}\`);
+  const currentStepEl = document.getElementById(`step-${step}`);
   const requiredInputs = currentStepEl.querySelectorAll('input[required], select[required]');
   
   // Basic required check
@@ -558,33 +558,33 @@ function generateReviewHtml() {
   const hasNvr = v('f_has_nvr') === 'Yes';
   
   let html = '<div class="summary-box">';
-  html += \`
-    <div class="summary-row"><span class="summary-label">Store</span><span class="summary-val">\${v('f_store_name')} (\${v('f_store_location')}, \${v('f_city')})</span></div>
-    <div class="summary-row"><span class="summary-label">Contact</span><span class="summary-val">\${v('f_name')} | \${v('f_phone')}</span></div>
-    <div class="summary-row"><span class="summary-label">NVR Present</span><span class="summary-val">\${v('f_has_nvr')}</span></div>
-    <div class="summary-row"><span class="summary-label">Camera Brand</span><span class="summary-val">\${v('f_brand') === 'Other' ? v('f_brand_other') : v('f_brand')}</span></div>
-  \`;
+  html += `
+    <div class="summary-row"><span class="summary-label">Store</span><span class="summary-val">${v('f_store_name')} (${v('f_store_location')}, ${v('f_city')})</span></div>
+    <div class="summary-row"><span class="summary-label">Contact</span><span class="summary-val">${v('f_name')} | ${v('f_phone')}</span></div>
+    <div class="summary-row"><span class="summary-label">NVR Present</span><span class="summary-val">${v('f_has_nvr')}</span></div>
+    <div class="summary-row"><span class="summary-label">Camera Brand</span><span class="summary-val">${v('f_brand') === 'Other' ? v('f_brand_other') : v('f_brand')}</span></div>
+  `;
   
   if (hasNvr) {
     const b = v('f_brand');
     if (b === 'CP PLUS') {
-      html += \`<div class="summary-row"><span class="summary-label">NVR Cloud ID</span><span class="summary-val">\${v('f_nvr_cloud_id')}</span></div>\`;
+      html += `<div class="summary-row"><span class="summary-label">NVR Cloud ID</span><span class="summary-val">${v('f_nvr_cloud_id')}</span></div>`;
     } else {
-      html += \`<div class="summary-row"><span class="summary-label">NVR IP</span><span class="summary-val">\${v('f_nvr_ip')}</span></div>\`;
+      html += `<div class="summary-row"><span class="summary-label">NVR IP</span><span class="summary-val">${v('f_nvr_ip')}</span></div>`;
       if (b === 'Hikvision') {
-        html += \`<div class="summary-row"><span class="summary-label">NVR Port</span><span class="summary-val">\${v('f_nvr_port')}</span></div>\`;
+        html += `<div class="summary-row"><span class="summary-label">NVR Port</span><span class="summary-val">${v('f_nvr_port')}</span></div>`;
       }
     }
-    html += \`<div class="summary-row"><span class="summary-label">NVR Username</span><span class="summary-val">\${v('f_nvr_user')}</span></div>\`;
+    html += `<div class="summary-row"><span class="summary-label">NVR Username</span><span class="summary-val">${v('f_nvr_user')}</span></div>`;
   }
   
-  html += \`<div class="summary-row"><span class="summary-label">Total Cameras</span><span class="summary-val">\${v('f_camera_count')}</span></div>\`;
+  html += `<div class="summary-row"><span class="summary-label">Total Cameras</span><span class="summary-val">${v('f_camera_count')}</span></div>`;
   html += '</div>';
   
   if (v('f_router_needed') === 'Yes') {
     html += '<div class="summary-box">';
-    html += \`<div class="summary-row"><span class="summary-label">Router IP</span><span class="summary-val">\${v('f_router_ip')}</span></div>\`;
-    html += \`<div class="summary-row"><span class="summary-label">Router User</span><span class="summary-val">\${v('f_router_user')}</span></div>\`;
+    html += `<div class="summary-row"><span class="summary-label">Router IP</span><span class="summary-val">${v('f_router_ip')}</span></div>`;
+    html += `<div class="summary-row"><span class="summary-label">Router User</span><span class="summary-val">${v('f_router_user')}</span></div>`;
     html += '</div>';
   }
   
@@ -616,15 +616,15 @@ function updateStepVisibility() {
   });
   
   // Show current
-  document.getElementById(\`step-\${currentStep}\`).classList.add('active');
+  document.getElementById(`step-${currentStep}`).classList.add('active');
   
   // Update progress
   const progressPercent = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
-  document.getElementById('progressBar').style.width = \`\${progressPercent}%\`;
+  document.getElementById('progressBar').style.width = `${progressPercent}%`;
   
   // Update indicators
   for (let i = 1; i <= TOTAL_STEPS; i++) {
-    const ind = document.getElementById(\`ind-\${i}\`);
+    const ind = document.getElementById(`ind-${i}`);
     if (i < currentStep) ind.classList.add('completed');
     else if (i === currentStep) ind.classList.add('active');
   }
@@ -692,12 +692,12 @@ async function handleSubmit(e) {
   for (let i = 1; i <= count; i++) {
     const cam = {
       camera_number: i,
-      camera_ip_address: document.querySelector(\`.cam-ip[data-idx="\${i}"]\`)?.value || '',
-      camera_channel: document.querySelector(\`.cam-chan[data-idx="\${i}"]\`)?.value || ''
+      camera_ip_address: document.querySelector(`.cam-ip[data-idx="${i}"]`)?.value || '',
+      camera_channel: document.querySelector(`.cam-chan[data-idx="${i}"]`)?.value || ''
     };
     if (!payload.has_nvr) {
-      cam.camera_username = document.querySelector(\`.cam-user[data-idx="\${i}"]\`)?.value || '';
-      cam.camera_password = document.querySelector(\`.cam-pass[data-idx="\${i}"]\`)?.value || '';
+      cam.camera_username = document.querySelector(`.cam-user[data-idx="${i}"]`)?.value || '';
+      cam.camera_password = document.querySelector(`.cam-pass[data-idx="${i}"]`)?.value || '';
     }
     cameras.push(cam);
   }
