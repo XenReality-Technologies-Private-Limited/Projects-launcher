@@ -88,8 +88,10 @@
   const err  = document.getElementById('err');
   const btn  = document.getElementById('btn');
 
+  const nextUrl = new URLSearchParams(location.search).get('next') || '/instructions/';
+
   if (pb.authStore.isValid) {
-    window.location.replace('/instructions/');
+    window.location.replace(nextUrl);
   }
 
   form.addEventListener('submit', async (e) => {
@@ -102,7 +104,7 @@
     try {
       await pb.collection('xr_employees').authWithPassword(identity, password);
       history.replaceState(null, '', location.href);
-      window.location.replace('/instructions/');
+      window.location.replace(nextUrl);
     } catch {
       err.textContent = 'Invalid credentials. Please try again.';
       err.style.display = 'block';

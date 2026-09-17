@@ -15,7 +15,7 @@ async function initAdmin() {
 
 async function verifyAuth() {
   if (!pb.authStore.isValid) {
-    window.location.replace('/instructions/login.html');
+    window.location.replace('/instructions/login.html?next=/instructions/admin.html');
     return;
   }
   
@@ -37,7 +37,7 @@ async function verifyAuth() {
   } catch (err) {
     console.error("Auth error:", err);
     localStorage.removeItem('pocketbase_auth');
-    window.location.replace('/instructions/login.html');
+    window.location.replace('/instructions/login.html?next=/instructions/admin.html');
   }
 }
 
