@@ -19,18 +19,17 @@ async function verifyAuth() {
     return;
   }
   
-  // Refresh auth to get latest role and check validity
   try {
     await pb.collection('xr_employees').authRefresh();
-    const user = pb.authStore.record;
-    
-    // Check role (assuming field is named 'role' and admins are 'admin')
+    // Explicitly fetch user record to get all custom fields (role may not be in auth token)
+    const user = await pb.collection('xr_employees').getOne(pb.authStore.record.id);
+
     if (!user || user.role !== 'admin') {
       alert("Access Denied: You do not have administrator privileges.");
       window.location.replace('/instructions/');
       return;
     }
-    
+
     document.getElementById('user-greeting').textContent = `Hello, ${user.name || user.email}`;
     document.getElementById('admin-loader').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
