@@ -20,11 +20,11 @@ async function verifyAuth() {
   }
   
   try {
-    await pb.collection('xr_employees').authRefresh();
-    // Explicitly fetch user record to get all custom fields (role may not be in auth token)
-    const user = await pb.collection('xr_employees').getOne(pb.authStore.record.id);
+    const authData = await pb.collection('xr_employees').authRefresh();
+    const user = authData.record;
 
     if (!user || user.role !== 'admin') {
+      pb.authStore.clear();
       alert("Access Denied: You do not have administrator privileges.");
       window.location.replace('/instructions/');
       return;
@@ -33,10 +33,10 @@ async function verifyAuth() {
     document.getElementById('user-greeting').textContent = `Hello, ${user.name || user.email}`;
     document.getElementById('admin-loader').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
-    
+
   } catch (err) {
     console.error("Auth error:", err);
-    localStorage.removeItem('pocketbase_auth');
+    pb.authStore.clear();
     window.location.replace('/instructions/login.html?next=/instructions/admin.html');
   }
 }
