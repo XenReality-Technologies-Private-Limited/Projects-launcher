@@ -187,14 +187,6 @@
           <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
       </div>
-      <!-- Group Admin -->
-      <div class="spa-menu-group" id="adminMenuGroup" style="display: none;">
-        <div class="spa-sub-group-label">Administration</div>
-        <a class="spa-menu-item" href="admin.html">
-          Admin Dashboard
-          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        </a>
-      </div>
       <!-- Group 2: Installation -->
       <div class="spa-menu-group">
         <a class="spa-menu-item locked" data-target="sec-rpi" onclick="appFlow.nav(this)">
@@ -206,6 +198,14 @@
           Setup
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
           <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+      </div>
+      <!-- Group Admin — shown only for role=admin -->
+      <div class="spa-menu-group" id="adminMenuGroup" style="display: none;">
+        <div class="spa-sub-group-label">Administration</div>
+        <a class="spa-menu-item" href="admin.html">
+          Admin Dashboard
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
       </div>
     </ul>
