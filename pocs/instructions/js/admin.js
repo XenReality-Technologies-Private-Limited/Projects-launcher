@@ -1,4 +1,4 @@
-import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
+﻿import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
 
 const pb = new PocketBase('https://pb.xenreality.com');
 let allSubmissions = [];
@@ -31,7 +31,7 @@ async function verifyAuth() {
       return;
     }
     
-    document.getElementById('user-greeting').textContent = \`Hello, \${user.name || user.email}\`;
+    document.getElementById('user-greeting').textContent = `Hello, ${user.name || user.email}`;
     document.getElementById('admin-loader').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
     
@@ -81,7 +81,7 @@ async function loadSubmissions() {
     renderTable();
   } catch (err) {
     console.error("Failed to load submissions:", err);
-    tbody.innerHTML = \`<tr><td colspan="8" style="text-align:center;color:#ef4444;">Error loading data: \${escapeHtml(err.message)}</td></tr>\`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#ef4444;">Error loading data: ${escapeHtml(err.message)}</td></tr>`;
   }
 }
 
@@ -108,24 +108,24 @@ function renderTable() {
   
   tbody.innerHTML = filtered.map(sub => {
     const d = new Date(sub.created);
-    const dateStr = \`\${d.getDate()}/\${d.getMonth()+1}/\${d.getFullYear()}\`;
+    const dateStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
     
     let statusClass = 'status-pending';
     if (sub.status === 'reviewed') statusClass = 'status-reviewed';
     if (sub.status === 'actioned') statusClass = 'status-actioned';
     
-    return \`
-      <tr style="cursor:pointer;" onclick="openDetails('\${sub.id}')">
-        <td>\${dateStr}</td>
-        <td style="font-weight:600;">\${escapeHtml(sub.store_name)}</td>
-        <td>\${escapeHtml(sub.store_location)}, \${escapeHtml(sub.city)}</td>
-        <td>\${escapeHtml(sub.field_engineer_name)}</td>
-        <td>\${sub.has_nvr ? \`Yes (\${escapeHtml(sub.camera_brand)})\` : 'No'}</td>
-        <td>\${sub.camera_count}</td>
-        <td><span class="status-badge \${statusClass}">\${escapeHtml(sub.status || 'pending')}</span></td>
+    return `
+      <tr style="cursor:pointer;" onclick="openDetails('${sub.id}')">
+        <td>${dateStr}</td>
+        <td style="font-weight:600;">${escapeHtml(sub.store_name)}</td>
+        <td>${escapeHtml(sub.store_location)}, ${escapeHtml(sub.city)}</td>
+        <td>${escapeHtml(sub.field_engineer_name)}</td>
+        <td>${sub.has_nvr ? `Yes (${escapeHtml(sub.camera_brand)})` : 'No'}</td>
+        <td>${sub.camera_count}</td>
+        <td><span class="status-badge ${statusClass}">${escapeHtml(sub.status || 'pending')}</span></td>
         <td><button class="btn btn-ghost btn-sm">View</button></td>
       </tr>
-    \`;
+    `;
   }).join('');
 }
 
@@ -136,7 +136,7 @@ window.openDetails = async function(id) {
   currentSubmissionId = id;
   
   // Set modal header and status
-  document.getElementById('modal-title').textContent = \`\${escapeHtml(sub.store_name)} (\${escapeHtml(sub.city)})\`;
+  document.getElementById('modal-title').textContent = `${escapeHtml(sub.store_name)} (${escapeHtml(sub.city)})`;
   document.getElementById('update-status').value = sub.status || 'pending';
   
   // Render loading state for body
@@ -148,7 +148,7 @@ window.openDetails = async function(id) {
   let cameras = [];
   try {
     cameras = await pb.collection('camera_details').getFullList({
-      filter: \`submission = '\${id}'\`,
+      filter: `submission = '${id}'`,
       sort: 'camera_number'
     });
   } catch (err) {
@@ -156,156 +156,156 @@ window.openDetails = async function(id) {
   }
   
   // Build HTML
-  let html = \`
+  let html = `
     <div class="detail-grid">
       <div class="detail-item">
         <span class="detail-label">Store</span>
-        <span class="detail-val">\${escapeHtml(sub.store_name)}<br><span style="font-size:0.85em;color:var(--ink-soft);">\${escapeHtml(sub.store_location)}, \${escapeHtml(sub.city)}, \${escapeHtml(sub.country)}</span></span>
+        <span class="detail-val">${escapeHtml(sub.store_name)}<br><span style="font-size:0.85em;color:var(--ink-soft);">${escapeHtml(sub.store_location)}, ${escapeHtml(sub.city)}, ${escapeHtml(sub.country)}</span></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Engineer</span>
-        <span class="detail-val">\${escapeHtml(sub.field_engineer_name)}<br><span style="font-size:0.85em;color:var(--ink-soft);">\${escapeHtml(sub.field_engineer_phone)} | \${escapeHtml(sub.field_engineer_email)}</span></span>
+        <span class="detail-val">${escapeHtml(sub.field_engineer_name)}<br><span style="font-size:0.85em;color:var(--ink-soft);">${escapeHtml(sub.field_engineer_phone)} | ${escapeHtml(sub.field_engineer_email)}</span></span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Company</span>
-        <span class="detail-val">\${escapeHtml(sub.field_engineer_company || '-')}</span>
+        <span class="detail-val">${escapeHtml(sub.field_engineer_company || '-')}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Visit Date</span>
-        <span class="detail-val">\${escapeHtml(sub.visit_date.split(' ')[0])}</span>
+        <span class="detail-val">${escapeHtml(sub.visit_date.split(' ')[0])}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Submission Date</span>
-        <span class="detail-val">\${new Date(sub.created).toLocaleString()}</span>
+        <span class="detail-val">${new Date(sub.created).toLocaleString()}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">NVR Setup</span>
-        <span class="detail-val">\${sub.has_nvr ? 'Yes' : 'No'} (\${escapeHtml(sub.camera_brand)})</span>
+        <span class="detail-val">${sub.has_nvr ? 'Yes' : 'No'} (${escapeHtml(sub.camera_brand)})</span>
       </div>
     </div>
-  \`;
+  `;
   
   if (sub.has_nvr) {
-    html += \`<h3 class="section-title">NVR Details</h3><div class="detail-grid">\`;
+    html += `<h3 class="section-title">NVR Details</h3><div class="detail-grid">`;
     
     if (sub.nvr_cloud_id) {
-      html += \`
+      html += `
         <div class="detail-item">
           <span class="detail-label">Cloud ID / Serial</span>
-          <span class="detail-val">\${escapeHtml(sub.nvr_cloud_id)}</span>
+          <span class="detail-val">${escapeHtml(sub.nvr_cloud_id)}</span>
         </div>
-      \`;
+      `;
     }
     if (sub.nvr_ip_address) {
-      html += \`
+      html += `
         <div class="detail-item">
           <span class="detail-label">IP Address</span>
-          <span class="detail-val">\${escapeHtml(sub.nvr_ip_address)} \${sub.nvr_port ? \`:\${sub.nvr_port}\` : ''}</span>
+          <span class="detail-val">${escapeHtml(sub.nvr_ip_address)} ${sub.nvr_port ? `:${sub.nvr_port}` : ''}</span>
         </div>
-      \`;
+      `;
     }
     
     const uid = 'nvr_pwd_' + Math.random().toString(36).substr(2, 9);
-    html += \`
+    html += `
       <div class="detail-item">
         <span class="detail-label">NVR Username</span>
-        <span class="detail-val credential">\${escapeHtml(sub.nvr_username)}</span>
+        <span class="detail-val credential">${escapeHtml(sub.nvr_username)}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">NVR Password</span>
         <span class="detail-val credential">
-          <span id="\${uid}" data-val="\${escapeHtml(sub.nvr_password)}">••••••••</span>
-          <button class="credential-toggle" onclick="togglePwd('\${uid}')">
+          <span id="${uid}" data-val="${escapeHtml(sub.nvr_password)}">••••••••</span>
+          <button class="credential-toggle" onclick="togglePwd('${uid}')">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
           </button>
         </span>
       </div>
-    \`;
-    html += \`</div>\`;
+    `;
+    html += `</div>`;
   }
   
   if (sub.router_ip || sub.router_username) {
-    html += \`<h3 class="section-title">Router Details</h3><div class="detail-grid">\`;
-    html += \`
+    html += `<h3 class="section-title">Router Details</h3><div class="detail-grid">`;
+    html += `
       <div class="detail-item">
         <span class="detail-label">Router IP</span>
-        <span class="detail-val">\${escapeHtml(sub.router_ip || '-')}</span>
+        <span class="detail-val">${escapeHtml(sub.router_ip || '-')}</span>
       </div>
       <div class="detail-item">
         <span class="detail-label">Router User</span>
-        <span class="detail-val credential">\${escapeHtml(sub.router_username || '-')}</span>
+        <span class="detail-val credential">${escapeHtml(sub.router_username || '-')}</span>
       </div>
-    \`;
+    `;
     
     if (sub.router_password) {
       const uid = 'router_pwd_' + Math.random().toString(36).substr(2, 9);
-      html += \`
+      html += `
         <div class="detail-item">
           <span class="detail-label">Router Password</span>
           <span class="detail-val credential">
-            <span id="\${uid}" data-val="\${escapeHtml(sub.router_password)}">••••••••</span>
-            <button class="credential-toggle" onclick="togglePwd('\${uid}')">
+            <span id="${uid}" data-val="${escapeHtml(sub.router_password)}">••••••••</span>
+            <button class="credential-toggle" onclick="togglePwd('${uid}')">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
           </span>
         </div>
-      \`;
+      `;
     }
-    html += \`</div>\`;
+    html += `</div>`;
   }
   
-  html += \`<h3 class="section-title">Camera Details (\${cameras.length} records)</h3>\`;
+  html += `<h3 class="section-title">Camera Details (${cameras.length} records)</h3>`;
   
   if (cameras.length > 0) {
-    html += \`
+    html += `
       <table class="cam-table">
         <thead>
           <tr>
             <th>#</th>
             <th>IP Address</th>
             <th>Channel</th>
-            \${!sub.has_nvr ? '<th>Username</th><th>Password</th>' : ''}
+            ${!sub.has_nvr ? '<th>Username</th><th>Password</th>' : ''}
           </tr>
         </thead>
         <tbody>
-    \`;
+    `;
     
     cameras.forEach((cam, idx) => {
-      html += \`<tr>
-        <td>\${cam.camera_number}</td>
-        <td>\${escapeHtml(cam.camera_ip_address)}</td>
-        <td>\${escapeHtml(cam.camera_channel || '-')}</td>
-      \`;
+      html += `<tr>
+        <td>${cam.camera_number}</td>
+        <td>${escapeHtml(cam.camera_ip_address)}</td>
+        <td>${escapeHtml(cam.camera_channel || '-')}</td>
+      `;
       
       if (!sub.has_nvr) {
         const uid = 'cam_pwd_' + idx;
-        html += \`
-          <td><span class="credential" style="font-size:0.85rem;">\${escapeHtml(cam.camera_username)}</span></td>
+        html += `
+          <td><span class="credential" style="font-size:0.85rem;">${escapeHtml(cam.camera_username)}</span></td>
           <td>
             <span class="credential" style="font-size:0.85rem;">
-              <span id="\${uid}" data-val="\${escapeHtml(cam.camera_password)}">••••••</span>
-              <button class="credential-toggle" onclick="togglePwd('\${uid}')" style="padding:0;">
+              <span id="${uid}" data-val="${escapeHtml(cam.camera_password)}">••••••</span>
+              <button class="credential-toggle" onclick="togglePwd('${uid}')" style="padding:0;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               </button>
             </span>
           </td>
-        \`;
+        `;
       }
-      html += \`</tr>\`;
+      html += `</tr>`;
     });
     
-    html += \`</tbody></table>\`;
+    html += `</tbody></table>`;
   } else {
-    html += \`<p style="color:var(--ink-soft);font-size:0.9rem;">No camera records found.</p>\`;
+    html += `<p style="color:var(--ink-soft);font-size:0.9rem;">No camera records found.</p>`;
   }
   
   if (sub.additional_notes) {
-    html += \`
+    html += `
       <h3 class="section-title">Additional Comments</h3>
       <div style="background:#f8fafd;padding:16px;border-radius:12px;border:1px solid var(--line);font-size:0.95rem;line-height:1.5;">
-        \${escapeHtml(sub.additional_notes).replace(/\\n/g, '<br>')}
+        ${escapeHtml(sub.additional_notes).replace(/\\n/g, '<br>')}
       </div>
-    \`;
+    `;
   }
   
   bodyEl.innerHTML = html;

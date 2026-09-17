@@ -1678,7 +1678,8 @@ window.setLang = function(lang) {
     var authStr = localStorage.getItem('pocketbase_auth');
     if (authStr) {
       try {
-        var user = JSON.parse(authStr).model;
+        var auth = JSON.parse(authStr);
+        var user = auth.record || auth.model;
         // If they have admin role, show the menu
         if (user && user.role === 'admin') {
           document.getElementById('adminMenuGroup').style.display = 'block';
