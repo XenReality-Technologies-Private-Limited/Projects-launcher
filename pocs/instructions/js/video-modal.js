@@ -21,11 +21,12 @@
     btnPlay.querySelector('.xr-icon-pause').style.display = p ? 'inline' : 'none';
   }
 
-  function openModal(src) {
+  function openModal(src, title) {
     if (src && video.src !== src) {
       video.src = src;
       video.load();
     }
+    if (title) { modal.querySelector('.xr-video-hdr span').textContent = title; }
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
     video.play().then(function () { setPlaying(true); }).catch(function () {});
@@ -40,13 +41,20 @@
 
   if (btnOpen) {
     btnOpen.addEventListener('click', function() {
-      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Subheading%20(1).mp4");
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Instruction%20Video.mp4", "XenReality Pi 5 — Setup Walkthrough");
     });
   }
 
   if (btnOpenConfig) {
     btnOpenConfig.addEventListener('click', function() {
-      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Configurator.mp4");
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Configurator.mp4", "Configurator Setup");
+    });
+  }
+
+  var btnNetworkVideo = document.getElementById('btnWatchNetworkVideo');
+  if (btnNetworkVideo) {
+    btnNetworkVideo.addEventListener('click', function() {
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Network%20config%20for%20Europe%20(1).mp4", "Network Configuration Guide");
     });
   }
   btnClose.addEventListener('click', closeModal);
