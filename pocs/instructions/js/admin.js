@@ -297,7 +297,18 @@ window.openDetails = async function(id) {
   } else {
     html += `<p style="color:var(--ink-soft);font-size:0.9rem;">No camera records found.</p>`;
   }
-  
+
+  // Show uploaded camera file if present
+  if (sub.camera_file) {
+    var pbUrl = 'https://pb.xenreality.com/api/files/camera_nvr_submissions/' + sub.id + '/' + encodeURIComponent(sub.camera_file);
+    html += '<h3 class="section-title">Camera Details File</h3>';
+    html += '<div style="padding:16px;background:#f8fafd;border-radius:12px;border:1px solid var(--line);">';
+    html += '<a href="' + pbUrl + '" target="_blank" download style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:600;text-decoration:none;font-size:0.95rem;">';
+    html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    html += escapeHtml(sub.camera_file) + '</a>';
+    html += '</div>';
+  }
+
   if (sub.additional_notes) {
     html += `
       <h3 class="section-title">Additional Comments</h3>

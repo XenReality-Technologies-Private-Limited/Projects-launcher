@@ -191,13 +191,37 @@ function renderFormStructure(container) {
           </div>
         </div>
 
-        <div class="form-group" style="margin-top: 30px;">
-          <label class="form-label">Total number of cameras <span class="req">*</span></label>
-          <input type="number" class="form-control" id="f_camera_count" min="1" max="64" required>
-          <div class="form-error-msg">Enter a valid number (1-64)</div>
-        </div>
+        <div style="margin-top:30px; border-top:1px dashed var(--line); padding-top:24px;">
+          <label class="form-label" style="margin-bottom:12px;">How would you like to provide camera details? <span class="req">*</span></label>
+          <div style="display:flex;gap:12px;margin-bottom:20px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.95rem;">
+              <input type="radio" name="cam_entry_mode" id="cam_mode_manual" value="manual" checked style="accent-color:var(--accent);width:16px;height:16px;">
+              Enter manually
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.95rem;">
+              <input type="radio" name="cam_entry_mode" id="cam_mode_upload" value="upload" style="accent-color:var(--accent);width:16px;height:16px;">
+              Upload CSV / PDF
+            </label>
+          </div>
 
-        <div id="dynamic-cameras-container"></div>
+          <div id="manual-camera-section">
+            <div class="form-group">
+              <label class="form-label">Total number of cameras <span class="req">*</span></label>
+              <input type="number" class="form-control" id="f_camera_count" min="1" max="64">
+              <div class="form-error-msg">Enter a valid number (1–64)</div>
+            </div>
+            <div id="dynamic-cameras-container"></div>
+          </div>
+
+          <div id="upload-camera-section" class="hidden">
+            <div class="form-group">
+              <label class="form-label">Upload camera details file <span class="req">*</span></label>
+              <input type="file" class="form-control" id="f_camera_file" accept=".csv,.pdf" style="padding:10px;">
+              <span class="form-hint">Accepted: CSV or PDF — include IP address, channel, username and password for each camera</span>
+              <div class="form-error-msg" id="camera-file-error">Please upload a CSV or PDF file</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- STEP 3: Router & Additional Info -->
@@ -309,6 +333,15 @@ function bindEvents() {
   // Camera count generation
   document.getElementById('f_camera_count').addEventListener('change', generateCameraFields);
   document.getElementById('f_camera_count').addEventListener('input', generateCameraFields);
+
+  // Camera entry mode toggle
+  document.querySelectorAll('input[name="cam_entry_mode"]').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      var isUpload = document.getElementById('cam_mode_upload').checked;
+      document.getElementById('manual-camera-section').classList.toggle('hidden', isUpload);
+      document.getElementById('upload-camera-section').classList.toggle('hidden', !isUpload);
+    });
+  });
 
   // Validation removal on input
   document.querySelectorAll('.form-control').forEach(el => {
@@ -545,12 +578,31 @@ function validateStep(step) {
     }
   });
   
+  // If step 2: validate camera entry mode
+  if (step === 2) {
+    var isUpload = document.getElementById('cam_mode_upload') && document.getElementById('cam_mode_upload').checked;
+    if (isUpload) {
+      var fileInput = document.getElementById('f_camera_file');
+      if (!fileInput || !fileInput.files || !fileInput.files.length) {
+        isValid = false;
+        document.getElementById('camera-file-error').classList.add('visible');
+      }
+    } else {
+      var count = parseInt(document.getElementById('f_camera_count').value) || 0;
+      if (count < 1 || count > 64) {
+        isValid = false;
+        document.getElementById('f_camera_count').classList.add('error');
+        document.querySelector('#f_camera_count + .form-error-msg') && document.querySelector('#f_camera_count + .form-error-msg').classList.add('visible');
+      }
+    }
+  }
+
   if (!isValid) {
     // Scroll to first error
     const firstError = currentStepEl.querySelector('.error');
     if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-  
+
   return isValid;
 }
 
@@ -579,7 +631,8 @@ function generateReviewHtml() {
     html += `<div class="summary-row"><span class="summary-label">NVR Username</span><span class="summary-val">${v('f_nvr_user')}</span></div>`;
   }
   
-  html += `<div class="summary-row"><span class="summary-label">Total Cameras</span><span class="summary-val">${v('f_camera_count')}</span></div>`;
+  var isUpload = document.getElementById('cam_mode_upload') && document.getElementById('cam_mode_upload').checked;
+  html += '<div class="summary-row"><span class="summary-label">Camera Details</span><span class="summary-val">' + (isUpload ? (document.getElementById('f_camera_file').files[0] ? document.getElementById('f_camera_file').files[0].name : 'File selected') : v('f_camera_count') + ' camera(s)') + '</span></div>';
   html += '</div>';
   
   if (v('f_router_needed') === 'Yes') {
@@ -706,16 +759,27 @@ async function handleSubmit(e) {
   try {
     document.getElementById('form-overlay').classList.add('active');
     
-    // Create main record
-    const submissionRecord = await pb.collection('camera_nvr_submissions').create(payload);
-    
-    // Create camera records in parallel
-    const camPromises = cameras.map(cam => {
-      cam.submission = submissionRecord.id;
-      return pb.collection('camera_details').create(cam);
-    });
-    
-    await Promise.all(camPromises);
+    // Create main record (with optional file upload)
+    var isUpload = document.getElementById('cam_mode_upload') && document.getElementById('cam_mode_upload').checked;
+
+    var submissionRecord;
+    if (isUpload) {
+      var fileInput = document.getElementById('f_camera_file');
+      var formData = new FormData();
+      Object.keys(payload).forEach(function(k) {
+        if (payload[k] !== null && payload[k] !== undefined) formData.append(k, payload[k]);
+      });
+      formData.append('camera_file', fileInput.files[0]);
+      submissionRecord = await pb.collection('camera_nvr_submissions').create(formData);
+    } else {
+      submissionRecord = await pb.collection('camera_nvr_submissions').create(payload);
+      // Create camera records in parallel
+      var camPromises = cameras.map(function(cam) {
+        cam.submission = submissionRecord.id;
+        return pb.collection('camera_details').create(cam);
+      });
+      await Promise.all(camPromises);
+    }
     
     // Success
     document.getElementById('form-overlay').classList.remove('active');
