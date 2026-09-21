@@ -189,6 +189,10 @@
           IP Discovery
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-form" onclick="appFlow.nav(this)">
+          Installation Details
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </a>
       </div>
       <!-- Group Admin — shown only for role=admin -->
       <div class="spa-menu-group" id="adminMenuGroup" style="display: none;">
@@ -643,13 +647,24 @@
 
     </div><!-- /sec-static-tplink -->
 
+    <!-- ══════════════════ INSTALLATION DETAILS ══════════════════ -->
+    <div class="spa-section" id="sec-form">
+      <section class="hero hero-compact">
+        <span class="badge-chip"><span class="badge-new">FORM</span> Submit before leaving the site</span>
+        <h1>Installation <span class="accent">Details</span></h1>
+        <p class="hero-sub">Fill in your details and the store's camera information. Your answers are saved directly to XenReality's records.</p>
+      </section>
+      <div id="credFormWrap" style="padding:32px 5% 40px;">
+        <div id="cameraNvrForm"></div>
+      </div>
+    </div><!-- /sec-form -->
 
     <!-- ══════════════════ CAMERA REQUIREMENTS ══════════════════ -->
     <div class="spa-section" id="sec-creds">
       <section class="hero hero-compact">
-        <span class="badge-chip"><span class="badge-new">CHECKLIST + FORM</span> Camera verification &amp; details</span>
+        <span class="badge-chip"><span class="badge-new">CHECKLIST</span> Camera verification</span>
         <h1>Camera <span class="accent">Requirements</span></h1>
-        <p class="hero-sub">Confirm the cameras meet every requirement below, then fill in the credentials form. Your answers are saved directly to XenReality's records.</p>
+        <p class="hero-sub">Confirm the cameras meet every requirement below before proceeding.</p>
       </section>
 
       <section class="section">
@@ -705,10 +720,6 @@
             <button class="btn btn-ghost" id="btnCamResetCancel">Cancel</button>
           </div>
         </div>
-      </div>
-
-      <div id="credFormWrap" style="padding:32px 5% 40px;">
-        <div id="cameraNvrForm"></div>
       </div>
 
     </div><!-- /sec-creds -->
@@ -1398,7 +1409,7 @@
 <script>
 // ── App flow (progressive unlock) ──
 var appFlow = {
-  order: ['sec-guidelines','sec-creds','sec-nvr','sec-infra','sec-setup','sec-static-tplink'],
+  order: ['sec-guidelines','sec-creds','sec-nvr','sec-infra','sec-setup','sec-static-tplink','sec-form'],
 
   get unlocked() { return parseInt(localStorage.getItem('xr-instructions-unlocked') || '0'); },
   set unlocked(v) { localStorage.setItem('xr-instructions-unlocked', v); },
@@ -1538,7 +1549,7 @@ makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 
 // NVR checklist
 makeChecklist({ boxSel: '.nvr-box', storeKey: 'xen-nvr-checklist', countId: 'nvrCount', fillId: 'nvrFill', continueId: 'btnNvrContinue', resetBtnId: 'btnNvrReset', modalId: 'nvrResetModal', confirmId: 'btnNvrResetConfirm', cancelId: 'btnNvrResetCancel' });
 // Camera checklist — "continue" scrolls to the form, then Next button advances flow
-makeChecklist({ boxSel: '.cam-box', storeKey: 'xen-cam-checklist', countId: 'camCount', fillId: 'camFill', continueId: 'btnCamContinue', resetBtnId: 'btnCamReset', modalId: 'camResetModal', confirmId: 'btnCamResetConfirm', cancelId: 'btnCamResetCancel', onNext: function() { var f = document.getElementById('credFormWrap'); if (f) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+makeChecklist({ boxSel: '.cam-box', storeKey: 'xen-cam-checklist', countId: 'camCount', fillId: 'camFill', continueId: 'btnCamContinue', resetBtnId: 'btnCamReset', modalId: 'camResetModal', confirmId: 'btnCamResetConfirm', cancelId: 'btnCamResetCancel' });
 
 // ── Camera guidelines departure checklist ──
 (function() {
