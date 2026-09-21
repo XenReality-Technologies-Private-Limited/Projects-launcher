@@ -3,7 +3,7 @@
 const pb = new PocketBase('https://pb.xenreality.com');
 
 // Configuration
-const RECAPTCHA_SITE_KEY = '6LekZ9wsAAAAAK43XWtHtK4mVWRjDP-q4YMmZ6rX';
+const RECAPTCHA_SITE_KEY = '6Ld81sYtAAAAAD5iOXnq-TptlOyZfpVNWevsB-Pw';
 
 const NAMED_BRANDS = [
   'Axis Communications', 'Bosch', 'CP PLUS', 'Dahua', 'Hanwha Vision',
