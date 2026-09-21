@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XenReality Pi 5 Setup Guide</title>
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
-<link rel="stylesheet" href="css/style.css?v=10">
+<link rel="stylesheet" href="css/style.css?v=11">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
 <link rel="stylesheet" href="css/form.css">
 <!-- Google Translate -->
@@ -165,22 +165,22 @@
           Camera Guidelines
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
-        <a class="spa-menu-item spa-menu-sub" data-target="sec-infra" onclick="appFlow.nav(this)">
-          Network Infrastructure
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-creds" onclick="appFlow.nav(this)">
+          Camera Requirements
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
         <a class="spa-menu-item spa-menu-sub" data-target="sec-nvr" onclick="appFlow.nav(this)">
           NVR Requirements
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
-        <a class="spa-menu-item spa-menu-sub" data-target="sec-creds" onclick="appFlow.nav(this)">
-          Camera Requirements
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-infra" onclick="appFlow.nav(this)">
+          Network Infrastructure
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
       </div>
-      <!-- Group 2: AI Edge Device Config -->
+      <!-- Group 2: AI Edge Device Configuration -->
       <div class="spa-menu-group">
-        <div class="spa-sub-group-label">AI Edge Device Config</div>
+        <div class="spa-sub-group-label">AI Edge Device Configuration</div>
         <a class="spa-menu-item spa-menu-sub" data-target="sec-rpi" onclick="appFlow.nav(this)">
           Raspberry Pi
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -343,7 +343,7 @@
           </div>
           <div class="req-bar-actions">
             <button class="btn btn-ghost btn-sm" id="btnNvrReset">Reset</button>
-            <button class="btn btn-success btn-lg req-continue disabled" id="btnNvrContinue" disabled>Next: Camera Requirements →</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnNvrContinue" disabled>Next: Network Infrastructure →</button>
           </div>
         </div>
       </div>
@@ -645,9 +645,6 @@
         </div>
       </div>
 
-      <div class="spa-section-footer">
-        <button class="btn btn-primary btn-lg" onclick="showNvrAccessModal()">Next →</button>
-      </div>
     </div><!-- /sec-static-tplink -->
 
 
@@ -1412,7 +1409,7 @@
 <script>
 // ── App flow (progressive unlock) ──
 var appFlow = {
-  order: ['sec-guidelines','sec-infra','sec-nvr','sec-creds','sec-rpi','sec-setup','sec-static-tplink'],
+  order: ['sec-guidelines','sec-creds','sec-nvr','sec-infra','sec-rpi','sec-setup','sec-static-tplink'],
 
   get unlocked() { return parseInt(localStorage.getItem('xr-instructions-unlocked') || '0'); },
   set unlocked(v) { localStorage.setItem('xr-instructions-unlocked', v); },
@@ -1548,7 +1545,7 @@ function makeChecklist(cfg) {
 }
 
 // Infrastructure checklist
-makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 'infraCount', fillId: 'infraFill', continueId: 'btnInfraContinue', resetBtnId: 'btnInfraReset', modalId: 'infraResetModal', confirmId: 'btnInfraResetConfirm', cancelId: 'btnInfraResetCancel', onNext: function() { showNvrAccessModal(); } });
+makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 'infraCount', fillId: 'infraFill', continueId: 'btnInfraContinue', resetBtnId: 'btnInfraReset', modalId: 'infraResetModal', confirmId: 'btnInfraResetConfirm', cancelId: 'btnInfraResetCancel' });
 // NVR checklist
 makeChecklist({ boxSel: '.nvr-box', storeKey: 'xen-nvr-checklist', countId: 'nvrCount', fillId: 'nvrFill', continueId: 'btnNvrContinue', resetBtnId: 'btnNvrReset', modalId: 'nvrResetModal', confirmId: 'btnNvrResetConfirm', cancelId: 'btnNvrResetCancel' });
 // Camera checklist — "continue" scrolls to the form, then Next button advances flow
