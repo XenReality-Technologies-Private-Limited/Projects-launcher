@@ -494,6 +494,31 @@ main { padding-bottom: 110px; }
   .brand-tile { padding: 8px 12px; }
   .brand-tile img { max-height: 18px; }
 
+  /* SPA chrome: flatten wrapper, hide sidebar, show only setup section */
+  .spa-sidebar { display: none !important; }
+  .spa-wrapper { display: block !important; height: auto !important; overflow: visible !important; }
+  .spa-main { overflow: visible !important; height: auto !important; }
+  .spa-section { display: none !important; }
+  #sec-setup { display: block !important; }
+  .spa-section-footer, .video-cta-row { display: none !important; }
+
+  /* Brand logo: top-right corner of every page, above all content */
+  .spa-brand {
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    height: 44px !important;
+    border-bottom: none !important;
+    background: transparent !important;
+    padding: 6px 0 !important;
+  }
+  .spa-brand-logo { height: 26px !important; }
+  /* Steps that open a new page get top clearance for the logo */
+  #wizard .step.print-page-start { margin-top: 56px !important; }
+
+  /* 2 steps per page */
+  .print-break { break-after: page !important; }
+
   /* setup guide export (index page): hide the app chrome, show every step */
   #home, #about, #choose, #support { display: none !important; }
   #wizard { display: block !important; max-width: 100%; padding: 0; counter-reset: printstep; }

@@ -175,10 +175,21 @@
   // ── Export PDF: print the whole guide (all steps + requirements summary) ──
   function exportPdf() {
     document.querySelectorAll("details.trouble").forEach((d) => d.setAttribute("open", ""));
+    document.querySelectorAll("#wizard .step").forEach(function(step, i) {
+      // even index = page-starting step (1, 3, 5, 7, 9); odd = break after it
+      step.classList.toggle("print-break", (i + 1) % 2 === 0);
+      step.classList.toggle("print-page-start", i % 2 === 0);
+    });
     window.print();
   }
-  window.addEventListener("afterprint", () => {
+  window.addEventListener("afterprint", function() {
     document.querySelectorAll("details.trouble[open]").forEach((d) => d.removeAttribute("open"));
+    document.querySelectorAll("#wizard .step.print-break").forEach(function(step) {
+      step.classList.remove("print-break");
+    });
+    document.querySelectorAll("#wizard .step.print-page-start").forEach(function(step) {
+      step.classList.remove("print-page-start");
+    });
   });
   const btnExportPdf = document.getElementById("btnExportPdf");
   const btnExportPdf2 = document.getElementById("btnExportPdf2");

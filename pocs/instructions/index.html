@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XenReality Pi 5 Setup Guide</title>
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=10">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
 <link rel="stylesheet" href="css/form.css">
 <!-- Google Translate -->
@@ -158,46 +158,40 @@
     </div>
 
     <ul class="spa-sidebar-menu">
-      <!-- Group 1: Requirements flow -->
+      <!-- Group 1: Pre-Requisites -->
       <div class="spa-menu-group">
-        <a class="spa-menu-item active" data-target="sec-guidelines" onclick="appFlow.nav(this)">
+        <div class="spa-sub-group-label">Pre-Requisites</div>
+        <a class="spa-menu-item active spa-menu-sub" data-target="sec-guidelines" onclick="appFlow.nav(this)">
           Camera Guidelines
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
-        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-infra" onclick="appFlow.nav(this)">
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-infra" onclick="appFlow.nav(this)">
           Network Infrastructure
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
-        <div class="spa-sub-group-label">Router Settings</div>
-        <a class="spa-menu-item locked spa-menu-sub2" data-target="sec-static-tplink" onclick="appFlow.nav(this)">
-          AI Edge Device IP Discovery
-          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        </a>
-        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-nvr" onclick="appFlow.nav(this)">
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-nvr" onclick="appFlow.nav(this)">
           NVR Requirements
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
-        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-creds" onclick="appFlow.nav(this)">
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-creds" onclick="appFlow.nav(this)">
           Camera Requirements
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
       </div>
-      <!-- Group 2: Installation -->
+      <!-- Group 2: AI Edge Device Config -->
       <div class="spa-menu-group">
-        <a class="spa-menu-item" data-target="sec-rpi" onclick="appFlow.nav(this)">
+        <div class="spa-sub-group-label">AI Edge Device Config</div>
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-rpi" onclick="appFlow.nav(this)">
           Raspberry Pi
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </a>
-        <a class="spa-menu-item locked spa-menu-sub" data-target="sec-setup" onclick="appFlow.nav(this)">
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-setup" onclick="appFlow.nav(this)">
           Setup
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </a>
+        <a class="spa-menu-item spa-menu-sub" data-target="sec-static-tplink" onclick="appFlow.nav(this)">
+          IP Discovery
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </a>
       </div>
       <!-- Group Admin — shown only for role=admin -->
@@ -487,7 +481,7 @@
           </div>
           <div class="req-bar-actions">
             <button class="btn btn-ghost btn-sm" id="btnInfraReset">Reset</button>
-            <button class="btn btn-success btn-lg req-continue disabled" id="btnInfraContinue" disabled>Next: TP Link Router →</button>
+            <button class="btn btn-success btn-lg req-continue disabled" id="btnInfraContinue" disabled>Next →</button>
           </div>
         </div>
       </div>
@@ -1418,7 +1412,7 @@
 <script>
 // ── App flow (progressive unlock) ──
 var appFlow = {
-  order: ['sec-guidelines','sec-infra','sec-static-tplink','sec-nvr','sec-creds','sec-rpi','sec-setup'],
+  order: ['sec-guidelines','sec-infra','sec-nvr','sec-creds','sec-rpi','sec-setup','sec-static-tplink'],
 
   get unlocked() { return parseInt(localStorage.getItem('xr-instructions-unlocked') || '0'); },
   set unlocked(v) { localStorage.setItem('xr-instructions-unlocked', v); },
@@ -1464,31 +1458,27 @@ var appFlow = {
     this.order.forEach(function(id, i) {
       var el = document.querySelector('[data-target="' + id + '"]');
       if (!el) return;
-      el.classList.toggle('locked', i > u);
+      el.classList.remove('locked');
       el.classList.toggle('completed', i < u);
     });
-    // Always unlocked
-    var rpi = document.querySelector('[data-target="sec-rpi"]');
-    if (rpi) { rpi.classList.remove('locked'); }
   }
 };
 
 // ── NVR access choice modal ──
 function showNvrAccessModal() {
-  // First unlock next step (sec-nvr at index 3) so user can return to it later
-  var nvrIdx = appFlow.order.indexOf('sec-nvr');
-  var credsIdx = appFlow.order.indexOf('sec-creds');
-  if (nvrIdx > appFlow.unlocked) { appFlow.unlocked = nvrIdx; appFlow.refreshMenu(); }
+  var infraIdx = appFlow.order.indexOf('sec-infra');
+  if (infraIdx > appFlow.unlocked) { appFlow.unlocked = infraIdx; appFlow.refreshMenu(); }
   document.getElementById('nvrAccessModal').classList.remove('hidden');
 }
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnNvrAccessYes').addEventListener('click', function() {
     document.getElementById('nvrAccessModal').classList.add('hidden');
-    appFlow.next(); // from sec-static-tplink → sec-nvr
+    var nvrIdx = appFlow.order.indexOf('sec-nvr');
+    if (nvrIdx > appFlow.unlocked) { appFlow.unlocked = nvrIdx; appFlow.refreshMenu(); }
+    appFlow.showSection('sec-nvr');
   });
   document.getElementById('btnNvrAccessNo').addEventListener('click', function() {
     document.getElementById('nvrAccessModal').classList.add('hidden');
-    // Skip NVR, unlock and navigate to Camera Requirements
     var credsIdx = appFlow.order.indexOf('sec-creds');
     if (credsIdx > appFlow.unlocked) { appFlow.unlocked = credsIdx; appFlow.refreshMenu(); }
     appFlow.showSection('sec-creds');
@@ -1558,7 +1548,7 @@ function makeChecklist(cfg) {
 }
 
 // Infrastructure checklist
-makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 'infraCount', fillId: 'infraFill', continueId: 'btnInfraContinue', resetBtnId: 'btnInfraReset', modalId: 'infraResetModal', confirmId: 'btnInfraResetConfirm', cancelId: 'btnInfraResetCancel' });
+makeChecklist({ boxSel: '.infra-box', storeKey: 'xen-infra-checklist', countId: 'infraCount', fillId: 'infraFill', continueId: 'btnInfraContinue', resetBtnId: 'btnInfraReset', modalId: 'infraResetModal', confirmId: 'btnInfraResetConfirm', cancelId: 'btnInfraResetCancel', onNext: function() { showNvrAccessModal(); } });
 // NVR checklist
 makeChecklist({ boxSel: '.nvr-box', storeKey: 'xen-nvr-checklist', countId: 'nvrCount', fillId: 'nvrFill', continueId: 'btnNvrContinue', resetBtnId: 'btnNvrReset', modalId: 'nvrResetModal', confirmId: 'btnNvrResetConfirm', cancelId: 'btnNvrResetCancel' });
 // Camera checklist — "continue" scrolls to the form, then Next button advances flow
@@ -1677,7 +1667,7 @@ window.setLang = function(lang) {
 })();
 </script>
 
-<script src="js/app.js?v=3"></script>
+<script src="js/app.js?v=5"></script>
 <script src="js/video-modal.js?v=1"></script>
 <script type="module" src="js/camera-nvr-form.js"></script>
 <script>
