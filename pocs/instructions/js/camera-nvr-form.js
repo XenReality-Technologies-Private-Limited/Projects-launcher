@@ -78,8 +78,8 @@ function renderFormStructure(container) {
         <div class="form-group">
           <label class="form-label">Mobile Number <span class="req">*</span></label>
           <input type="tel" class="form-control" id="f_phone" placeholder="+919876543210" required>
-          <span class="form-hint">Format: +91 followed by 10 digits</span>
-          <div class="form-error-msg">Enter a valid Indian phone number (+91XXXXXXXXXX)</div>
+          <span class="form-hint">Enter 10-digit number (e.g. 9876543210 or +91 9876543210)</span>
+          <div class="form-error-msg">Enter a valid 10-digit mobile number</div>
         </div>
 
         <div class="form-group">
@@ -516,9 +516,10 @@ function validateStep(step) {
         error = true;
       }
     } else {
-      // Format validation
-      if (input.id === 'f_phone' && !/^\\+91\\d{10}$/.test(input.value.trim())) {
-        error = true;
+      // Format validation — strip +, spaces, dashes then accept 10 digits or 91+10 digits
+      if (input.id === 'f_phone') {
+        const digits = input.value.trim().replace(/[\s\-\+]/g, '');
+        if (!/^(91)?\d{10}$/.test(digits)) { error = true; }
       }
       if (input.type === 'email' && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(input.value.trim())) {
         error = true;
