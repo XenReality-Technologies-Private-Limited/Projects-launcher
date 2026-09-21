@@ -302,7 +302,7 @@ function renderFormStructure(container) {
       </div>
       <h2 style="margin-bottom: 12px; color: var(--ink);">Details Saved Successfully!</h2>
       <p style="color: var(--ink-soft); margin-bottom: 30px; font-size: 1.1rem; line-height: 1.5;">Thank you. The camera and NVR credentials have been securely recorded.</p>
-      <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next: Raspberry Pi Setup →</button>
+      <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next →</button>
     </div>
   `;
 }
@@ -762,7 +762,9 @@ async function handleSubmit(e) {
     
     // Success
     document.getElementById('form-overlay').classList.remove('active');
-    document.getElementById('success-overlay').classList.remove('hidden');
+    const successEl = document.getElementById('success-overlay');
+    successEl.classList.remove('hidden');
+    successEl.classList.add('active');
     document.getElementById('submissionForm').reset();
     
   } catch (err) {
