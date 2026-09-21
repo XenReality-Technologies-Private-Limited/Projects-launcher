@@ -181,10 +181,6 @@
       <!-- Group 2: AI Edge Device Configuration -->
       <div class="spa-menu-group">
         <div class="spa-sub-group-label">AI Edge Device Configuration</div>
-        <a class="spa-menu-item spa-menu-sub" data-target="sec-rpi" onclick="appFlow.nav(this)">
-          Raspberry Pi
-          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        </a>
         <a class="spa-menu-item spa-menu-sub" data-target="sec-setup" onclick="appFlow.nav(this)">
           Setup
           <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -717,8 +713,8 @@
 
     </div><!-- /sec-creds -->
 
-    <!-- ══════════════════ RASPBERRY PI ══════════════════ -->
-    <div class="spa-section" id="sec-rpi">
+    <!-- ══════════════════ SETUP ══════════════════ -->
+    <div class="spa-section" id="sec-setup">
       <section class="hero" id="home">
         <span class="badge-chip"><span class="badge-new">NEW</span> Pi 5 guided installation</span>
         <h1>Set up your <span class="accent">XenReality&nbsp;Pi</span></h1>
@@ -752,13 +748,6 @@
         </div>
       </section>
 
-      <div class="spa-section-footer">
-        <button class="btn btn-primary btn-lg" onclick="appFlow.next()">Next: Setup →</button>
-      </div>
-    </div><!-- /sec-rpi -->
-
-    <!-- ══════════════════ SETUP ══════════════════ -->
-    <div class="spa-section" id="sec-setup">
       <section class="section" id="choose">
         <h2 class="section-title">Choose your business type</h2>
         <p class="section-sub">The Pi setup is exactly the same for both. The difference is what XenReality measures for you.<br>
@@ -1409,7 +1398,7 @@
 <script>
 // ── App flow (progressive unlock) ──
 var appFlow = {
-  order: ['sec-guidelines','sec-creds','sec-nvr','sec-infra','sec-rpi','sec-setup','sec-static-tplink'],
+  order: ['sec-guidelines','sec-creds','sec-nvr','sec-infra','sec-setup','sec-static-tplink'],
 
   get unlocked() { return parseInt(localStorage.getItem('xr-instructions-unlocked') || '0'); },
   set unlocked(v) { localStorage.setItem('xr-instructions-unlocked', v); },
