@@ -521,11 +521,11 @@ function validateStep(step) {
         const digits = input.value.trim().replace(/[\s\-\+]/g, '');
         if (!/^(91)?\d{10}$/.test(digits)) { error = true; }
       }
-      if (input.type === 'email' && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(input.value.trim())) {
+      if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
         error = true;
       }
       if (input.id === 'f_nvr_ip' || input.id === 'f_router_ip' || input.classList.contains('cam-ip')) {
-        if (!/^((25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(25[0-5]|2[0-4]\\d|[01]?\\d\\d?)$/.test(input.value.trim())) {
+        if (!/^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$/.test(input.value.trim())) {
           error = true;
           customMsg = 'Enter a valid IPv4 address';
         }
