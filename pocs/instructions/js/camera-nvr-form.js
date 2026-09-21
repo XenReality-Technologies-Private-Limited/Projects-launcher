@@ -78,7 +78,7 @@ function renderFormStructure(container) {
         <div class="form-group">
           <label class="form-label">Mobile Number <span class="req">*</span></label>
           <input type="tel" class="form-control" id="f_phone" placeholder="+919876543210" required>
-          <span class="form-hint">Enter 10-digit number (e.g. 9876543210 or +91 9876543210)</span>
+          <span class="form-hint"></span>
           <div class="form-error-msg">Enter a valid 10-digit mobile number</div>
         </div>
 
