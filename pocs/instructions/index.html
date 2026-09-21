@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XenReality Pi 5 Setup Guide</title>
 <link rel="icon" type="image/png" href="images/xenreality-logo.png">
-<link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/style.css?v=12">
 <link rel="stylesheet" href="css/video-modal.css?v=1">
 <link rel="stylesheet" href="css/form.css">
 <!-- Google Translate -->
@@ -146,7 +146,11 @@
   <!-- ── Brand logo: fixed, always visible ── -->
   <div class="spa-brand">
     <img src="https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/images/xenlogo.png" alt="XenReality" class="spa-brand-logo">
+    <button id="mob-menu-btn" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
+  <div id="mob-backdrop"></div>
 
   <!-- ── Sidebar ── -->
   <aside class="spa-sidebar">
@@ -1572,12 +1576,31 @@ makeChecklist({ boxSel: '.cam-box', storeKey: 'xen-cam-checklist', countId: 'cam
 document.addEventListener('DOMContentLoaded', function() {
   appFlow.init();
 
-  var sidebar = document.querySelector('.spa-sidebar');
-  var toggle  = document.getElementById('sidebar-toggle');
+  var sidebar  = document.querySelector('.spa-sidebar');
+  var toggle   = document.getElementById('sidebar-toggle');
+  var mobBtn   = document.getElementById('mob-menu-btn');
+  var backdrop = document.getElementById('mob-backdrop');
+
+  // Desktop: collapse/expand via chevron
   if (localStorage.getItem('xr-sidebar-collapsed') === '1') sidebar.classList.add('collapsed');
   toggle.addEventListener('click', function() {
     var c = sidebar.classList.toggle('collapsed');
     localStorage.setItem('xr-sidebar-collapsed', c ? '1' : '0');
+  });
+
+  // Mobile: hamburger slides sidebar in as overlay
+  function mobOpen()  { sidebar.classList.add('mob-open');  backdrop.classList.add('visible'); }
+  function mobClose() { sidebar.classList.remove('mob-open'); backdrop.classList.remove('visible'); }
+  mobBtn.addEventListener('click', function() {
+    sidebar.classList.contains('mob-open') ? mobClose() : mobOpen();
+  });
+  backdrop.addEventListener('click', mobClose);
+
+  // Close mobile menu when a nav item is tapped
+  document.querySelectorAll('.spa-menu-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      if (window.innerWidth <= 768) mobClose();
+    });
   });
 });
 

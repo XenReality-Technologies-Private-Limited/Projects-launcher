@@ -694,3 +694,38 @@ body { top: 0 !important; }
 .tplink-table td { color: var(--ink-soft); }
 .tplink-step code { background: #eef2f7; padding: 2px 6px; border-radius: 5px; font-size: 0.87rem; color: var(--ink); }
 .tplink-section-wrap { padding: 32px 5%; display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Mobile hamburger (hidden on desktop) ── */
+#mob-menu-btn { display: none; }
+#mob-backdrop { display: none; position: fixed; inset: 64px 0 0 0; background: rgba(0,0,0,0.45); z-index: 140; }
+#mob-backdrop.visible { display: block; }
+
+@media (max-width: 768px) {
+  /* Brand bar spans full width and shows hamburger */
+  .spa-brand { width: 100%; justify-content: space-between; pointer-events: auto; padding-right: 14px; }
+  #mob-menu-btn { display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 8px; border-radius: 8px; color: var(--ink-soft); transition: background .15s; }
+  #mob-menu-btn:hover { background: var(--line); }
+
+  /* Sidebar: fixed overlay, slides in from left */
+  .spa-sidebar { position: fixed; top: 64px; left: 0; height: calc(100vh - 64px); width: 280px !important; z-index: 150; transform: translateX(-100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); box-shadow: 4px 0 24px rgba(0,0,0,0.14); }
+  .spa-sidebar.mob-open { transform: translateX(0); }
+  .spa-sidebar.collapsed { width: 280px !important; }
+  .spa-sidebar-header { display: none; }
+
+  /* Main content fills full width */
+  .spa-main { padding-top: 0; width: 100%; }
+  .spa-section-footer { padding: 0 16px 20px; }
+
+  /* Hero tweaks */
+  .hero-compact { padding-top: 80px !important; }
+  .hero h1, .hero-compact h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+
+  /* TP Link table scrolls horizontally */
+  .tplink-step { padding: 18px 16px; }
+  .tplink-table { display: block; overflow-x: auto; white-space: nowrap; }
+  .tplink-table td, .tplink-table th { white-space: normal; }
+
+  /* Grids: reduce columns */
+  .angle-grid { grid-template-columns: 1fr; }
+  .dist-grid { grid-template-columns: 1fr 1fr; }
+}
