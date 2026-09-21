@@ -2,8 +2,6 @@
 
 const pb = new PocketBase('https://pb.xenreality.com');
 
-// Configuration
-const RECAPTCHA_SITE_KEY = '6Ld81sYtAAAAAD5iOXnq-TptlOyZfpVNWevsB-Pw';
 
 const NAMED_BRANDS = [
   'Axis Communications', 'Bosch', 'CP PLUS', 'Dahua', 'Hanwha Vision',
@@ -20,13 +18,6 @@ initForm();
 function initForm() {
   const container = document.getElementById('cameraNvrForm');
   if (!container) return;
-
-  // Add reCAPTCHA script dynamically
-  const script = document.createElement('script');
-  script.src = 'https://www.google.com/recaptcha/api.js';
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
 
   renderFormStructure(container);
   bindEvents();
@@ -287,10 +278,6 @@ function renderFormStructure(container) {
           <div class="form-error-msg">You must confirm to proceed</div>
         </div>
 
-        <div class="captcha-container">
-          <div class="g-recaptcha" data-sitekey="${RECAPTCHA_SITE_KEY}"></div>
-          <div class="form-error-msg" id="captcha-error" style="text-align: center;">Please complete the CAPTCHA</div>
-        </div>
       </div>
 
       <!-- Navigation Actions -->
@@ -699,14 +686,6 @@ async function handleSubmit(e) {
   
   if (!validateStep(4)) return;
   
-  // Validate CAPTCHA
-  const captchaResponse = window.grecaptcha ? grecaptcha.getResponse() : '';
-  if (!captchaResponse) {
-    document.getElementById('captcha-error').classList.add('visible');
-    return;
-  }
-  document.getElementById('captcha-error').classList.remove('visible');
-  
   const v = (id) => document.getElementById(id)?.value || '';
   const brandValue = v('f_brand') === 'Other' ? v('f_brand_other') : v('f_brand');
   
@@ -785,7 +764,6 @@ async function handleSubmit(e) {
     document.getElementById('form-overlay').classList.remove('active');
     document.getElementById('success-overlay').classList.remove('hidden');
     document.getElementById('submissionForm').reset();
-    if (window.grecaptcha) window.grecaptcha.reset();
     
   } catch (err) {
     console.error("Submission error:", err);
