@@ -1,4 +1,14 @@
 /* ── Video watch CTA (hero) ── */
+.choice-col {
+  display: flex;
+  flex-direction: column;
+}
+.choice-col .choice-card {
+  width: 100%;
+}
+.choice-col .video-cta-row {
+  margin-top: 16px;
+}
 .video-cta-row {
   margin-top: 20px;
   display: flex;

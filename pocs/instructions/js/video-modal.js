@@ -3,6 +3,7 @@
   var video   = document.getElementById('xrSetupVideo');
   var btnOpen = document.getElementById('btnWatchVideo');
   var btnOpenConfig = document.getElementById('btnWatchConfiguratorVideo');
+  var btnOpenFnbConfig = document.getElementById('btnWatchFnbConfiguratorVideo');
   var btnClose= document.getElementById('xrVideoClose');
   var btnPlay = document.getElementById('xrVideoPlayBtn');
   var fill    = document.getElementById('xrProgressFill');
@@ -48,6 +49,12 @@
   if (btnOpenConfig) {
     btnOpenConfig.addEventListener('click', function() {
       openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Configurator.mp4", "Configurator Setup");
+    });
+  }
+
+  if (btnOpenFnbConfig) {
+    btnOpenFnbConfig.addEventListener('click', function() {
+      openModal("https://d2uimaqek2eby3.cloudfront.net/Instruction_Manual/Configuration%20for%20FnB.mp4", "Configurator Setup — F&B");
     });
   }
 
