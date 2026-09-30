@@ -101,7 +101,6 @@ export function renderDashboard(app, data, videos) {
     </header>
 
     <iframe id="live-frame" src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:100;"></iframe>
-    <iframe id="fb-frame"   src="" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:100;"></iframe>
 
     <div class="dash-body" id="poc-body">
 
@@ -497,7 +496,6 @@ export function renderDashboard(app, data, videos) {
   // ── PoC / Live / Fresh-Bakes toggle ─────────────────────────────────────
   const pocBody      = document.getElementById('poc-body');
   const liveFrame    = document.getElementById('live-frame');
-  const fbFrame      = document.getElementById('fb-frame');
   const btnPoc       = document.getElementById('btn-poc');
   const btnLive      = document.getElementById('btn-live');
   const btnFb        = document.getElementById('btn-fb');
@@ -508,7 +506,6 @@ export function renderDashboard(app, data, videos) {
 
   function hideAllFrames() {
     liveFrame.style.display = 'none';
-    fbFrame.style.display   = 'none';
   }
 
   function setHeaderOverlay(_on) {
@@ -535,8 +532,6 @@ export function renderDashboard(app, data, videos) {
     allVids.forEach(v => v.pause());
     pocBody.style.display = 'none';
     hideAllFrames();
-    if (!fbFrame.src || fbFrame.src === location.href) fbFrame.src = 'https://arvind.xenreality.com/';
-    fbFrame.style.display = 'block';
     setHeaderOverlay(true);
     headerTitle.textContent = 'XenTrack Dashboard';
     if (customerLogo) customerLogo.style.visibility = '';
