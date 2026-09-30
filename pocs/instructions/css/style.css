@@ -500,7 +500,7 @@ main { padding-bottom: 110px; }
   .spa-main { overflow: visible !important; height: auto !important; }
   .spa-section { display: none !important; }
   #sec-setup { display: block !important; }
-  .spa-section-footer, .video-cta-row { display: none !important; }
+  .spa-section-footer, .video-cta-row, .configurator-note { display: none !important; }
 
   /* Brand logo: top-right corner of every page, above all content */
   .spa-brand {
