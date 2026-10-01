@@ -1068,6 +1068,116 @@
         </div>
       </section>
 
+      <section class="section" id="camera-setup-help">
+        <h2 class="section-title">Camera Setup Help</h2>
+        <p class="section-sub">What to do when your cameras don't show up in the list.</p>
+
+        <div class="card req-card">
+          <h3>First: turn on ONVIF</h3>
+          <ul class="mini-list">
+            <li>The configurator finds cameras using a setting called <strong>ONVIF</strong>.</li>
+            <li>If your NVR or cameras don't appear in the list, ONVIF is probably turned off.</li>
+            <li>Turn it on in the NVR. Do the same on any camera that is plugged into the network directly instead of into the NVR.</li>
+          </ul>
+
+          <details class="trouble" style="margin-top:16px;">
+            <summary>How to turn on ONVIF</summary>
+            <div class="trouble-body">
+              <p style="font-weight:700;margin-bottom:4px;">1. Open the NVR's settings page</p>
+              <ul class="mini-list" style="margin-bottom:14px;">
+                <li>On a laptop connected to the store network, open a web browser.</li>
+                <li>Type the NVR's IP address in the address bar, e.g. <code>http://192.168.1.100</code></li>
+                <li>Log in with the NVR's admin username and password.</li>
+              </ul>
+
+              <p style="font-weight:700;margin-bottom:4px;">2. Hikvision / HiLook</p>
+              <ul class="mini-list" style="margin-bottom:14px;">
+                <li>Go to <strong>Configuration &gt; Network &gt; Advanced Settings &gt; Integration Protocol</strong>.</li>
+                <li>Tick <strong>Enable Open Network Video Interface</strong> (this is ONVIF).</li>
+                <li>Click <strong>Add</strong> to create an ONVIF user: type a username and password, set the level to <strong>Administrator</strong>, and click <strong>OK</strong>.</li>
+                <li>Click <strong>Save</strong>.</li>
+                <li>Use this ONVIF username and password when the configurator asks.</li>
+              </ul>
+
+              <p style="font-weight:700;margin-bottom:4px;">3. Dahua / CP Plus</p>
+              <ul class="mini-list" style="margin-bottom:14px;">
+                <li>Go to <strong>Settings &gt; Network &gt; Access Platform</strong>, and open the <strong>ONVIF</strong> tab. (On some models: <strong>Settings &gt; Network &gt; ONVIF</strong>.)</li>
+                <li>Turn ONVIF on (<strong>Enable</strong>) and click <strong>Save</strong> / <strong>Apply</strong>.</li>
+                <li>Use the NVR's normal admin username and password in the configurator.</li>
+              </ul>
+
+              <p style="font-weight:700;margin-bottom:4px;">4. Other brands</p>
+              <ul class="mini-list" style="margin-bottom:0;">
+                <li>Look for <strong>ONVIF</strong> in the Network settings and turn it on.</li>
+              </ul>
+
+              <div class="callout" style="margin-top:14px;">
+                The menu names can be slightly different depending on the model. If you can't find the setting, search for "ONVIF" in the NVR's manual.
+              </div>
+            </div>
+          </details>
+
+          <div class="callout callout-warn" style="margin-top:14px;">
+            <strong>After turning ONVIF on:</strong> click <strong>Re-scan</strong> in the configurator. Only if the cameras still don't appear, follow the steps below.
+          </div>
+        </div>
+
+        <div class="card req-card">
+          <h3>If the cameras still don't show up</h3>
+          <ol class="num-list">
+            <li>
+              <strong>Find the channel number of your camera</strong>
+              <ul class="mini-list" style="margin-top:6px;">
+                <li>Open <strong>KVMS</strong> (or your NVR's viewing app).</li>
+                <li>Go to <strong>Add Device</strong>.</li>
+                <li>Enter the NVR's IP address, username and password, and save.</li>
+                <li>Your cameras are now listed.</li>
+                <li>The channel number is the camera's number in that list: Camera 1 = channel 1, Camera 2 = channel 2, and so on.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Enter the details in the configurator</strong>
+              <ul class="mini-list" style="margin-top:6px;">
+                <li>Click <strong>Enter camera details manually</strong>.</li>
+                <li><strong>Manufacturer:</strong> choose your brand (Hikvision, Dahua or CP Plus).</li>
+                <li><strong>NVR / DVR IP Address:</strong> the NVR's IP address.</li>
+                <li><strong>RTSP Port:</strong> leave it as <code>554</code>.</li>
+                <li><strong>Channel Number:</strong> the number you found in step 1.</li>
+                <li><strong>Username</strong> and <strong>Password:</strong> the NVR's login.</li>
+                <li>Click <strong>Next</strong>, then <strong>Test Stream</strong>. You should see the camera's picture.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>If your brand is not in the list</strong>
+              <ul class="mini-list" style="margin-top:6px;margin-bottom:0;">
+                <li>Choose <strong>Other</strong>.</li>
+                <li>Paste the camera's full RTSP address (you can find it in the camera's manual or on the maker's website).</li>
+                <li>It looks like this: <code>rtsp://username:password@IP-address:554/...</code></li>
+              </ul>
+            </li>
+          </ol>
+
+          <details class="trouble" style="margin-top:16px;">
+            <summary>For reference: how the address is built</summary>
+            <div class="trouble-body">
+              <p style="color:var(--ink-soft);font-size:0.9rem;">The configurator builds the RTSP address for you. For example, for channel 3:</p>
+              <table style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+                <thead>
+                  <tr style="background:#f1f5f9;">
+                    <th style="text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);">Brand</th>
+                    <th style="text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);">RTSP address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="padding:8px 10px;border-bottom:1px solid var(--line);">Hikvision</td><td style="padding:8px 10px;border-bottom:1px solid var(--line);"><code>rtsp://admin:password@192.168.1.64:554/Streaming/Channels/301</code></td></tr>
+                  <tr><td style="padding:8px 10px;">Dahua / CP Plus</td><td style="padding:8px 10px;"><code>rtsp://admin:password@192.168.1.64:554/cam/realmonitor?channel=3&amp;subtype=0</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <section class="section" id="support">
         <div class="card support-card">
           <h2>Stuck? We've got you.</h2>
