@@ -88,8 +88,19 @@
   const err  = document.getElementById('err');
   const btn  = document.getElementById('btn');
 
+  // Blank/missing role = Xen Employee (default). Only employees may enter here —
+  // Partners and Customers are blocked, same as every other role check on this site.
+  const isEmployee = () => {
+    const role = pb.authStore.model?.role;
+    return !role || role === 'employee';
+  };
+
   if (pb.authStore.isValid) {
-    window.location.replace('/label-studio-projects/');
+    if (isEmployee()) {
+      window.location.replace('/label-studio-projects/');
+    } else {
+      pb.authStore.clear();
+    }
   }
 
   form.addEventListener('submit', async (e) => {
@@ -101,6 +112,10 @@
     btn.textContent = 'Signing in…';
     try {
       await pb.collection('xr_employees').authWithPassword(identity, password);
+      if (!isEmployee()) {
+        pb.authStore.clear();
+        throw new Error('blocked');
+      }
       history.replaceState(null, '', location.href);
       window.location.replace('/label-studio-projects/');
     } catch {

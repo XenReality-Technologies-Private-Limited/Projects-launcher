@@ -1,4 +1,19 @@
 <title>Label Studio Project Registry</title>
+<style>html{visibility:hidden}</style>
+<script type="module">
+  import PocketBase from 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.0/dist/pocketbase.es.mjs';
+  const pb = new PocketBase('https://pb.xenreality.com');
+  // Blank/missing role = Xen Employee (default). Only employees may view this registry —
+  // Partners and Customers are blocked, same as every other role check on this site.
+  const role = pb.authStore.model?.role;
+  const isEmployee = !role || role === 'employee';
+  if (!pb.authStore.isValid || !isEmployee) {
+    if (pb.authStore.isValid) pb.authStore.clear();
+    window.location.replace('/label-studio-projects/login.html');
+  } else {
+    document.documentElement.style.visibility = 'visible';
+  }
+</script>
 <style>
   :root{
     --bg:#f5f4f0;
