@@ -124,10 +124,10 @@ function isEmployee(role) {
   return !role || role === 'employee';
 }
 
-function cardHTML(item, displayName) {
+function cardHTML(item, displayName, searchText) {
   const initial = item.name.charAt(0).toUpperCase();
   const color   = accentColor(item.name);
-  const search  = displayName.toLowerCase();
+  const search  = (searchText || displayName).toLowerCase();
 
   if (!item.url) {
     return `
@@ -164,7 +164,7 @@ function visibleCategories(role) {
 
 function groupHTML(group) {
   const cards = group.items
-    .map((it) => cardHTML(it, group.prefix ? `${group.prefix} - ${it.name}` : it.name))
+    .map((it) => cardHTML(it, it.name, group.prefix ? `${group.prefix} ${it.name}` : it.name))
     .join('');
   const heading = group.heading ? `<h2 class="group-heading">${group.heading}</h2>` : '';
   return `<section class="group-section">${heading}<div class="projects-grid">${cards}</div></section>`;
