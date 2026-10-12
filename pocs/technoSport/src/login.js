@@ -7,8 +7,13 @@ const COLLECTION = 'xr_employees';
 
 export function requireAuth(onAuthed) {
   const _m = pb.authStore.model;
-  if (pb.authStore.isValid && (!_m?.poc || _m.poc === POC_SLUG)) { onAuthed(); return; }
-  if (pb.authStore.isValid) pb.authStore.clear();
+  if (pb.authStore.isValid) {
+    if (!_m?.poc || _m.poc === POC_SLUG) { onAuthed(); return; }
+    // Valid session, but for a different project's account — send them to
+    // where they actually belong instead of clearing it and re-prompting.
+    window.location.replace('/' + _m.poc + '/');
+    return;
+  }
 
   const overlay = document.createElement('div');
   overlay.id = 'auth-overlay';
@@ -59,6 +64,13 @@ export function requireAuth(onAuthed) {
     btn.textContent = 'Signing in…';
     try {
       await pb.collection(COLLECTION).authWithPassword(identity, password);
+      const _m = pb.authStore.model;
+      if (_m?.poc && _m.poc !== POC_SLUG) {
+        // Right credentials, wrong project's login page — take them to their
+        // own dashboard instead of rejecting a perfectly valid login.
+        window.location.replace('/' + _m.poc + '/');
+        return;
+      }
       history.replaceState(null, '', location.href);
       overlay.remove();
       onAuthed();

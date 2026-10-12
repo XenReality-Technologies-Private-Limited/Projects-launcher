@@ -105,6 +105,27 @@ body {
   color: var(--text-muted);
 }
 
+.header-signout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.header-signout:hover {
+  background: #f3f4f6;
+  color: var(--text-primary);
+}
+
 /* ── Camera grid ─────────────────────────────────────────── */
 
 .camera-grid {
