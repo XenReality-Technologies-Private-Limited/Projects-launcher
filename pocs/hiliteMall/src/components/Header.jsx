@@ -32,7 +32,7 @@ export default function Header() {
         <img src="/xenlogo.png" alt="XenReality" className="header-logo-img" />
       </div>
       <div className="header-center">
-        <span className="header-title">HILITE MALL PoC DASHBOARD</span>
+        <span className="header-title">HILITE MALL XenTrack Demo Dashboard</span>
       </div>
       <div className="header-right">
         <span className="header-status">SYSTEM ONLINE</span>

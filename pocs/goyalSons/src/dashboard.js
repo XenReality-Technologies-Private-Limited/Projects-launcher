@@ -28,7 +28,7 @@ export function renderDashboard(appEl, { videoUrl, logoUrl }, { events, firstSee
         </div>
         <div class="header-vdivider"></div>
       </div>
-      <div class="header-title">PoC Dashboard</div>
+      <div class="header-title">XenTrack Demo Dashboard</div>
       <div class="header-right">
         <div class="header-datetime">
           <span class="header-date" id="hdr-date"></span>
