@@ -256,7 +256,7 @@ body {
 .project-avatar--logo {
   background: #fff;
   border: 1px solid var(--card-border);
-  padding: 10px;
+  padding: 4px;
 }
 
 .project-avatar--logo img {
