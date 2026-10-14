@@ -242,13 +242,13 @@ body {
 }
 
 .project-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 88px;
+  height: 88px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 2.2rem;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -256,7 +256,7 @@ body {
 .project-avatar--logo {
   background: #fff;
   border: 1px solid var(--card-border);
-  padding: 5px;
+  padding: 10px;
 }
 
 .project-avatar--logo img {
