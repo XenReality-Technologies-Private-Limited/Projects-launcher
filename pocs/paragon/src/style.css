@@ -594,7 +594,7 @@ body {
 .header-time { font-size: 14px; }
 .header-live-pill { font-size: 13px; padding: 7px 14px; }
 .live-dot { width: 7px; height: 7px; }
-.header-customer-logo { height: 32px; }
+.header-customer-logo { height: 56px; }
 .header-signout { width: 36px; height: 36px; }
 
 .dash-header { height: 64px !important; }

@@ -469,7 +469,7 @@ body {
 .header-time { font-size: 14px; }
 .header-live-pill { font-size: 13px; padding: 7px 14px; }
 .live-dot { width: 7px; height: 7px; }
-.header-customer-logo { height: 32px; }
+.header-customer-logo { height: 56px; }
 .header-signout { width: 36px; height: 36px; }
 
 .dash-header { height: 64px !important; }
@@ -503,7 +503,6 @@ body {
   max-width: none !important;
 }
 
-/* thomsun logo — slightly smaller */
-.header-customer-logo { height: 32px !important; width: 120px !important; }
+.header-customer-logo { height: 56px !important; width: 180px !important; }
 
 .header-title { text-align: left !important; }
