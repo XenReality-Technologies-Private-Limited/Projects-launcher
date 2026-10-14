@@ -97,7 +97,7 @@ body {
 }
 .header-signout:hover { background: #f3f4f6; color: #374151; }
 
-.header-customer-logo { height: 28px; max-width: 120px; width: auto; object-fit: contain; }
+.header-customer-logo { height: 40px; max-width: 150px; width: auto; object-fit: contain; }
 
 /* ── Body: videos on top, metrics underneath ── */
 .content {

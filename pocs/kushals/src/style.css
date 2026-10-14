@@ -553,7 +553,7 @@ body {
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; flex-shrink: 0; }
 .header-signout { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: transparent; border: 1px solid #e5e7eb; color: #9ca3af; cursor: pointer; transition: background .15s, color .15s; flex-shrink: 0; padding: 0; }
 .header-signout:hover { background: #f3f4f6; color: #374151; }
-.header-customer-logo { height: 28px; max-width: 120px; width: auto; object-fit: contain; }
+.header-customer-logo { height: 40px; max-width: 150px; width: auto; object-fit: contain; }
 .dash-tabs { display: flex; align-items: center; gap: 4px; padding: 0 24px; height: 40px; background: #fff; border-bottom: 1px solid #e5e7eb; flex-shrink: 0; }
 .dash-tab { padding: 6px 16px; border: none; background: transparent; font-size: 0.82rem; font-weight: 500; color: #6b7280; cursor: pointer; border-radius: 6px; transition: background .15s, color .15s; }
 .dash-tab.active { background: #eef2ff; color: #4f46e5; font-weight: 700; }
