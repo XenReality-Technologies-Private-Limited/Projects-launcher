@@ -11,12 +11,6 @@ function findRow(rows, t) {
   return result;
 }
 
-// The customer gave these directly (not derived from tinRows): loading
-// starts at the first can and is confirmed stopped a bit after the last
-// one logged, rather than assuming it ends exactly at the final can.
-const LOADING_START_SEC = 7 * 60 + 27;
-const LOADING_STOP_SEC  = 36 * 60 + 46;
-
 const TRUCK_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17h4V5H2v12h3"/><path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5"/><path d="M14 17H9"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>`;
 const CAN_ICON   = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="13" rx="1.5"/><path d="M8 7V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/></svg>`;
 
@@ -63,7 +57,6 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
             <div class="status-card">
               <div class="status-card-head">
                 <span class="status-card-title"><span class="status-icon">${CAN_ICON}</span><span class="status-card-label">Oil Cans Loaded</span></span>
-                <span class="status-pill status-pill--pending" id="loading-pill">Not Started</span>
               </div>
               <div class="status-value">
                 <span class="status-big" id="cans-loaded">0</span>
@@ -102,7 +95,6 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
   const statusText   = appEl.querySelector('#truck-status-text');
   const statusSub    = appEl.querySelector('#truck-status-sub');
   const cansLoadedEl = appEl.querySelector('#cans-loaded');
-  const loadingPill  = appEl.querySelector('#loading-pill');
   const activityList = appEl.querySelector('#activity-list');
 
   // Every activity entry shows a wall-clock-looking time, even the can
@@ -135,8 +127,6 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
   for (const row of tinRows) {
     ALL_EVENTS.push({ timeSeconds: row.timeSeconds, text: 'Oil can loaded', dotClass: 'activity-dot--can' });
   }
-  ALL_EVENTS.push({ timeSeconds: LOADING_START_SEC, text: 'Loading started', dotClass: 'activity-dot--can' });
-  ALL_EVENTS.push({ timeSeconds: LOADING_STOP_SEC, text: 'Loading complete', dotClass: 'activity-dot--on' });
   ALL_EVENTS.sort((a, b) => a.timeSeconds - b.timeSeconds);
 
   let lastEventCount = -1;
@@ -189,21 +179,10 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
     cansLoadedEl.textContent = row ? row.cumulative : 0;
   }
 
-  function updateLoadingState(t) {
-    const state = t < LOADING_START_SEC ? 'pending'
-      : t < LOADING_STOP_SEC ? 'active'
-      : 'done';
-    loadingPill.className = `status-pill status-pill--${state}`;
-    loadingPill.textContent = state === 'pending' ? 'Not Started'
-      : state === 'active' ? 'Loading In Progress'
-      : 'Loading Complete';
-  }
-
   function updateAll() {
     const t = video.currentTime;
     updateTruckStatus(t);
     updateCans(t);
-    updateLoadingState(t);
     updateActivity(t);
   }
 
