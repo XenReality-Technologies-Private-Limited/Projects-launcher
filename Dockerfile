@@ -122,6 +122,12 @@ RUN cd pocs/majesticMaharaja && npm install --prefer-offline
 COPY pocs/majesticMaharaja/ ./pocs/majesticMaharaja/
 RUN cd pocs/majesticMaharaja && npm run build
 
+# ── rasoiKing ──
+COPY pocs/rasoiKing/package*.json ./pocs/rasoiKing/
+RUN cd pocs/rasoiKing && npm install --prefer-offline
+COPY pocs/rasoiKing/ ./pocs/rasoiKing/
+RUN cd pocs/rasoiKing && npm run build
+
 
 # ── instructions (static HTML, no build step) ──
 COPY pocs/instructions/ ./pocs/instructions/
@@ -149,6 +155,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/goyalSons/dist    _deploy/goyalSons && \
     cp -r pocs/chicking/dist      _deploy/chicking && \
     cp -r pocs/majesticMaharaja/dist _deploy/majesticMaharaja && \
+    cp -r pocs/rasoiKing/dist    _deploy/rasoiKing && \
     cp -r pocs/instructions      _deploy/instructions && \
     cp -r pocs/label-studio-projects _deploy/label-studio-projects
 

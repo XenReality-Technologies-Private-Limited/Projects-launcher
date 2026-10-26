@@ -77,6 +77,19 @@ const CATEGORIES = [
     ],
   },
   {
+    id: 'logistics',
+    label: 'Logistics / Food Supply Chain',
+    groups: [
+      {
+        heading: null,
+        prefix: null,
+        items: [
+          { name: 'Rasoi King', url: '/rasoiKing/', logo: 'https://d2uimaqek2eby3.cloudfront.net/Rasoi/Rasoi_King_Logo.webp' },
+        ],
+      },
+    ],
+  },
+  {
     id: 'instructions',
     label: 'Instruction Manual',
     groups: [
