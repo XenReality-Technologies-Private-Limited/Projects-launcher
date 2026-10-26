@@ -115,7 +115,12 @@ body {
 }
 
 /* ── Video (left) ── */
+/* align-self: start — otherwise CSS Grid stretches this to match the
+   sidebar's full height, and the fixed-aspect-ratio video inside it would
+   leave the same blank gap again, just inside the card instead of inside
+   the video element. */
 .video-card {
+  align-self: start;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -139,23 +144,22 @@ body {
   letter-spacing: 0.06em;
 }
 
+/* Fixed 16:9, same as every other POC's video panel (e.g. reliance's
+   .kpi-video-container) — letting this stretch to fill whatever flex
+   space was left over is what made it come out square; a real aspect
+   ratio keeps it a proper rectangle and sizes the sidebar to match. */
 .video-body {
-  flex: 1 1 auto;
-  min-height: 0;
+  aspect-ratio: 16 / 9;
   display: flex;
   background: #eef0f3;
   overflow: hidden;
 }
 
-/* `cover`, not `contain`: this camera's aspect ratio doesn't match the
-   panel's, and `contain` left a band of blank background under the frame
-   instead of filling the card. Crops the edges slightly rather than
-   leaving dead space. */
 .panel-video {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   background: #eef0f3;
 }
 
