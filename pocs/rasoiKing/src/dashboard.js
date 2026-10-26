@@ -118,13 +118,21 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
     if (empty) empty.remove();
     const li = document.createElement('li');
     li.className = 'activity-item';
-    li.innerHTML = `<span class="activity-dot ${dotClass}"></span><span class="activity-time">${wallTimeAt(t)}</span><span class="activity-text">${text}</span>`;
+    li.innerHTML = `<span class="activity-dot ${dotClass}"></span><button type="button" class="activity-time" data-seek="${t}" title="Jump to this point in the video">${wallTimeAt(t)}</button><span class="activity-text">${text}</span>`;
     activityList.insertBefore(li, activityList.firstChild);
     // Keep the feed from growing without bound over a long clip.
     while (activityList.children.length > 30) {
       activityList.removeChild(activityList.lastChild);
     }
   }
+
+  // Clicking a timestamp jumps the video there — delegated since rows are
+  // added continuously while the clip plays.
+  activityList.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-seek]');
+    if (!btn) return;
+    video.currentTime = parseFloat(btn.dataset.seek);
+  });
 
   let lastPresent = null;
 
