@@ -113,31 +113,65 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
     return row?.wallTime || '--:--:--';
   }
 
-  function logActivity(text, dotClass, t) {
-    const empty = activityList.querySelector('.activity-empty');
-    if (empty) empty.remove();
-    const li = document.createElement('li');
-    li.className = 'activity-item';
-    li.innerHTML = `<span class="activity-dot ${dotClass}"></span><button type="button" class="activity-time" data-seek="${t}" title="Jump to this point in the video">${wallTimeAt(t)}</button><span class="activity-text">${text}</span>`;
-    activityList.insertBefore(li, activityList.firstChild);
-    // Keep the feed from growing without bound over a long clip.
-    while (activityList.children.length > 30) {
-      activityList.removeChild(activityList.lastChild);
+  // The activity feed is a pure function of the current playhead position,
+  // not an incrementally-appended log. Earlier this only ever logged
+  // forward, so seeking backward (including via clicking an activity
+  // timestamp) left stale "future" entries sitting at the top of a list
+  // that no longer matched what the video was showing. Precomputing every
+  // possible event once and re-deriving "what's happened so far" from
+  // scratch on every update means it's always correct regardless of which
+  // direction the playhead just moved.
+  const ALL_EVENTS = [];
+  for (let i = 1; i < truckRows.length; i++) {
+    if (truckRows[i].present !== truckRows[i - 1].present) {
+      const present = truckRows[i].present === 1;
+      ALL_EVENTS.push({
+        timeSeconds: truckRows[i].timeSeconds,
+        text: present ? 'Truck detected at loading bay' : 'Truck departed',
+        dotClass: present ? 'activity-dot--on' : 'activity-dot--off',
+      });
     }
   }
+  for (const row of tinRows) {
+    ALL_EVENTS.push({ timeSeconds: row.timeSeconds, text: 'Oil can loaded', dotClass: 'activity-dot--can' });
+  }
+  ALL_EVENTS.push({ timeSeconds: LOADING_START_SEC, text: 'Loading started', dotClass: 'activity-dot--can' });
+  ALL_EVENTS.push({ timeSeconds: LOADING_STOP_SEC, text: 'Loading complete', dotClass: 'activity-dot--on' });
+  ALL_EVENTS.sort((a, b) => a.timeSeconds - b.timeSeconds);
 
-  // Clicking a timestamp jumps the video there — delegated since rows are
-  // added continuously while the clip plays.
+  let lastEventCount = -1;
+
+  function updateActivity(t) {
+    let count = 0;
+    while (count < ALL_EVENTS.length && ALL_EVENTS[count].timeSeconds <= t) count++;
+    if (count === lastEventCount) return; // nothing to re-render
+    lastEventCount = count;
+
+    if (count === 0) {
+      activityList.innerHTML = '<li class="activity-empty">No activity yet</li>';
+      return;
+    }
+    // No cap — by the end of the clip every row (all ~160 of them) should
+    // be listed, not just a recent window. The list scrolls.
+    const visible = ALL_EVENTS.slice(0, count).reverse();
+    activityList.innerHTML = visible.map((ev) => `
+      <li class="activity-item">
+        <span class="activity-dot ${ev.dotClass}"></span>
+        <button type="button" class="activity-time" data-seek="${ev.timeSeconds}" title="Jump to this point in the video">${wallTimeAt(ev.timeSeconds)}</button>
+        <span class="activity-text">${ev.text}</span>
+      </li>
+    `).join('');
+  }
+
+  // Clicking a timestamp jumps the video there — delegated since the list
+  // is rebuilt wholesale on every update.
   activityList.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-seek]');
     if (!btn) return;
     video.currentTime = parseFloat(btn.dataset.seek);
   });
 
-  let lastPresent = null;
-
-  function updateTruckStatus() {
-    const t   = video.currentTime;
+  function updateTruckStatus(t) {
     const row = findRow(truckRows, t);
     if (!row) return;
 
@@ -148,66 +182,29 @@ export function renderDashboard(appEl, { videoUrl }, { truckRows }) {
     statusSub.textContent = present
       ? 'Delivery truck detected at loading bay'
       : 'No truck currently at the loading bay';
-
-    if (lastPresent !== null && row.present !== lastPresent) {
-      logActivity(
-        present ? 'Truck detected at loading bay' : 'Truck departed',
-        present ? 'activity-dot--on' : 'activity-dot--off',
-        t
-      );
-    }
-    lastPresent = row.present;
   }
 
-  // Tracks how far into tinRows we've already logged, so fast-forwarding
-  // (or just timeupdate firing again before the next can) doesn't re-log
-  // the same can twice. Entries are replayed in order if the playhead jumps
-  // past more than one at once (e.g. a seek).
-  let loggedTinIndex = -1;
-
-  function updateCans() {
-    const t = video.currentTime;
+  function updateCans(t) {
     const row = findRow(tinRows, t);
     cansLoadedEl.textContent = row ? row.cumulative : 0;
-
-    const currentIndex = row ? tinRows.indexOf(row) : -1;
-    if (currentIndex > loggedTinIndex) {
-      for (let i = loggedTinIndex + 1; i <= currentIndex; i++) {
-        logActivity('Oil can loaded', 'activity-dot--can', tinRows[i].timeSeconds);
-      }
-    }
-    loggedTinIndex = currentIndex;
   }
 
-  let lastLoadingState = null; // 'pending' | 'active' | 'done'
-
-  function updateLoadingState() {
-    const t = video.currentTime;
+  function updateLoadingState(t) {
     const state = t < LOADING_START_SEC ? 'pending'
       : t < LOADING_STOP_SEC ? 'active'
       : 'done';
-
-    if (state !== lastLoadingState) {
-      loadingPill.className = `status-pill status-pill--${state}`;
-      loadingPill.textContent = state === 'pending' ? 'Not Started'
-        : state === 'active' ? 'Loading In Progress'
-        : 'Loading Complete';
-
-      if (lastLoadingState !== null) {
-        logActivity(
-          state === 'active' ? 'Loading started' : 'Loading complete',
-          state === 'active' ? 'activity-dot--can' : 'activity-dot--on',
-          t
-        );
-      }
-      lastLoadingState = state;
-    }
+    loadingPill.className = `status-pill status-pill--${state}`;
+    loadingPill.textContent = state === 'pending' ? 'Not Started'
+      : state === 'active' ? 'Loading In Progress'
+      : 'Loading Complete';
   }
 
   function updateAll() {
-    updateTruckStatus();
-    updateCans();
-    updateLoadingState();
+    const t = video.currentTime;
+    updateTruckStatus(t);
+    updateCans(t);
+    updateLoadingState(t);
+    updateActivity(t);
   }
 
   video.addEventListener('timeupdate', updateAll);
