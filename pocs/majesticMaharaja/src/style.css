@@ -386,6 +386,11 @@ body {
 
 .header-title { text-align: left !important; }
 
+/* ─── SureCount AI rebrand — full-color lockup, not a single-tone mark,
+   so it no longer sits in the navy pill or gets inverted to white ──── */
+.header-logo-pill { background: transparent; padding: 0; }
+.header-logo-pill img { height: 44px; width: auto; filter: none; }
+
 /* ── Video Section ──────────────────────────────────────────────────────────── */
 .video-section {
   margin-bottom: 8px;
