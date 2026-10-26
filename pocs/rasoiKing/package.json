@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "pocketbase": "^0.27.0",
-    "sql.js": "^1.14.0"
+    "sql.js": "1.14.0"
   },
   "devDependencies": {
     "vite": "^5.0.0"
