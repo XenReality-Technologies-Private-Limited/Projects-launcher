@@ -84,7 +84,7 @@ const CATEGORIES = [
         heading: null,
         prefix: null,
         items: [
-          { name: 'Rasoi King', url: '/rasoiKing/', logo: 'https://d2uimaqek2eby3.cloudfront.net/Rasoi/Rasoi_King_Logo.webp' },
+          { name: 'Rasoi King', url: '/rasoiKing/', logo: 'https://d2uimaqek2eby3.cloudfront.net/Rasoi/Rasoi_King_Logo.png' },
         ],
       },
     ],
