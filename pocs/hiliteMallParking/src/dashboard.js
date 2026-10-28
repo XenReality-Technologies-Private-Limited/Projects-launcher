@@ -7,12 +7,12 @@ function fmtClipTime(s) {
   return `${m}:${sec.toString().padStart(2, '0')}`;
 }
 
-// Each clip's `source` string embeds the camera recording's actual start
-// timestamp as a 14-digit YYYYMMDDHHMMSS run (format/position varies per
-// camera — e.g. "..._20260213195233_195312" vs "D19_20250927182300"), which
-// is clip time 0. Built using Date.UTC and read back with the UTC getters so
-// the displayed clock matches the camera's stamp regardless of the viewer's
-// own timezone.
+// Each clip's `source` string embeds the wall-clock start of the longer raw
+// recording the clip was cut from, as a 14-digit YYYYMMDDHHMMSS run (format
+// varies per camera — e.g. "..._20260213195233_195312" vs
+// "D19_20250927182300"). Built using Date.UTC and read back with the UTC
+// getters so the displayed clock matches the camera's stamp regardless of
+// the viewer's own timezone.
 function parseSourceEpoch(source) {
   const m = /(?<!\d)(\d{14})(?!\d)/.exec(source || '');
   if (!m) return null;
@@ -21,6 +21,18 @@ function parseSourceEpoch(source) {
     +s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8),
     +s.slice(8, 10), +s.slice(10, 12), +s.slice(12, 14)
   );
+}
+
+// The exported clip is usually a short slice of that longer raw recording —
+// per the schema's own note, "source time = clip time + source_window_s[0]"
+// — so clip time 0 is actually `source_window_s[0]` seconds after the raw
+// recording's start, not the raw start itself. Skipping this offset is what
+// made the on-screen detection time drift from the camera's burned-in clock.
+function clipZeroEpoch(clipData) {
+  const base = parseSourceEpoch(clipData.source);
+  if (base == null) return null;
+  const offset = Array.isArray(clipData.source_window_s) ? clipData.source_window_s[0] : 0;
+  return base + offset * 1000;
 }
 
 function fmtWallClock(sourceEpoch, clipSeconds) {
@@ -217,7 +229,7 @@ export function renderDashboard(appEl, clips) {
     const container  = overlay.parentElement;
     const alertPanel = appEl.querySelector(`#alerts-${clip.id}`);
     const incidents  = mergeAlerts((clip.data.events || []).filter((e) => e.alert));
-    const sourceEpoch = parseSourceEpoch(clip.data.source);
+    const sourceEpoch = clipZeroEpoch(clip.data);
 
     function draw() {
       const t = video.currentTime;
