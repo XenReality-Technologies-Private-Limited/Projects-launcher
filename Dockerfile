@@ -128,6 +128,12 @@ RUN cd pocs/rasoiKing && npm install --prefer-offline
 COPY pocs/rasoiKing/ ./pocs/rasoiKing/
 RUN cd pocs/rasoiKing && npm run build
 
+# ── hiliteMallParking ──
+COPY pocs/hiliteMallParking/package*.json ./pocs/hiliteMallParking/
+RUN cd pocs/hiliteMallParking && npm install --prefer-offline
+COPY pocs/hiliteMallParking/ ./pocs/hiliteMallParking/
+RUN cd pocs/hiliteMallParking && npm run build
+
 
 # ── instructions (static HTML, no build step) ──
 COPY pocs/instructions/ ./pocs/instructions/
@@ -156,6 +162,7 @@ RUN mkdir -p _deploy && \
     cp -r pocs/chicking/dist      _deploy/chicking && \
     cp -r pocs/majesticMaharaja/dist _deploy/majesticMaharaja && \
     cp -r pocs/rasoiKing/dist    _deploy/rasoiKing && \
+    cp -r pocs/hiliteMallParking/dist _deploy/hiliteMallParking && \
     cp -r pocs/instructions      _deploy/instructions && \
     cp -r pocs/label-studio-projects _deploy/label-studio-projects
 
