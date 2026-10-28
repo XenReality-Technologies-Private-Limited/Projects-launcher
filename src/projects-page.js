@@ -42,6 +42,7 @@ const CATEGORIES = [
           { name: 'Carrefour',    url: 'https://carrefour.xenreality.com/', ssoCollection: 'bata_users', logo: 'https://d2uimaqek2eby3.cloudfront.net/Carrefour/Carrefour-Logo.svg' },
           { name: 'V Bazaar',     url: '/vBazaar/',     logo: 'https://d2uimaqek2eby3.cloudfront.net/V%20Bazaar/V-Bazaar-logo.png' },
           { name: 'Safeer Group', url: '/safeerGroup/' },
+          { name: 'Hilite Mall',  url: '/hiliteMallParking/', logo: 'https://d2uimaqek2eby3.cloudfront.net/Hilite-Mall/hilite-mall-logo.svg' },
         ],
       },
       {
