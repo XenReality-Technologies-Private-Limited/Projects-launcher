@@ -86,7 +86,7 @@ function mergeAlerts(events) {
 // in draw()) even after playback moves past ev.end.
 function incidentCardHtml(ev, sourceEpoch, t, clipId) {
   const ended = t >= ev.end - 0.05;
-  const endLabel = ended ? fmtWallClock(sourceEpoch, ev.end) : 'Ongoing…';
+  const endLabel = fmtWallClock(sourceEpoch, ended ? ev.end : t);
   const dwellLabel = ended
     ? `${Math.round(ev.dwell_s)} seconds`
     : `${Math.round(Math.max(0, t - ev.start))} seconds`;
