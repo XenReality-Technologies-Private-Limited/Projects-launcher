@@ -77,7 +77,7 @@ function incidentCardHtml(ev, sourceEpoch, t, clipId) {
   const endLabel = ended ? fmtWallClock(sourceEpoch, ev.end) : 'Ongoing…';
   const dwellLabel = ended
     ? `${Math.round(ev.dwell_s)} seconds`
-    : `${Math.round(Math.max(0, t - ev.start))} seconds so far…`;
+    : `${Math.round(Math.max(0, t - ev.start))} seconds`;
 
   return `
     <div class="incident-card">
@@ -191,12 +191,14 @@ export function renderDashboard(appEl, clips) {
   setInterval(tickClock, 1000);
 
   // Clicking (or Enter/Space on) an incident's Detection Time seeks that
-  // clip's own video to the start of the incident.
+  // clip's own video to the start of the incident and plays it.
   function seekFromTarget(target) {
     const el = target.closest('[data-seek]');
     if (!el) return;
     const video = appEl.querySelector(`#video-${el.dataset.clip}`);
-    if (video) video.currentTime = parseFloat(el.dataset.seek);
+    if (!video) return;
+    video.currentTime = parseFloat(el.dataset.seek);
+    video.play();
   }
   appEl.addEventListener('click', (e) => seekFromTarget(e.target));
   appEl.addEventListener('keydown', (e) => {
