@@ -10,9 +10,9 @@ const CF = 'https://d2uimaqek2eby3.cloudfront.net/Hilite-Mall';
 // the tracks.json (per-frame tracking data the frontend doesn't need).
 const CLIPS = [
   { id: 'b2',      label: 'Camera B2',       video: `${CF}/detected_01_B2_0m02s.mp4`,                 events: `${CF}/detected_01_B2_0m02s.events.json` },
-  { id: 'd19',     label: 'Camera D19',      video: `${CF}/detected_02_D19_3m55s.mp4`,                events: `${CF}/detected_02_D19_3m55s.events.json` },
-  { id: 'admin3',  label: 'Admin — CH3',     video: `${CF}/detected_03_admin_ch3_0m54s.mp4`,          events: `${CF}/detected_03_admin_ch3_0m54s.events.json` },
   { id: 'bs2md',   label: 'BS2 MD Parking',  video: `${CF}/detected_04_BS2-MD-PARKING_1m09s.mp4`,     events: `${CF}/detected_04_BS2-MD-PARKING_1m09s.events.json` },
+  { id: 'admin3',  label: 'Admin — CH3',     video: `${CF}/detected_03_admin_ch3_0m54s.mp4`,          events: `${CF}/detected_03_admin_ch3_0m54s.events.json` },
+  { id: 'd19',     label: 'Camera D19',      video: `${CF}/detected_02_D19_3m55s.mp4`,                events: `${CF}/detected_02_D19_3m55s.events.json` },
 ];
 
 async function bootstrap() {
