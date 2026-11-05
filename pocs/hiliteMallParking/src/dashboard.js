@@ -182,7 +182,7 @@ export function renderDashboard(appEl, clips) {
         <div class="kpi-body">
           <div class="kpi-video-container">
             <span class="kpi-video-label">${clip.label.toUpperCase()}</span>
-            <video class="kpi-video" id="video-${clip.id}" src="${clip.video}" controls muted playsinline autoplay></video>
+            <video class="kpi-video" id="video-${clip.id}" src="${clip.video}" controls muted playsinline></video>
             <div class="kpi-overlay" id="overlay-${clip.id}"></div>
           </div>
           <div class="kpi-right">
@@ -250,18 +250,44 @@ export function renderDashboard(appEl, clips) {
   });
 
   // Alerts list: pick which camera's video + alert status is shown below it.
-  // The other cards stay mounted (not removed) so their video/alert-panel
-  // state keeps updating underneath, same as the side-nav panels above.
+  // The other cards stay mounted (not removed) so their alert-panel state
+  // keeps updating underneath, same as the side-nav panels above. Only the
+  // selected camera's video actually plays — switching away pauses it,
+  // switching to one (optionally restarting it) resumes/starts it.
   const clipButtons = appEl.querySelectorAll('[data-clip-select]');
   const clipCards = appEl.querySelectorAll('[data-clip-card]');
+  function selectClip(clipId, { restart = false } = {}) {
+    clipButtons.forEach((b) => b.classList.toggle('is-active', b.dataset.clipSelect === clipId));
+    clipCards.forEach((card) => {
+      const isSelected = card.dataset.clipCard === clipId;
+      card.hidden = !isSelected;
+      const v = card.querySelector('video');
+      if (!v) return;
+      if (isSelected) {
+        if (restart) v.currentTime = 0;
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    });
+  }
   clipButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      clipButtons.forEach((b) => b.classList.toggle('is-active', b === btn));
-      clipCards.forEach((card) => {
-        card.hidden = card.dataset.clipCard !== btn.dataset.clipSelect;
-      });
+    btn.addEventListener('click', () => selectClip(btn.dataset.clipSelect));
+  });
+
+  // Once a camera's video finishes, automatically move on to the next one
+  // (wrapping back to the first after the last), so the cameras play through
+  // in sequence without needing a click each time.
+  clips.forEach((clip, i) => {
+    const video = appEl.querySelector(`#video-${clip.id}`);
+    if (!video) return;
+    video.addEventListener('ended', () => {
+      const next = clips[(i + 1) % clips.length];
+      selectClip(next.id, { restart: true });
     });
   });
+
+  selectClip(clips[0].id, { restart: true });
 
   // Clock
   const hdrDate = appEl.querySelector('#hdr-date');
