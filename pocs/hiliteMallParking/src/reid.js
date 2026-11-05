@@ -35,6 +35,10 @@ const TRANSITION_SCREENSHOTS = {
 
 // ── SQLite (sql.js) loading ────────────────────────────────────────────
 async function createDatabase() {
+  // This CDN version must match the "sql.js" version pinned in package.json —
+  // the JS glue (from npm) and the .wasm binary (fetched here) have to come
+  // from the same build, or the wasm's exports won't match what the glue
+  // expects and initialization throws inside sql.js's own runtime.
   const SQL = await initSqlJs({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/sql.js@1.14.0/dist/${file}`,
   });
