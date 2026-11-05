@@ -11,13 +11,13 @@ const VIDEO_CONFIG = {
     url: `${CF}/ch20.mp4`,
     // Camera embedded timestamp at frame 0 (use this, not NVR filename time)
     startTime: '2026-04-24T15:37:22',
-    label: 'Ground Lobby — CAM ch20',
+    label: 'Ground Lobby - CAM ch20',
     suppressReId: true, // RE-ID only confirmed after cross-camera match; mirror ch25 here
   },
   ch25: {
     url: `${CF}/ch25.mp4`,
     startTime: '2026-04-24T15:41:09',
-    label: '-5 — CAM ch25',
+    label: '-5 - CAM ch25',
     // Show a ticking clock from ch20's start until this camera's feed begins
     clockStartTime: '2026-04-24T15:37:22',
   },
@@ -357,7 +357,7 @@ function cameraCardHtml(channel, cfg) {
         </div>
         <div class="camera-graph-block">
           <canvas class="kpi-graph" id="reid-graph-${channel}" width="600" height="120"></canvas>
-          <div class="kpi-legend">Re-ID match activity — last 60 s &nbsp;|&nbsp; green fill = person on floor</div>
+          <div class="kpi-legend">Re-ID match activity - last 60 s &nbsp;|&nbsp; green fill = person on floor</div>
         </div>
       </div>
     </section>`;
@@ -381,10 +381,10 @@ function journeyTableHtml(transitions) {
   const rows = transitions.map((t) => {
     const shots = TRANSITION_SCREENSHOTS[`${t.canonical_id}_${t.from_channel}`];
     const departedEye = shots?.departed
-      ? `<button type="button" class="eye-btn" data-snapshot="${shots.departed}" data-title="P#${t.canonical_id} — ${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} · ${fmtTimeIST(t.exit_time)}" title="View snapshot">${EYE_ICON}</button>`
+      ? `<button type="button" class="eye-btn" data-snapshot="${shots.departed}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} · ${fmtTimeIST(t.exit_time)}" title="View snapshot">${EYE_ICON}</button>`
       : '';
     const arrivedEye = shots?.arrived
-      ? `<button type="button" class="eye-btn" data-snapshot="${shots.arrived}" data-title="P#${t.canonical_id} — ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} · ${fmtTimeIST(t.entry_time)}" title="View snapshot">${EYE_ICON}</button>`
+      ? `<button type="button" class="eye-btn" data-snapshot="${shots.arrived}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} · ${fmtTimeIST(t.entry_time)}" title="View snapshot">${EYE_ICON}</button>`
       : '';
     return `
       <tr>
@@ -439,12 +439,12 @@ function statsRowHtml(persons, floorVisits) {
       </div>
       <div class="stat-card">
         <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_BLUE}</div>
-        <div class="stat-label">Total Dwell — Ground Lobby</div>
+        <div class="stat-label">Total Dwell - Ground Lobby</div>
         <div class="stat-value">${fmtDwellDuration(dwellCh20)}</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_PURPLE}</div>
-        <div class="stat-label">Total Dwell — -5</div>
+        <div class="stat-label">Total Dwell - -5</div>
         <div class="stat-value">${fmtDwellDuration(dwellCh25)}</div>
       </div>
     </div>`;
@@ -478,7 +478,7 @@ function setupCameraCard(mainEl, channel, cfg, series, { getForcedIds, onMatchCh
       : `<div class="kpi-metric-value reid-absent">--</div>`;
     subEl.textContent = activeIds.length > 0
       ? 'Cross-camera match on floor'
-      : isAwaiting ? 'Tracking — awaiting cross-camera match' : 'No match in frame';
+      : isAwaiting ? 'Tracking - awaiting cross-camera match' : 'No match in frame';
     onMatchChange?.(activeIds);
   }
 

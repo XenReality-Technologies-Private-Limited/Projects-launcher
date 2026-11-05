@@ -365,6 +365,20 @@ body {
   gap: 4px;
 }
 
+.kpi-metric-value {
+  font-variant-numeric: tabular-nums;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.kpi-legend {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
 .kpi-graph {
   width: 100%;
   height: 120px;
@@ -394,10 +408,7 @@ body {
 }
 
 .reid-absent {
-  font-variant-numeric: tabular-nums;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-muted) !important;
 }
 
 .reid-sublabel { margin-top: 2px; }
