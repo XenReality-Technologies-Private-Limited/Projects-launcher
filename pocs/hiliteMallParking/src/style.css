@@ -92,6 +92,107 @@ body {
 
 .header-customer-logo { height: 56px; max-width: 180px; width: auto; object-fit: contain; }
 
+/* ── Side nav + content ── */
+.app-body {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - 64px);
+}
+
+.side-nav {
+  flex: 0 0 auto;
+  width: 260px;
+  position: sticky;
+  top: 64px;
+  align-self: flex-start;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 12px;
+  background: var(--card-bg);
+  border-right: 1px solid var(--card-border);
+}
+
+.side-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.side-nav-item:hover { background: #f1f5f9; color: var(--text-primary); }
+.side-nav-item.is-active { background: rgba(46, 49, 146, 0.08); color: var(--xr-navy); border-color: rgba(46, 49, 146, 0.18); }
+
+.content-area { flex: 1; min-width: 0; }
+
+/* Camera tabs: sit below the header, above the video, one beside the other. */
+.camera-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.alerts-list-item {
+  display: block;
+  flex: 1 1 200px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--card-border);
+  border-radius: 14px;
+  background: var(--card-bg);
+  box-shadow: var(--shadow-soft);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.alerts-list-item:hover { border-color: #cbd5e1; }
+.alerts-list-item.is-active { border-color: var(--xr-navy); box-shadow: 0 0 0 3px rgba(46, 49, 146, 0.12); }
+
+.alerts-list-item-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--xr-navy);
+}
+
+.alerts-list-item-body { margin-top: 8px; min-height: 1px; }
+
+.alerts-list-item-subtitle {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.alerts-list-item-subtitle--alert { color: var(--text-primary); }
+
+.alerts-list-item-time {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.alerts-list-item-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 /* ── Body: one kpi-card per clip, stacked ── */
 .dashboard-main {
   display: flex;
@@ -101,6 +202,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
 }
+.dashboard-main[hidden] { display: none; }
 
 .kpi-card {
   border-radius: 22px;
@@ -246,6 +348,11 @@ body {
 .incident-banner--ok .incident-banner-icon { color: #16a34a; }
 .incident-banner--ok .incident-banner-text { color: #15803d; }
 
+.incident-rows {
+  display: flex;
+  flex-direction: column;
+}
+
 .incident-row {
   display: flex;
   align-items: flex-start;
@@ -312,6 +419,14 @@ body {
 @media (max-width: 900px) {
   .dashboard-main { padding-inline: 12px; }
   .kpi-body { grid-template-columns: 1fr; }
+  .app-body { flex-direction: column; }
+  .side-nav {
+    width: 100%;
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--card-border);
+  }
 }
 
 /* ── Hilite Mall re-id section (appended after the 4 parking cards) ── */
@@ -500,77 +615,56 @@ body {
   border-radius: 50%;
 }
 
-/* ── Journey table ── */
-.journey-count {
-  background: rgba(16, 185, 129, 0.1);
-  color: #047857;
-  border-color: rgba(16, 185, 129, 0.3);
-}
-
+/* ── Customer Journey: selected journey's header + its cameras ── */
 .journey-empty {
   color: var(--text-muted);
   font-size: 0.9rem;
   padding: 12px 0;
 }
 
-.journey-table-wrap { overflow-x: auto; }
-
-.journey-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
+/* Journey header sits beside the stat cards, below the two camera feeds. */
+.journey-summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 20px;
 }
 
-.journey-table th {
-  text-align: left;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--card-border);
-  white-space: nowrap;
+.journey-detail-header {
+  flex: 2 1 320px;
+  border-radius: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-soft);
+  padding: 16px 20px;
 }
 
-.journey-table td {
-  padding: 13px 14px;
-  border-bottom: 1px solid #f3f4f6;
+.journey-detail-title {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
-.journey-table tr:last-child td { border-bottom: none; }
-
-.journey-person-id {
-  font-weight: 700;
-  font-size: 1rem;
-  color: #2563eb;
-  font-variant-numeric: tabular-nums;
-}
-
-.journey-time {
-  font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
+.journey-detail-sub {
   font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-.journey-travel {
-  font-variant-numeric: tabular-nums;
-  color: #f59e0b;
-  font-weight: 700;
-  font-size: 0.95rem;
+.journey-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
 }
 
-/* ── Stats row ── */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-@media (max-width: 640px) {
-  .stats-row { grid-template-columns: 1fr; }
-}
+.journey-detail-meta-item { display: inline-flex; align-items: center; }
+.journey-detail-meta-item--travel { color: #f59e0b; font-weight: 700; }
 
 .stat-card {
+  flex: 1 1 160px;
   border-radius: 22px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -579,6 +673,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   text-align: center;
 }

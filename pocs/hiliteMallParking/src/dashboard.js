@@ -99,19 +99,21 @@ function incidentCardHtml(ev, sourceEpoch, t, clipId) {
         <span class="incident-banner-icon">${WARN_ICON}</span>
         <span class="incident-banner-text">Suspicious Activity Detected</span>
       </div>
-      <div class="incident-row">
-        <span class="incident-icon">${CLOCK_ICON}</span>
-        <div class="incident-row-body">
-          <div class="incident-row-label">Detection Time</div>
-          <button type="button" class="incident-row-value incident-row-value--clickable" data-clip="${clipId}" data-seek="${ev.start}" title="Jump to this point in the video">${fmtWallClock(sourceEpoch, ev.start)} &ndash; ${endLabel}</button>
+      <div class="incident-rows">
+        <div class="incident-row">
+          <span class="incident-icon">${CLOCK_ICON}</span>
+          <div class="incident-row-body">
+            <div class="incident-row-label">Detection Time</div>
+            <button type="button" class="incident-row-value incident-row-value--clickable" data-clip="${clipId}" data-seek="${ev.start}" title="Jump to this point in the video">${fmtWallClock(sourceEpoch, ev.start)} &ndash; ${endLabel}</button>
+          </div>
         </div>
-      </div>
-      <div class="incident-divider"></div>
-      <div class="incident-row">
-        <span class="incident-icon">${PERSON_ICON}</span>
-        <div class="incident-row-body">
-          <div class="incident-row-label">Time spent near the Car</div>
-          <div class="incident-row-value incident-row-value--lg">${dwellLabel}</div>
+        <div class="incident-divider"></div>
+        <div class="incident-row">
+          <span class="incident-icon">${PERSON_ICON}</span>
+          <div class="incident-row-body">
+            <div class="incident-row-label">Time spent near the Car</div>
+            <div class="incident-row-value incident-row-value--lg">${dwellLabel}</div>
+          </div>
         </div>
       </div>
     </div>`;
@@ -125,6 +127,24 @@ function noAlertCardHtml() {
         <span class="incident-banner-text">No Suspicious Activity</span>
       </div>
     </div>`;
+}
+
+// Compact preview shown in the camera list — mirrors the most recent
+// reported incident's own banner text/time range/dwell, just condensed.
+function alertListItemBodyHtml(ev, sourceEpoch, t) {
+  const ended = t >= ev.end - 0.05;
+  const endLabel = fmtWallClock(sourceEpoch, ended ? ev.end : t);
+  const dwellLabel = ended
+    ? `${Math.round(ev.dwell_s)} seconds`
+    : `${Math.round(Math.max(0, t - ev.start))} seconds`;
+  return `
+    <div class="alerts-list-item-subtitle alerts-list-item-subtitle--alert">Suspicious Activity Detected</div>
+    <div class="alerts-list-item-time">${fmtWallClock(sourceEpoch, ev.start)} &ndash; ${endLabel}</div>
+    <div class="alerts-list-item-badge">${dwellLabel} near the car</div>`;
+}
+
+function noAlertListItemBodyHtml() {
+  return `<div class="alerts-list-item-subtitle">No Suspicious Activity</div>`;
 }
 
 function videoContentRect(video, container) {
@@ -150,9 +170,9 @@ function videoContentRect(video, container) {
 }
 
 export function renderDashboard(appEl, clips) {
-  const cardsHtml = clips.map((clip) => {
+  const cardsHtml = clips.map((clip, i) => {
     return `
-      <section class="kpi-card" id="card-${clip.id}">
+      <section class="kpi-card" id="card-${clip.id}" data-clip-card="${clip.id}" ${i === 0 ? '' : 'hidden'}>
         <div class="kpi-header">
           <div class="kpi-title-wrap">
             <span class="kpi-title-icon" aria-hidden="true">${CAR_ICON}</span>
@@ -173,6 +193,13 @@ export function renderDashboard(appEl, clips) {
       </section>`;
   }).join('');
 
+  const cameraTabsHtml = clips.map((clip, i) => `
+    <button type="button" class="alerts-list-item${i === 0 ? ' is-active' : ''}" data-clip-select="${clip.id}">
+      <div class="alerts-list-item-name">${clip.label.toUpperCase()}</div>
+      <div class="alerts-list-item-body" id="alerts-list-body-${clip.id}"></div>
+    </button>
+  `).join('');
+
   appEl.innerHTML = `
     <header class="dash-header">
       <div class="header-xr-block">
@@ -190,7 +217,51 @@ export function renderDashboard(appEl, clips) {
       </div>
     </header>
 
-    <main class="dashboard-main">${cardsHtml}</main>`;
+    <div class="app-body">
+      <nav class="side-nav">
+        <button type="button" class="side-nav-item is-active" data-view="alerts">
+          <span class="side-nav-label">Suspicious Activity Alerts</span>
+        </button>
+        <button type="button" class="side-nav-item" data-view="journey">
+          <span class="side-nav-label">Customer Journey</span>
+        </button>
+      </nav>
+      <div class="content-area">
+        <main class="dashboard-main" id="view-alerts" data-view-panel="alerts">
+          <div class="camera-tabs">${cameraTabsHtml}</div>
+          ${cardsHtml}
+        </main>
+        <main class="dashboard-main" id="view-journey" data-view-panel="journey" hidden></main>
+      </div>
+    </div>`;
+
+  // Sidebar nav: switch which panel is visible; the other panel stays
+  // mounted (not removed) so its video/graph/interval state keeps running
+  // underneath.
+  const navItems = appEl.querySelectorAll('.side-nav-item');
+  const viewPanels = appEl.querySelectorAll('[data-view-panel]');
+  navItems.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      navItems.forEach((b) => b.classList.toggle('is-active', b === btn));
+      viewPanels.forEach((panel) => {
+        panel.hidden = panel.dataset.viewPanel !== btn.dataset.view;
+      });
+    });
+  });
+
+  // Alerts list: pick which camera's video + alert status is shown below it.
+  // The other cards stay mounted (not removed) so their video/alert-panel
+  // state keeps updating underneath, same as the side-nav panels above.
+  const clipButtons = appEl.querySelectorAll('[data-clip-select]');
+  const clipCards = appEl.querySelectorAll('[data-clip-card]');
+  clipButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      clipButtons.forEach((b) => b.classList.toggle('is-active', b === btn));
+      clipCards.forEach((card) => {
+        card.hidden = card.dataset.clipCard !== btn.dataset.clipSelect;
+      });
+    });
+  });
 
   // Clock
   const hdrDate = appEl.querySelector('#hdr-date');
@@ -230,6 +301,7 @@ export function renderDashboard(appEl, clips) {
     const overlay    = appEl.querySelector(`#overlay-${clip.id}`);
     const container  = overlay.parentElement;
     const alertPanel = appEl.querySelector(`#alerts-${clip.id}`);
+    const listBody   = appEl.querySelector(`#alerts-list-body-${clip.id}`);
     const incidents  = mergeAlerts((clip.data.events || []).filter((e) => e.alert));
     const sourceEpoch = clipZeroEpoch(clip.data);
 
@@ -247,6 +319,16 @@ export function renderDashboard(appEl, clips) {
         alertPanel.innerHTML = reported.length
           ? reported.map((ev) => incidentCardHtml(ev, sourceEpoch, t, clip.id)).join('')
           : noAlertCardHtml();
+      }
+
+      // Camera list preview: show the most recent reported incident, same
+      // underlying data as the detail panel above, just condensed. Left
+      // blank until the video has actually started playing — claiming "No
+      // Suspicious Activity" before playback even begins isn't a real status.
+      if (listBody && t > 0) {
+        listBody.innerHTML = reported.length
+          ? alertListItemBodyHtml(reported[reported.length - 1], sourceEpoch, t)
+          : noAlertListItemBodyHtml();
       }
 
       if (!onScreen.length) { overlay.innerHTML = ''; return; }
@@ -267,8 +349,8 @@ export function renderDashboard(appEl, clips) {
     window.addEventListener('resize', draw);
   }
 
-  // Appended after the 4 parking incident cards: the Hilite Mall cross-camera
-  // re-identification feed (ch20/ch25 + journey table + stats), a separate
-  // detection type with its own data source (persons.db via sql.js).
-  renderReidSection(appEl.querySelector('.dashboard-main'));
+  // Rendered into its own "Customer Journey" nav panel: the Hilite Mall
+  // cross-camera re-identification feed (ch20/ch25 + journey table + stats),
+  // a separate detection type with its own data source (persons.db via sql.js).
+  renderReidSection(appEl.querySelector('#view-journey'));
 }

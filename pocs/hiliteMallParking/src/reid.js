@@ -190,7 +190,7 @@ class TimeSeriesGraph {
       const matchY = paddingTop;
       const noMatchY = height - paddingBottom;
       ctx.fillStyle = '#9ca3af';
-      ctx.font = 'bold 9px system-ui, sans-serif';
+      ctx.font = "bold 9px 'Open Sans', system-ui, sans-serif";
       ctx.textAlign = 'right';
       ctx.textBaseline = 'top';
       ctx.fillText('MATCH', paddingLeft - 6, matchY);
@@ -258,7 +258,7 @@ class TimeSeriesGraph {
     if (this.showLiveCount && windowValues.length > 0) {
       const liveCount = windowValues[windowValues.length - 1];
       ctx.fillStyle = this.lineColor;
-      ctx.font = '16px system-ui, sans-serif';
+      ctx.font = "16px 'Open Sans', system-ui, sans-serif";
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
       ctx.fillText(String(liveCount), playheadX + 4, lastY);
@@ -278,7 +278,6 @@ class TimeSeriesGraph {
 
 // ── Icons ──────────────────────────────────────────────────────────────
 const CAMERA_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><circle cx="12" cy="14" r="2"/></svg>`;
-const JOURNEY_ICON = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M13 6l6 6-6 6"/></svg>`;
 const EYE_ICON = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
 const PLAY_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
 const MUTE_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
@@ -363,58 +362,37 @@ function cameraCardHtml(channel, cfg) {
     </section>`;
 }
 
-function journeyTableHtml(transitions) {
-  if (!transitions.length) {
-    return `
-      <section class="kpi-card journey-card">
-        <div class="kpi-header">
-          <div class="kpi-title-wrap">
-            <span class="kpi-title-icon" aria-hidden="true">${JOURNEY_ICON}</span>
-            <h2 class="kpi-title">Person Journeys</h2>
-          </div>
-          <span class="kpi-badge journey-count">0 TRACKED</span>
-        </div>
-        <p class="journey-empty">No cross-floor journeys detected.</p>
-      </section>`;
-  }
+function journeyDetailHeaderHtml(t) {
+  const shots = TRANSITION_SCREENSHOTS[`${t.canonical_id}_${t.from_channel}`];
+  const departedEye = shots?.departed
+    ? `<button type="button" class="eye-btn" data-snapshot="${shots.departed}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} · ${fmtTimeIST(t.exit_time)}" title="View snapshot">${EYE_ICON}</button>`
+    : '';
+  const arrivedEye = shots?.arrived
+    ? `<button type="button" class="eye-btn" data-snapshot="${shots.arrived}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} · ${fmtTimeIST(t.entry_time)}" title="View snapshot">${EYE_ICON}</button>`
+    : '';
+  return `
+    <div class="journey-detail-header">
+      <h2 class="journey-detail-title">P#${t.canonical_id} Journey</h2>
+      <div class="journey-detail-sub">${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} &middot; ${(t.from_channel || '').toUpperCase()} &rarr; ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} &middot; ${(t.to_channel || '').toUpperCase()}</div>
+      <div class="journey-detail-meta">
+        <span class="journey-detail-meta-item">Departed ${fmtTimeIST(t.exit_time)}${departedEye}</span>
+        <span class="journey-detail-meta-item">Arrived ${fmtTimeIST(t.entry_time)}${arrivedEye}</span>
+        <span class="journey-detail-meta-item journey-detail-meta-item--travel">Travel Time ${fmtTravel(t.travel_seconds)}</span>
+      </div>
+    </div>`;
+}
 
-  const rows = transitions.map((t) => {
-    const shots = TRANSITION_SCREENSHOTS[`${t.canonical_id}_${t.from_channel}`];
-    const departedEye = shots?.departed
-      ? `<button type="button" class="eye-btn" data-snapshot="${shots.departed}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} · ${fmtTimeIST(t.exit_time)}" title="View snapshot">${EYE_ICON}</button>`
-      : '';
-    const arrivedEye = shots?.arrived
-      ? `<button type="button" class="eye-btn" data-snapshot="${shots.arrived}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} · ${fmtTimeIST(t.entry_time)}" title="View snapshot">${EYE_ICON}</button>`
-      : '';
-    return `
-      <tr>
-        <td class="journey-person-id">P#${t.canonical_id}</td>
-        <td>${CHANNEL_LABELS[t.from_channel] ?? t.from_channel}</td>
-        <td>${CHANNEL_LABELS[t.to_channel] ?? t.to_channel}</td>
-        <td class="journey-time">${fmtTimeIST(t.exit_time)}${departedEye}</td>
-        <td class="journey-time">${fmtTimeIST(t.entry_time)}${arrivedEye}</td>
-        <td class="journey-travel">${fmtTravel(t.travel_seconds)}</td>
-      </tr>`;
-  }).join('');
+function journeySectionHtml(transitions, cardsHtml, persons, floorVisits) {
+  const detailHeadersHtml = transitions.length
+    ? transitions.map((t) => journeyDetailHeaderHtml(t)).join('')
+    : '<p class="journey-empty">No cross-floor journeys detected.</p>';
 
   return `
-    <section class="kpi-card journey-card">
-      <div class="kpi-header">
-        <div class="kpi-title-wrap">
-          <span class="kpi-title-icon" aria-hidden="true">${JOURNEY_ICON}</span>
-          <h2 class="kpi-title">Person Journeys</h2>
-        </div>
-        <span class="kpi-badge journey-count">${transitions.length} TRACKED</span>
-      </div>
-      <div class="journey-table-wrap">
-        <table class="journey-table">
-          <thead>
-            <tr><th>Person</th><th>From</th><th>To</th><th>Departed</th><th>Arrived</th><th>Travel Time</th></tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
-    </section>
+    <div class="camera-grid">${cardsHtml}</div>
+    <div class="journey-summary-row">
+      ${detailHeadersHtml}
+      ${statCardsHtml(persons, floorVisits)}
+    </div>
     <div class="snapshot-backdrop" id="reid-snapshot-backdrop" style="display:none">
       <div class="snapshot-modal">
         <div class="snapshot-header">
@@ -426,27 +404,25 @@ function journeyTableHtml(transitions) {
     </div>`;
 }
 
-function statsRowHtml(persons, floorVisits) {
+function statCardsHtml(persons, floorVisits) {
   const crossFloor = persons.filter((p) => p.floors_visited > 1).length;
   const dwellCh20 = totalDwell(floorVisits, 'ch20');
   const dwellCh25 = totalDwell(floorVisits, 'ch25');
   return `
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon" aria-hidden="true">${CROSSFLOOR_ICON}</div>
-        <div class="stat-label">Cross-Floor Persons</div>
-        <div class="stat-value">${crossFloor}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_BLUE}</div>
-        <div class="stat-label">Total Dwell - Ground Lobby</div>
-        <div class="stat-value">${fmtDwellDuration(dwellCh20)}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_PURPLE}</div>
-        <div class="stat-label">Total Dwell - -5</div>
-        <div class="stat-value">${fmtDwellDuration(dwellCh25)}</div>
-      </div>
+    <div class="stat-card">
+      <div class="stat-icon" aria-hidden="true">${CROSSFLOOR_ICON}</div>
+      <div class="stat-label">Cross-Floor Persons</div>
+      <div class="stat-value">${crossFloor}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_BLUE}</div>
+      <div class="stat-label">Total Dwell - Ground Lobby</div>
+      <div class="stat-value">${fmtDwellDuration(dwellCh20)}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_PURPLE}</div>
+      <div class="stat-label">Total Dwell - -5</div>
+      <div class="stat-value">${fmtDwellDuration(dwellCh25)}</div>
     </div>`;
 }
 
@@ -581,9 +557,7 @@ function mountReidSection(mainEl, dbData, timeSeries) {
   const mirrorChannel = channels.find(([, cfg]) => cfg.clockStartTime)?.[0] ?? null;
 
   const cardsHtml = channels.map(([channel, cfg]) => cameraCardHtml(channel, cfg)).join('');
-  mainEl.insertAdjacentHTML('beforeend', `<div class="camera-grid">${cardsHtml}</div>`);
-  mainEl.insertAdjacentHTML('beforeend', journeyTableHtml(dbData.transitions));
-  mainEl.insertAdjacentHTML('beforeend', statsRowHtml(dbData.persons, dbData.floorVisits));
+  mainEl.insertAdjacentHTML('beforeend', journeySectionHtml(dbData.transitions, cardsHtml, dbData.persons, dbData.floorVisits));
 
   const state = { mirrorIds: [] };
   const controllers = {};
