@@ -48,8 +48,8 @@ function fmtWallClock(sourceEpoch, clipSeconds) {
 
 const CLOCK_ICON  = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`;
 const PERSON_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 7-7h2a7 7 0 0 1 7 7v1"/></svg>`;
-const WARN_ICON   = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 6.5a1 1 0 0 1 1 1V14a1 1 0 1 1-2 0V9.5a1 1 0 0 1 1-1zM12 17a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>`;
-const CHECK_ICON  = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.5 2.5 2.5 5-5"/></svg>`;
+const WARN_ICON   = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+const CHECK_ICON  = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8.5 12.5 2.5 2.5 5-5"/></svg>`;
 
 // object-fit:contain letterboxes/pillarboxes the native frame inside the
 // container — car_box coordinates are in native video pixels, so the
@@ -86,7 +86,7 @@ function mergeAlerts(events) {
 // only once playback reaches the incident's own end; until then, show it as
 // still in progress. Once reported, the card keeps showing (see `reported`
 // in draw()) even after playback moves past ev.end.
-function incidentCardHtml(ev, sourceEpoch, t, clipId) {
+function incidentCardHtml(ev, sourceEpoch, t, clipId, clipLabel) {
   const ended = t >= ev.end - 0.05;
   const endLabel = fmtWallClock(sourceEpoch, ended ? ev.end : t);
   const dwellLabel = ended
@@ -94,26 +94,22 @@ function incidentCardHtml(ev, sourceEpoch, t, clipId) {
     : `${Math.round(Math.max(0, t - ev.start))} seconds`;
 
   return `
-    <div class="incident-card">
-      <div class="incident-banner">
-        <span class="incident-banner-icon">${WARN_ICON}</span>
-        <span class="incident-banner-text">Suspicious Activity Detected</span>
-      </div>
-      <div class="incident-rows">
-        <div class="incident-row">
-          <span class="incident-icon">${CLOCK_ICON}</span>
-          <div class="incident-row-body">
-            <div class="incident-row-label">Detection Time</div>
-            <button type="button" class="incident-row-value incident-row-value--clickable" data-clip="${clipId}" data-seek="${ev.start}" title="Jump to this point in the video">${fmtWallClock(sourceEpoch, ev.start)} &ndash; ${endLabel}</button>
-          </div>
+    <div class="side-data-card">
+      <div class="side-data-items">
+        <div class="side-data-item">
+          <div class="side-data-label">Detection time &middot; captured footage</div>
+          <button type="button" class="side-data-value side-data-value--clickable" data-clip="${clipId}" data-seek="${ev.start}" title="Jump to this point in the video">${fmtWallClock(sourceEpoch, ev.start)}&ndash;${endLabel}</button>
         </div>
-        <div class="incident-divider"></div>
-        <div class="incident-row">
-          <span class="incident-icon">${PERSON_ICON}</span>
-          <div class="incident-row-body">
-            <div class="incident-row-label">Time spent near the Car</div>
-            <div class="incident-row-value incident-row-value--lg">${dwellLabel}</div>
-          </div>
+        <div class="side-data-item">
+          <div class="side-data-label">Time spent near the car</div>
+          <div class="side-data-value">${dwellLabel}</div>
+        </div>
+      </div>
+      <div class="side-data-notice">
+        <span class="side-data-notice-icon">${WARN_ICON}</span>
+        <div class="side-data-notice-text">
+          <span class="side-data-notice-title">SUSPICIOUS ACTIVITY DETECTED</span>
+          <span class="side-data-notice-sub">&middot; Activity flag, not confirmed intent.</span>
         </div>
       </div>
     </div>`;
@@ -121,30 +117,15 @@ function incidentCardHtml(ev, sourceEpoch, t, clipId) {
 
 function noAlertCardHtml() {
   return `
-    <div class="incident-card incident-card--ok">
-      <div class="incident-banner incident-banner--ok">
-        <span class="incident-banner-icon">${CHECK_ICON}</span>
-        <span class="incident-banner-text">No Suspicious Activity</span>
+    <div class="side-data-card side-data-card--ok">
+      <div class="side-data-empty">
+        <div class="side-data-empty-icon">
+          ${CHECK_ICON}
+        </div>
+        <div class="side-data-empty-title">No suspicious activity detected</div>
+        <div class="side-data-empty-sub">Monitoring video feed &middot; Waiting for activity</div>
       </div>
     </div>`;
-}
-
-// Compact preview shown in the camera list — mirrors the most recent
-// reported incident's own banner text/time range/dwell, just condensed.
-function alertListItemBodyHtml(ev, sourceEpoch, t) {
-  const ended = t >= ev.end - 0.05;
-  const endLabel = fmtWallClock(sourceEpoch, ended ? ev.end : t);
-  const dwellLabel = ended
-    ? `${Math.round(ev.dwell_s)} seconds`
-    : `${Math.round(Math.max(0, t - ev.start))} seconds`;
-  return `
-    <div class="alerts-list-item-subtitle alerts-list-item-subtitle--alert">Suspicious Activity Detected</div>
-    <div class="alerts-list-item-time">${fmtWallClock(sourceEpoch, ev.start)} &ndash; ${endLabel}</div>
-    <div class="alerts-list-item-badge">${dwellLabel} near the car</div>`;
-}
-
-function noAlertListItemBodyHtml() {
-  return `<div class="alerts-list-item-subtitle">No Suspicious Activity</div>`;
 }
 
 function videoContentRect(video, container) {
@@ -170,68 +151,82 @@ function videoContentRect(video, container) {
 }
 
 export function renderDashboard(appEl, clips) {
-  const cardsHtml = clips.map((clip, i) => {
+  const cardsHtml = clips.map((clip) => {
     return `
-      <section class="kpi-card" id="card-${clip.id}" data-clip-card="${clip.id}" ${i === 0 ? '' : 'hidden'}>
+      <section class="kpi-card" id="card-${clip.id}">
         <div class="kpi-header">
           <div class="kpi-title-wrap">
-            <span class="kpi-title-icon" aria-hidden="true">${CAR_ICON}</span>
-            <h2 class="kpi-title">${clip.label}</h2>
+            <h2 class="kpi-title">${clip.label.toUpperCase()}</h2>
           </div>
+          <span class="kpi-badge kpi-badge--ok" id="badge-${clip.id}">No suspicious activity</span>
         </div>
         <div class="kpi-body">
           <div class="kpi-video-container">
-            <span class="kpi-video-label">${clip.label.toUpperCase()}</span>
-            <video class="kpi-video" id="video-${clip.id}" src="${clip.video}" controls muted playsinline></video>
+            <span class="kpi-video-label">Recorded preview</span>
+            <video class="kpi-video" id="video-${clip.id}" src="${clip.video}" controls muted playsinline autoplay></video>
             <div class="kpi-overlay" id="overlay-${clip.id}"></div>
           </div>
           <div class="kpi-right">
-            <div class="kpi-metric-label">Alert Status</div>
             <div class="alert-panel" id="alerts-${clip.id}">${noAlertCardHtml()}</div>
           </div>
         </div>
       </section>`;
   }).join('');
 
-  const cameraTabsHtml = clips.map((clip, i) => `
-    <button type="button" class="alerts-list-item${i === 0 ? ' is-active' : ''}" data-clip-select="${clip.id}">
-      <div class="alerts-list-item-name">${clip.label.toUpperCase()}</div>
-      <div class="alerts-list-item-body" id="alerts-list-body-${clip.id}"></div>
-    </button>
-  `).join('');
-
   appEl.innerHTML = `
-    <header class="dash-header">
-      <div class="header-xr-block">
-        <div class="header-logo-pill"><img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" /></div><div class="header-vdivider"></div>
-      </div>
-      <div class="header-title">XenTrack Demo Dashboard</div>
-      <div class="header-right">
-        <div class="header-datetime">
-          <span class="header-date" id="hdr-date"></span>
-          <span class="header-time" id="hdr-time"></span>
+    <div class="app-layout">
+      <aside class="side-nav">
+        <!-- Brand Logo -->
+        <div class="side-nav-brand">
+          <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" class="side-nav-logo" />
         </div>
-        <div class="header-live-pill"><span class="live-dot"></span>Live</div>
-        <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Hilite-Mall/hilite-mall-logo.svg" alt="Hilite Mall" onerror="this.style.display='none'" />
-        <button class="header-signout" title="Sign out" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
-      </div>
-    </header>
 
-    <div class="app-body">
-      <nav class="side-nav">
-        <button type="button" class="side-nav-item is-active" data-view="alerts">
-          <span class="side-nav-label">Suspicious Activity Alerts</span>
-        </button>
-        <button type="button" class="side-nav-item" data-view="journey">
-          <span class="side-nav-label">Customer Journey</span>
-        </button>
-      </nav>
-      <div class="content-area">
-        <main class="dashboard-main" id="view-alerts" data-view-panel="alerts">
-          <div class="camera-tabs">${cameraTabsHtml}</div>
-          ${cardsHtml}
-        </main>
-        <main class="dashboard-main" id="view-journey" data-view-panel="journey" hidden></main>
+        <div class="side-nav-divider"></div>
+
+        <!-- Monitoring Site Label (no dropdown) -->
+        <div class="side-nav-site">
+          <div class="side-nav-site-label">MONITORING SITE</div>
+          <div class="side-nav-site-name">HiLiTE Mall</div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="side-nav-menu">
+          <button type="button" class="side-nav-item is-active" data-view="alerts">
+            <span class="side-nav-label">Suspicious Activity Alerts</span>
+          </button>
+          <button type="button" class="side-nav-item" data-view="journey">
+            <span class="side-nav-label">Customer Journey</span>
+          </button>
+        </div>
+
+        <!-- Sign Out -->
+        <div class="side-nav-footer">
+          <button class="side-nav-signout" onclick="(function(){try{localStorage.removeItem('pocketbase_auth');}catch(e){}window.location.reload();})()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </aside>
+
+      <div class="main-wrapper">
+        <header class="dash-header">
+          <div class="header-title" id="hdr-breadcrumb">XENTRACK DEMO DASHBOARD</div>
+          <div class="header-right">
+            <div class="header-datetime">
+              <span class="header-date" id="hdr-date"></span>
+              <span class="header-time" id="hdr-time"></span>
+            </div>
+            <div class="header-live-pill"><span class="live-dot"></span>Live</div>
+            <img class="header-customer-logo" src="https://d2uimaqek2eby3.cloudfront.net/Hilite-Mall/hilite-mall-logo.svg" alt="Hilite Mall" onerror="this.style.display='none'" />
+          </div>
+        </header>
+
+        <div class="content-area">
+          <main class="dashboard-main" id="view-alerts" data-view-panel="alerts">
+            ${cardsHtml}
+          </main>
+          <main class="dashboard-main" id="view-journey" data-view-panel="journey" hidden></main>
+        </div>
       </div>
     </div>`;
 
@@ -248,46 +243,6 @@ export function renderDashboard(appEl, clips) {
       });
     });
   });
-
-  // Alerts list: pick which camera's video + alert status is shown below it.
-  // The other cards stay mounted (not removed) so their alert-panel state
-  // keeps updating underneath, same as the side-nav panels above. Only the
-  // selected camera's video actually plays — switching away pauses it,
-  // switching to one (optionally restarting it) resumes/starts it.
-  const clipButtons = appEl.querySelectorAll('[data-clip-select]');
-  const clipCards = appEl.querySelectorAll('[data-clip-card]');
-  function selectClip(clipId, { restart = false } = {}) {
-    clipButtons.forEach((b) => b.classList.toggle('is-active', b.dataset.clipSelect === clipId));
-    clipCards.forEach((card) => {
-      const isSelected = card.dataset.clipCard === clipId;
-      card.hidden = !isSelected;
-      const v = card.querySelector('video');
-      if (!v) return;
-      if (isSelected) {
-        if (restart) v.currentTime = 0;
-        v.play().catch(() => {});
-      } else {
-        v.pause();
-      }
-    });
-  }
-  clipButtons.forEach((btn) => {
-    btn.addEventListener('click', () => selectClip(btn.dataset.clipSelect));
-  });
-
-  // Once a camera's video finishes, automatically move on to the next one
-  // (wrapping back to the first after the last), so the cameras play through
-  // in sequence without needing a click each time.
-  clips.forEach((clip, i) => {
-    const video = appEl.querySelector(`#video-${clip.id}`);
-    if (!video) return;
-    video.addEventListener('ended', () => {
-      const next = clips[(i + 1) % clips.length];
-      selectClip(next.id, { restart: true });
-    });
-  });
-
-  selectClip(clips[0].id, { restart: true });
 
   // Clock
   const hdrDate = appEl.querySelector('#hdr-date');
@@ -327,7 +282,6 @@ export function renderDashboard(appEl, clips) {
     const overlay    = appEl.querySelector(`#overlay-${clip.id}`);
     const container  = overlay.parentElement;
     const alertPanel = appEl.querySelector(`#alerts-${clip.id}`);
-    const listBody   = appEl.querySelector(`#alerts-list-body-${clip.id}`);
     const incidents  = mergeAlerts((clip.data.events || []).filter((e) => e.alert));
     const sourceEpoch = clipZeroEpoch(clip.data);
 
@@ -341,20 +295,22 @@ export function renderDashboard(appEl, clips) {
       const onScreen = incidents.filter((ev) => t >= ev.start && t <= ev.end);
       const reported = incidents.filter((ev) => t >= ev.start);
 
+      const badge = appEl.querySelector(`#badge-${clip.id}`);
       if (alertPanel) {
-        alertPanel.innerHTML = reported.length
-          ? reported.map((ev) => incidentCardHtml(ev, sourceEpoch, t, clip.id)).join('')
-          : noAlertCardHtml();
-      }
-
-      // Camera list preview: show the most recent reported incident, same
-      // underlying data as the detail panel above, just condensed. Left
-      // blank until the video has actually started playing — claiming "No
-      // Suspicious Activity" before playback even begins isn't a real status.
-      if (listBody && t > 0) {
-        listBody.innerHTML = reported.length
-          ? alertListItemBodyHtml(reported[reported.length - 1], sourceEpoch, t)
-          : noAlertListItemBodyHtml();
+        if (reported.length > 0) {
+          const activeEv = onScreen[0] || reported[reported.length - 1];
+          alertPanel.innerHTML = incidentCardHtml(activeEv, sourceEpoch, t, clip.id, clip.label);
+          if (badge) {
+            badge.className = 'kpi-badge kpi-badge--alert';
+            badge.textContent = 'Suspicious activity detected';
+          }
+        } else {
+          alertPanel.innerHTML = noAlertCardHtml();
+          if (badge) {
+            badge.className = 'kpi-badge kpi-badge--ok';
+            badge.textContent = 'No suspicious activity';
+          }
+        }
       }
 
       if (!onScreen.length) { overlay.innerHTML = ''; return; }

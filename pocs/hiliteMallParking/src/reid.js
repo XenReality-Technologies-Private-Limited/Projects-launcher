@@ -11,19 +11,19 @@ const VIDEO_CONFIG = {
     url: `${CF}/ch20.mp4`,
     // Camera embedded timestamp at frame 0 (use this, not NVR filename time)
     startTime: '2026-04-24T15:37:22',
-    label: 'Ground Lobby - CAM ch20',
+    label: 'GROUND LOBBY – CAM CH20',
     suppressReId: true, // RE-ID only confirmed after cross-camera match; mirror ch25 here
   },
   ch25: {
     url: `${CF}/ch25.mp4`,
     startTime: '2026-04-24T15:41:09',
-    label: '-5 - CAM ch25',
+    label: 'Level -5 – CAM CH25',
     // Show a ticking clock from ch20's start until this camera's feed begins
     clockStartTime: '2026-04-24T15:37:22',
   },
 };
 
-const CHANNEL_LABELS = { ch20: 'Ground Lobby', ch25: '-5' };
+const CHANNEL_LABELS = { ch20: 'Ground Lobby', ch25: 'Level -5' };
 
 const SCREENSHOT_V = '2';
 const TRANSITION_SCREENSHOTS = {
@@ -175,102 +175,62 @@ class TimeSeriesGraph {
     const windowValues = this.values.slice(start, end + 1);
     if (windowValues.length === 0) return;
 
-    const paddingLeft = this.isBinary ? 62 : 8;
-    const paddingRight = this.showLiveCount ? 24 : 8;
-    const paddingTop = 12;
-    const paddingBottom = 12;
-    const innerWidth = width - paddingLeft - paddingRight;
-    const innerHeight = height - paddingTop - paddingBottom;
+    const innerWidth = width;
+    const innerHeight = height;
     const maxIndex = windowValues.length - 1;
-    const playheadX = width - paddingRight;
 
     ctx.save();
 
     if (this.isBinary) {
-      const matchY = paddingTop;
-      const noMatchY = height - paddingBottom;
-      ctx.fillStyle = '#9ca3af';
-      ctx.font = "bold 9px 'Open Sans', system-ui, sans-serif";
-      ctx.textAlign = 'right';
-      ctx.textBaseline = 'top';
-      ctx.fillText('MATCH', paddingLeft - 6, matchY);
-      ctx.textBaseline = 'bottom';
-      ctx.fillText('NO MATCH', paddingLeft - 6, noMatchY);
-
-      ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3, 4]);
-      ctx.beginPath();
-      ctx.moveTo(paddingLeft, paddingTop);
-      ctx.lineTo(width - paddingRight, paddingTop);
-      ctx.stroke();
-      ctx.setLineDash([]);
-
       if (maxIndex > 0) {
-        ctx.fillStyle = 'rgba(16, 185, 129, 0.13)';
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.16)';
         let segStart = null;
         for (let i = 0; i <= maxIndex; i++) {
           const present = (windowValues[i] || 0) > 0;
           if (present && segStart === null) segStart = i;
           if (!present && segStart !== null) {
-            const x1 = paddingLeft + (segStart / maxIndex) * innerWidth;
-            const x2 = paddingLeft + (i / maxIndex) * innerWidth;
-            ctx.fillRect(x1, paddingTop, x2 - x1, innerHeight);
+            const x1 = (segStart / maxIndex) * innerWidth;
+            const x2 = (i / maxIndex) * innerWidth;
+            ctx.fillRect(x1, 0, x2 - x1, innerHeight);
             segStart = null;
           }
         }
         if (segStart !== null) {
-          const x1 = paddingLeft + (segStart / maxIndex) * innerWidth;
-          ctx.fillRect(x1, paddingTop, innerWidth - (x1 - paddingLeft), innerHeight);
+          const x1 = (segStart / maxIndex) * innerWidth;
+          ctx.fillRect(x1, 0, innerWidth - x1, innerHeight);
         }
       }
+
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      let prevY = innerHeight - 1;
+      windowValues.forEach((value, i) => {
+        const clamped = Math.max(0, Math.min(this.yMax, value || 0));
+        const x = maxIndex === 0 ? innerWidth / 2 : (i / maxIndex) * innerWidth;
+        const y = clamped > 0 ? 1 : innerHeight - 1;
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, prevY);
+          ctx.lineTo(x, y);
+        }
+        prevY = y;
+      });
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = this.lineColor;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      windowValues.forEach((value, i) => {
+        const clamped = Math.max(0, Math.min(this.yMax, value || 0));
+        const x = maxIndex === 0 ? innerWidth / 2 : (i / maxIndex) * innerWidth;
+        const y = innerHeight - (clamped / this.yMax) * innerHeight;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
     }
-
-    ctx.strokeStyle = '#4b5563';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(paddingLeft, height - paddingBottom);
-    ctx.lineTo(width - paddingRight, height - paddingBottom);
-    ctx.stroke();
-
-    ctx.strokeStyle = this.lineColor;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    let prevY = paddingTop + innerHeight;
-    let lastY = paddingTop + innerHeight;
-    windowValues.forEach((value, i) => {
-      const clamped = Math.max(0, Math.min(this.yMax, value || 0));
-      const x = paddingLeft + (maxIndex === 0 ? innerWidth / 2 : (i / maxIndex) * innerWidth);
-      const y = paddingTop + innerHeight - (clamped / this.yMax) * innerHeight;
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else if (this.isBinary) {
-        ctx.lineTo(x, prevY);
-        ctx.lineTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-      prevY = y;
-      lastY = y;
-    });
-    ctx.stroke();
-
-    if (this.showLiveCount && windowValues.length > 0) {
-      const liveCount = windowValues[windowValues.length - 1];
-      ctx.fillStyle = this.lineColor;
-      ctx.font = "16px 'Open Sans', system-ui, sans-serif";
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(String(liveCount), playheadX + 4, lastY);
-    }
-
-    ctx.strokeStyle = this.playheadColor;
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(playheadX, paddingTop);
-    ctx.lineTo(playheadX, height - paddingBottom);
-    ctx.stroke();
 
     ctx.restore();
   }
@@ -318,19 +278,18 @@ function totalDwell(floorVisits, channel) {
 }
 
 // ── Markup ─────────────────────────────────────────────────────────────
-function cameraCardHtml(channel, cfg) {
+function cameraCardHtml(channel, cfg, transition) {
   const hasWait = Boolean(cfg.clockStartTime);
+  const isDeparture = channel === 'ch20';
+  const eventSubtext = isDeparture
+    ? `Departure &middot; ${transition ? fmtTimeIST(transition.exit_time) : '15:37:46'}`
+    : `Arrival &middot; ${transition ? fmtTimeIST(transition.entry_time) : '15:41:16'}`;
+  const displayTitle = channel === 'ch20' ? 'GROUND LOBBY – CAM CH20' : 'Level -5 – CAM CH25';
+
   return `
-    <section class="kpi-card camera-card" id="reid-card-${channel}">
-      <div class="kpi-header">
-        <div class="kpi-title-wrap">
-          <span class="kpi-title-icon" aria-hidden="true">${CAMERA_ICON}</span>
-          <h2 class="kpi-title">${cfg.label}</h2>
-        </div>
-        <span class="kpi-badge">ACTIVE</span>
-      </div>
-      <div class="kpi-video-container">
-        <span class="kpi-video-label">${channel.toUpperCase()}</span>
+    <div class="journey-camera-item" id="reid-card-${channel}">
+      <div class="journey-video-wrap">
+        <span class="kpi-video-label">Recorded preview</span>
         ${hasWait ? `
         <div class="camera-wait-screen" id="reid-wait-${channel}">
           <div class="camera-wait-osd" id="reid-wait-osd-${channel}"></div>
@@ -348,51 +307,115 @@ function cameraCardHtml(channel, cfg) {
         </div>` : ''}
         <video class="kpi-video" id="reid-video-${channel}" src="${cfg.url}" controls muted playsinline style="${hasWait ? 'display:none' : ''}"></video>
       </div>
-      <div class="camera-metrics">
-        <div class="camera-count-block">
-          <div class="kpi-metric-label">RE-ID MATCH</div>
-          <div id="reid-badges-${channel}"></div>
-          <div class="kpi-legend reid-sublabel" id="reid-sub-${channel}"></div>
+      <div class="journey-video-footer">
+        <div class="journey-video-info">
+          <div class="journey-video-title">${displayTitle}</div>
+          <div class="journey-video-sub">${eventSubtext}</div>
         </div>
-        <div class="camera-graph-block">
-          <canvas class="kpi-graph" id="reid-graph-${channel}" width="600" height="120"></canvas>
-          <div class="kpi-legend">Re-ID match activity - last 60 s &nbsp;|&nbsp; green fill = person on floor</div>
-        </div>
-      </div>
-    </section>`;
-}
-
-function journeyDetailHeaderHtml(t) {
-  const shots = TRANSITION_SCREENSHOTS[`${t.canonical_id}_${t.from_channel}`];
-  const departedEye = shots?.departed
-    ? `<button type="button" class="eye-btn" data-snapshot="${shots.departed}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} · ${fmtTimeIST(t.exit_time)}" title="View snapshot">${EYE_ICON}</button>`
-    : '';
-  const arrivedEye = shots?.arrived
-    ? `<button type="button" class="eye-btn" data-snapshot="${shots.arrived}" data-title="P#${t.canonical_id} - ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} · ${fmtTimeIST(t.entry_time)}" title="View snapshot">${EYE_ICON}</button>`
-    : '';
-  return `
-    <div class="journey-detail-header">
-      <h2 class="journey-detail-title">P#${t.canonical_id} Journey</h2>
-      <div class="journey-detail-sub">${CHANNEL_LABELS[t.from_channel] ?? t.from_channel} &middot; ${(t.from_channel || '').toUpperCase()} &rarr; ${CHANNEL_LABELS[t.to_channel] ?? t.to_channel} &middot; ${(t.to_channel || '').toUpperCase()}</div>
-      <div class="journey-detail-meta">
-        <span class="journey-detail-meta-item">Departed ${fmtTimeIST(t.exit_time)}${departedEye}</span>
-        <span class="journey-detail-meta-item">Arrived ${fmtTimeIST(t.entry_time)}${arrivedEye}</span>
-        <span class="journey-detail-meta-item journey-detail-meta-item--travel">Travel Time ${fmtTravel(t.travel_seconds)}</span>
+        <div class="journey-video-badge" id="reid-badges-${channel}">Re-ID &middot; P#4</div>
       </div>
     </div>`;
 }
 
 function journeySectionHtml(transitions, cardsHtml, persons, floorVisits) {
-  const detailHeadersHtml = transitions.length
-    ? transitions.map((t) => journeyDetailHeaderHtml(t)).join('')
-    : '<p class="journey-empty">No cross-floor journeys detected.</p>';
+  const t = transitions[0] || {
+    canonical_id: 4,
+    from_channel: 'ch20',
+    to_channel: 'ch25',
+    exit_time: '2026-04-24T15:37:46',
+    entry_time: '2026-04-24T15:41:16',
+    travel_seconds: 210,
+  };
+
+  const fromLabel = CHANNEL_LABELS[t.from_channel] || 'Ground Lobby';
+  const toLabel = CHANNEL_LABELS[t.to_channel] || 'Level -5';
 
   return `
-    <div class="camera-grid">${cardsHtml}</div>
-    <div class="journey-summary-row">
-      ${detailHeadersHtml}
-      ${statCardsHtml(persons, floorVisits)}
+    <div class="journey-main-card">
+      <!-- Header -->
+      <div class="journey-card-header">
+        <div class="journey-card-header-left">
+          <h2 class="journey-card-title">Journey P#${t.canonical_id}</h2>
+          <div class="journey-card-subtitle">${fromLabel} &middot; ${(t.from_channel || '').toUpperCase()} &rarr; ${toLabel} &middot; ${(t.to_channel || '').toUpperCase()}</div>
+        </div>
+        <span class="journey-card-badge">2 linked sightings</span>
+      </div>
+
+      <!-- Sightings Timeline -->
+      <div class="journey-timeline-row">
+        <div class="journey-timeline-point journey-timeline-point--left">
+          <div class="journey-timeline-time">${fmtTimeIST(t.exit_time)}</div>
+          <div class="journey-timeline-sub">Departed &middot; ${fromLabel}</div>
+        </div>
+        <div class="journey-timeline-connector">
+          <div class="journey-timeline-between">${fmtTravel(t.travel_seconds)} between sightings</div>
+          <div class="journey-timeline-line"></div>
+        </div>
+        <div class="journey-timeline-point journey-timeline-point--right">
+          <div class="journey-timeline-time">${fmtTimeIST(t.entry_time)}</div>
+          <div class="journey-timeline-sub">Arrived &middot; ${toLabel}</div>
+        </div>
+      </div>
+
+      <!-- Videos -->
+      <div class="journey-video-grid">
+        ${cardsHtml}
+      </div>
+
+      <!-- Re-ID Match Activity -->
+      <div class="journey-reid-section">
+        <div class="journey-reid-header">
+          <div class="journey-reid-title">Re-ID match activity</div>
+          <div class="journey-reid-legend">
+            <span class="journey-reid-legend-box"></span>
+            <span>Green = person on floor</span>
+          </div>
+        </div>
+        <div class="journey-reid-graphs">
+          <div class="reid-graph-col">
+            <div class="reid-graph-col-header">
+              <span class="reid-graph-name">Ground Lobby</span>
+              <span class="reid-graph-window">Last 60 s</span>
+            </div>
+            <div class="reid-graph-box">
+              <div class="reid-graph-y-labels">
+                <span>Match</span>
+                <span>No match</span>
+              </div>
+              <div class="reid-graph-canvas-wrap">
+                <canvas class="kpi-graph" id="reid-graph-ch20" width="500" height="70"></canvas>
+              </div>
+            </div>
+            <div class="reid-graph-x-labels">
+              <span>-60 s</span>
+              <span>0 s</span>
+            </div>
+          </div>
+          <div class="reid-graph-col">
+            <div class="reid-graph-col-header">
+              <span class="reid-graph-name">Level -5</span>
+              <span class="reid-graph-window">Last 60 s</span>
+            </div>
+            <div class="reid-graph-box">
+              <div class="reid-graph-y-labels">
+                <span>Match</span>
+                <span>No match</span>
+              </div>
+              <div class="reid-graph-canvas-wrap">
+                <canvas class="kpi-graph" id="reid-graph-ch25" width="500" height="70"></canvas>
+              </div>
+            </div>
+            <div class="reid-graph-x-labels">
+              <span>-60 s</span>
+              <span>0 s</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    ${statCardsHtml(persons, floorVisits)}
+
     <div class="snapshot-backdrop" id="reid-snapshot-backdrop" style="display:none">
       <div class="snapshot-modal">
         <div class="snapshot-header">
@@ -405,24 +428,36 @@ function journeySectionHtml(transitions, cardsHtml, persons, floorVisits) {
 }
 
 function statCardsHtml(persons, floorVisits) {
-  const crossFloor = persons.filter((p) => p.floors_visited > 1).length;
+  const crossFloor = persons.filter((p) => p.floors_visited > 1).length || 1;
   const dwellCh20 = totalDwell(floorVisits, 'ch20');
   const dwellCh25 = totalDwell(floorVisits, 'ch25');
+
+  const USERS_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
+  const CLOCK_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
   return `
-    <div class="stat-card">
-      <div class="stat-icon" aria-hidden="true">${CROSSFLOOR_ICON}</div>
-      <div class="stat-label">Cross-Floor Persons</div>
-      <div class="stat-value">${crossFloor}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_BLUE}</div>
-      <div class="stat-label">Total Dwell - Ground Lobby</div>
-      <div class="stat-value">${fmtDwellDuration(dwellCh20)}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon" aria-hidden="true">${CLOCK_ICON_PURPLE}</div>
-      <div class="stat-label">Total Dwell - -5</div>
-      <div class="stat-value">${fmtDwellDuration(dwellCh25)}</div>
+    <div class="journey-stat-row">
+      <div class="journey-stat-card">
+        <div class="journey-stat-icon journey-stat-icon--blue">${USERS_ICON}</div>
+        <div class="journey-stat-body">
+          <div class="journey-stat-label">Cross-floor persons</div>
+          <div class="journey-stat-value">${crossFloor}</div>
+        </div>
+      </div>
+      <div class="journey-stat-card">
+        <div class="journey-stat-icon journey-stat-icon--green">${CLOCK_ICON}</div>
+        <div class="journey-stat-body">
+          <div class="journey-stat-label">Total dwell &middot; Ground Lobby</div>
+          <div class="journey-stat-value">${fmtDwellDuration(dwellCh20)}</div>
+        </div>
+      </div>
+      <div class="journey-stat-card">
+        <div class="journey-stat-icon journey-stat-icon--green">${CLOCK_ICON}</div>
+        <div class="journey-stat-body">
+          <div class="journey-stat-label">Total dwell &middot; Level -5</div>
+          <div class="journey-stat-value">${fmtDwellDuration(dwellCh25)}</div>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -448,13 +483,14 @@ function setupCameraCard(mainEl, channel, cfg, series, { getForcedIds, onMatchCh
 
   function renderBadgesAndSub() {
     const activeIds = getForcedIds ? getForcedIds() : (phase === 'main' ? (personIds[currentSec] ?? []) : []);
-    const isAwaiting = getForcedIds ? activeIds.length === 0 : phase === 'wait';
-    badgesEl.innerHTML = activeIds.length
-      ? `<div class="reid-ids">${activeIds.map((id) => `<span class="reid-id-badge">P#${id}</span>`).join('')}</div>`
-      : `<div class="kpi-metric-value reid-absent">--</div>`;
-    subEl.textContent = activeIds.length > 0
-      ? 'Cross-camera match on floor'
-      : isAwaiting ? 'Tracking - awaiting cross-camera match' : 'No match in frame';
+    if (badgesEl) {
+      badgesEl.textContent = 'Re-ID \u00b7 P#4';
+    }
+    if (subEl) {
+      subEl.textContent = activeIds.length > 0
+        ? 'Cross-camera match on floor'
+        : (getForcedIds ? activeIds.length === 0 : phase === 'wait') ? 'Tracking - awaiting cross-camera match' : 'No match in frame';
+    }
     onMatchChange?.(activeIds);
   }
 
@@ -555,8 +591,9 @@ function setupJourneyModal(mainEl) {
 function mountReidSection(mainEl, dbData, timeSeries) {
   const channels = Object.entries(VIDEO_CONFIG);
   const mirrorChannel = channels.find(([, cfg]) => cfg.clockStartTime)?.[0] ?? null;
+  const t = dbData.transitions[0] || null;
 
-  const cardsHtml = channels.map(([channel, cfg]) => cameraCardHtml(channel, cfg)).join('');
+  const cardsHtml = channels.map(([channel, cfg]) => cameraCardHtml(channel, cfg, t)).join('');
   mainEl.insertAdjacentHTML('beforeend', journeySectionHtml(dbData.transitions, cardsHtml, dbData.persons, dbData.floorVisits));
 
   const state = { mirrorIds: [] };

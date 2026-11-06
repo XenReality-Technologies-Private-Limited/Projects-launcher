@@ -20,7 +20,7 @@ export function requireAuth(onAuthed) {
   overlay.style.cssText = `
     position:fixed;inset:0;background:#f1f5f9;display:flex;
     align-items:center;justify-content:center;z-index:9999;
-    font-family:'Open Sans',system-ui,sans-serif;
+    font-family:'DM Sans',system-ui,sans-serif;
   `;
   overlay.innerHTML = `
     <div style="background:#fff;border:1px solid #e2e8f0;border-radius:20px;
