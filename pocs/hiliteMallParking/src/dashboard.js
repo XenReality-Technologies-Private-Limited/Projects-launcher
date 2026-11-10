@@ -210,6 +210,11 @@ export function renderDashboard(appEl, clips) {
 
       <div class="main-wrapper">
         <header class="dash-header">
+          <div class="header-brand-mobile">
+            <div class="header-brand-mobile-pill">
+              <img src="https://d108xxen99ni2a.cloudfront.net/XenRealitylogo.webp" alt="XenReality" class="header-brand-mobile-logo" />
+            </div>
+          </div>
           <div class="header-title" id="hdr-breadcrumb">XENTRACK DEMO DASHBOARD</div>
           <div class="header-right">
             <div class="header-datetime">

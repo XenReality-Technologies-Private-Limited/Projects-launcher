@@ -192,6 +192,22 @@ body {
   z-index: 300;
 }
 
+/* Mobile-only: the XenReality mark, shown as its own row above the title
+   (desktop already shows it in the sidebar, so this stays hidden there). */
+.header-brand-mobile { display: none; }
+.header-brand-mobile-pill {
+  display: flex;
+  align-items: center;
+  background: var(--xr-navy);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.header-brand-mobile-logo {
+  height: 16px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
 .header-title {
   min-width: 0;
   overflow: hidden;
@@ -513,12 +529,26 @@ body {
   .kpi-body { grid-template-columns: 1fr; }
   .app-layout { flex-direction: column; }
   .side-nav {
+    /* .side-nav's desktop rule sets flex: 0 0 250px as a *width* for the
+       row layout above; once the main axis flips to vertical here, that
+       same flex-basis is read as a *height* instead, forcing a 250px-tall
+       bar. Reset the basis so height instead follows the (small) content. */
+    flex: 0 0 auto;
     width: 100%;
     position: static;
     height: auto;
     min-height: auto;
     box-shadow: none;
   }
+  /* Header, then the tab bar, then the page content — in that visual order —
+     even though the tab bar (.side-nav) and the header/content (nested
+     inside .main-wrapper) aren't siblings in the markup. display:contents
+     unwraps .main-wrapper so its children become direct flex items of
+     .app-layout alongside .side-nav, and `order` arranges all three. */
+  .main-wrapper { display: contents; }
+  .dash-header { order: 1; }
+  .side-nav { order: 2; }
+  .content-area { order: 3; }
 }
 
 /* Phones: the full vertical sidebar block (brand + site label + stacked nav)
@@ -531,6 +561,14 @@ body {
     min-height: 56px;
     padding: 8px 14px;
   }
+  /* Its own row, above the title — flex-basis:100% forces the wrap
+     (.dash-header already has flex-wrap:wrap) so title/right fall to the
+     next line below it instead of squeezing onto the same row. */
+  .header-brand-mobile {
+    display: flex;
+    flex-basis: 100%;
+    margin-bottom: 6px;
+  }
   .header-right { flex-wrap: wrap; row-gap: 6px; gap: 8px; }
   .header-datetime { display: none; }
   .header-customer-logo { height: 32px; }
@@ -538,9 +576,11 @@ body {
   .side-nav {
     flex-direction: row;
     align-items: center;
-    padding: 10px 12px;
+    padding: 8px 12px;
     gap: 10px;
   }
+  /* The XenReality mark now lives in the header above, so hide it here too
+     along with the monitoring-site label/divider, to make room for the tabs. */
   .side-nav-brand,
   .side-nav-divider,
   .side-nav-site {
@@ -553,7 +593,7 @@ body {
     gap: 8px;
     overflow-x: auto;
   }
-  .side-nav-item { white-space: nowrap; flex-shrink: 0; }
+  .side-nav-item { white-space: nowrap; flex-shrink: 0; padding: 8px 12px; }
   .side-nav-footer {
     margin-top: 0;
     padding-top: 0;
@@ -561,7 +601,7 @@ body {
     flex-shrink: 0;
   }
   .side-nav-signout span { display: none; }
-  .side-nav-signout { padding: 10px; }
+  .side-nav-signout { padding: 8px; }
 
   .kpi-card,
   .journey-main-card,
