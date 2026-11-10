@@ -14,6 +14,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   font-family: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
   background: var(--page-bg);
   color: var(--text-primary);
@@ -179,6 +180,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 8px;
   height: 64px;
   padding: 0 28px;
   background: rgba(255,255,255,0.96);
@@ -190,6 +193,9 @@ body {
 }
 
 .header-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: 'Open Sans', ui-sans-serif, system-ui, sans-serif;
   font-size: 12px;
   font-weight: 700;
@@ -242,8 +248,9 @@ body {
 .kpi-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px 16px;
   margin-bottom: 14px;
 }
 
@@ -251,6 +258,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .kpi-title {
@@ -513,6 +521,56 @@ body {
   }
 }
 
+/* Phones: the full vertical sidebar block (brand + site label + stacked nav)
+   eats most of the screen before any real content shows, so collapse it into
+   a slim horizontal bar instead, and trim header/card chrome that otherwise
+   forces this page wider than the viewport. */
+@media (max-width: 640px) {
+  .dash-header {
+    height: auto;
+    min-height: 56px;
+    padding: 8px 14px;
+  }
+  .header-right { flex-wrap: wrap; row-gap: 6px; gap: 8px; }
+  .header-datetime { display: none; }
+  .header-customer-logo { height: 32px; }
+
+  .side-nav {
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .side-nav-brand,
+  .side-nav-divider,
+  .side-nav-site {
+    display: none;
+  }
+  .side-nav-menu {
+    flex: 1;
+    min-width: 0;
+    flex-direction: row;
+    gap: 8px;
+    overflow-x: auto;
+  }
+  .side-nav-item { white-space: nowrap; flex-shrink: 0; }
+  .side-nav-footer {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    flex-shrink: 0;
+  }
+  .side-nav-signout span { display: none; }
+  .side-nav-signout { padding: 10px; }
+
+  .kpi-card,
+  .journey-main-card,
+  .journey-stat-card {
+    padding: 16px;
+  }
+  .kpi-video-container { min-height: 0; }
+}
+
 /* ── Hilite Mall re-id section (appended after the 4 parking cards) ── */
 .reid-loading {
   padding: 24px;
@@ -569,6 +627,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .journey-stat-label {
@@ -598,10 +657,13 @@ body {
 .journey-card-header {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px 16px;
   margin-bottom: 20px;
 }
+
+.journey-card-header-left { min-width: 0; }
 
 .journey-card-title {
   margin: 0;
@@ -729,9 +791,13 @@ body {
   padding: 12px 16px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
   justify-content: space-between;
   border-top: 1px solid var(--card-border);
 }
+
+.journey-video-info { min-width: 0; }
 
 .journey-video-title {
   font-size: 0.88rem;
@@ -762,8 +828,9 @@ body {
 .journey-reid-header {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px 12px;
   margin-bottom: 14px;
 }
 
